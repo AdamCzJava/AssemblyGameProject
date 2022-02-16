@@ -1,0 +1,157 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 2/16/2022 3:18:04 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9      
+00001000                            10      
+00001000  21FC 0000C350 3000        11      MOVE.L #50000, $3000 ;move the literal number 50000(00 00 C3 50 in hex) which represents total amount of the carbon in to the address memory $3000
+00001008  31FC 1388 4000            12      MOVE.W #5000,  $4000 ;move the literal number 5000(00 00 13 88 in hex) which represents total amount of the money in to the address memory $3000
+0000100E  31FC 003C 5000            13      MOVE.W #60,    $5000 ;move the literal number 60 (00 3C in hex) which represents the solar panel in to the address memory $5000
+00001014  31FC 002D 6000            14      MOVE.W #45,    $6000 ;move the literal number 45 (00 2D in hex) which represents the windmill in to the address memory $6000
+0000101A  33FC 0019 00008000        15      MOVE.W #25,    $8000 ;move the literal number 25 (00 19 in hex) which represents the tree in to the address memory $8000
+00001022                            16      
+00001022                            17      
+00001022  43F9 000010FA             18      LEA welcome, A1 ;it loads variable welcome(10 AA in hex) in to A1
+00001028  303C 000E                 19      MOVE.W #14, D0  ;display the string variable welcome
+0000102C  4E4F                      20      TRAP #15 
+0000102E                            21      
+0000102E  43F9 000010DE             22      LEA text1, A1   ;it loads variable text1(108E in hex) in to A1
+00001034  303C 000E                 23      MOVE.W #14, D0  ;display the string variable text1
+00001038  4E4F                      24      TRAP #15        
+0000103A                            25      
+0000103A  103C 0002                 26      MOVE.B #2, D0   ;store the string in the memory location then stores that memory location in A1 it also store the number of characters in D1
+0000103E  4E4F                      27      TRAP #15
+00001040                            28      
+00001040  21D1 2000                 29      MOVE.L (A1), $2000 ;we move the value stored at the memory location stored in address register A1
+00001044                            30      
+00001044  43F9 000010F6             31      LEA text2, A1  ;it loads variable text2(10A6 in hex) in to A1
+0000104A  303C 000E                 32      MOVE.W #14, D0 ;display the string variable text2
+0000104E  4E4F                      33      TRAP #15
+00001050                            34      
+00001050  43F8 2000                 35      LEA $2000, A1 ;the string text2 which we stored at the moemory location 2000 we moved into the A1
+00001054  303C 0001                 36      MOVE.W #1, D0 ;display the user input
+00001058  4E4F                      37      TRAP #15
+0000105A                            38      
+0000105A                            39  RESTART:
+0000105A                            40      
+0000105A  6100 0070                 41      BSR NEWLINE     ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0000105E  43F9 0000118D             42      LEA text4, A1   ;it loads variable text4(1139 in hex) in to A1
+00001064  303C 000E                 43      MOVE.W #14, D0  ;display the string variable text4
+00001068  4E4F                      44      TRAP #15 
+0000106A                            45      
+0000106A  6100 000C                 46      BSR INPUT    ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+0000106E                            47    
+0000106E  B27C 000D                 48      CMP #13, D1     ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+00001072  6700 000C                 49      BEQ GAMELOOP    ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+00001076  60E2                      50      BRA RESTART     ;it branch to RESTART
+00001078                            51      
+00001078                            52  INPUT:
+00001078                            53  
+00001078  103C 0005                 54      MOVE.B #5, D0 ;read a single character from the keyboard into D1
+0000107C  4E4F                      55      TRAP #15        
+0000107E  4E75                      56      RTS    ;it return from Subroutine (INPUT) in to line after BSR INPUT
+00001080                            57      
+00001080                            58  GAMELOOP:
+00001080                            59      
+00001080  2238 3000                 60      MOVE.L $3000, D1 ;move address memory $3000 in to D1
+00001084  6100 0046                 61      BSR NEWLINE
+00001088  43F9 00001179             62      LEA text3, A1    ;it loads variable text3(1129 in hex) in to A1
+0000108E  303C 0011                 63      MOVE.W #17, D0   ;display string at A1 and display decimal number in D1(00 00 C3 50)which represent the carbon amount 50000 
+00001092  4E4F                      64      TRAP #15
+00001094  6100 0036                 65      BSR NEWLINE
+00001098  3238 4000                 66      MOVE.W $4000, D1 
+0000109C  43F9 000011AC             67      LEA text5, A1
+000010A2  303C 0011                 68      MOVE.W #17, D0
+000010A6  4E4F                      69      TRAP #15 
+000010A8  6100 0022                 70      BSR NEWLINE 
+000010AC  6100 001E                 71      BSR NEWLINE 
+000010B0  43F9 000011BF             72      LEA description, A1   
+000010B6  303C 000E                 73      MOVE.W #14, D0  
+000010BA  4E4F                      74      TRAP #15
+000010BC  6100 000E                 75      BSR NEWLINE     
+000010C0  43F9 0000122C             76      LEA description2, A1   
+000010C6  303C 000E                 77      MOVE.W #14, D0  
+000010CA  4E4F                      78      TRAP #15
+000010CC                            79  
+000010CC                            80  NEWLINE:
+000010CC                            81      
+000010CC  43F9 0000134A             82      LEA NEW, A1    ;it loads variable NEW(1182 in hex) in to A1
+000010D2  103C 000E                 83      MOVE.B #14, D0 ;display the string variable NEW
+000010D6  4E4F                      84      TRAP #15
+000010D8  4E75                      85      RTS            ;it returns from Subroutine (NEWLINE)into the line 'LEA text4, A1'under 'BSR NEWLINE'
+000010DA                            86  
+000010DA                            87  
+000010DA                            88  
+000010DA                            89     
+000010DA                            90      
+000010DA  FFFF FFFF                 91      SIMHALT   ; halt simulator
+000010DE                            92  
+000010DE= 50 6C 65 61 73 65 ...     93  text1 dc.b 'Please enter your name ',0                      ;variable text1 terminated with null '0'
+000010F6= 48 69 20 00               94  text2 dc.b 'Hi ' ,0                                         ;variable text2 terminated with null '0'
+000010FA= 2B 2D 2D 2D 2D 2D ...     95  welcome dc.b '+--------------------------------------+'     ;variable welcome terminated with null '0'
+00001122= 0D 0A                     96          dc.b  $0d,$0a                                       ;$0d stand for a new line and $0a move to the left
+00001124= 7C 20 20 57 65 6C ...     97          dc.b '|  Welcome to the adventure game!!     |'  
+0000114C= 0D 0A                     98          dc.b  $0d,$0a                     
+0000114E= 2B 2D 2D 2D 2D 2D ...     99          dc.b '+--------------------------------------+'
+00001176= 0D 0A 00                 100          dc.b  $0d,$0a, 0
+00001179                           101          
+00001179                           102          
+00001179= 54 48 45 20 43 41 ...    103  text3 dc.b 'THE CARBON TOTAL : ', 0                         ;variable text3 terminated with null '0'
+0000118D= 50 52 45 53 53 20 ...    104  text4 dc.b 'PRESS ENTER TO START THE GAME ', 0              ;variable text4 terminated with null '0'
+000011AC= 54 48 45 20 4D 4F ...    105  text5 dc.b 'THE MONEY TOTAL : ', 0
+000011BF= 54 68 65 20 61 69 ...    106  description dc.b 'The aim for this game is to reduce '
+000011E2= 0D 0A                    107              dc.b  $0d,$0a 
+000011E4= 74 68 65 20 61 6D ...    108              dc.b 'the amount of the carbon on the earth to prevent '
+00001215= 0D 0A                    109              dc.b  $0d,$0a 
+00001217= 54 48 45 20 47 4C ...    110              dc.b 'THE GLOBAL WARMING'
+00001229= 0D 0A 00                 111              dc.b  $0d,$0a, 0
+0000122C= 54 6F 20 72 65 64 ...    112  description2 dc.b 'To reduce the carbon level we can buy some items from the shop.'
+0000126B= 0D 0A                    113               dc.b  $0d,$0a
+0000126D= 53 4F 4C 41 52 20 ...    114               dc.b 'SOLAR PANELS'
+00001279= 0D 0A                    115               dc.b  $0d,$0a
+0000127B= 57 49 4E 44 4D 49 ...    116               dc.b 'WINDMILLS'
+00001284= 0D 0A                    117               dc.b  $0d,$0a
+00001286= 54 52 45 45 53           118               dc.b 'TREES'
+0000128B= 0D 0A                    119               dc.b  $0d,$0a
+0000128D= 57 65 20 63 61 6E ...    120               dc.b 'We can also play against some characters '
+000012B6= 61 74 20 74 68 65 ...    121               dc.b 'at the game and win the price'
+000012D3= 0D 0A 00                 122               dc.b  $0d,$0a, 0
+000012D6= 44 4F 20 59 4F 55 ...    123  solar dc.b 'DO YOU WANT TO BAY A SOLAR PANEL PRESS A ', 0   ;variable solar terminated with null '0'
+00001300= 44 4F 20 59 4F 55 ...    124  wind  dc.b 'DO YOU WANT TO BAY A WINDMILL PRESS B ', 0      ;variable wind terminated with null '0'
+00001327= 44 4F 20 59 4F 55 ...    125  tree  dc.b 'DO YOU WANT TO BAY A TREE PRESS C ', 0          ;variable tree terminated with null '0'
+0000134A= 0D 0A 00                 126  NEW   dc.b $0d,$0a, 0                                       ;variable NEW terminated with null '0'
+0000134D                           127          
+0000134D                           128      END    START                                            ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DESCRIPTION         11BF
+DESCRIPTION2        122C
+GAMELOOP            1080
+INPUT               1078
+NEW                 134A
+NEWLINE             10CC
+RESTART             105A
+SOLAR               12D6
+START               1000
+TEXT1               10DE
+TEXT2               10F6
+TEXT3               1179
+TEXT4               118D
+TEXT5               11AC
+TREE                1327
+WELCOME             10FA
+WIND                1300
