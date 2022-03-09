@@ -1,0 +1,817 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 3/9/2022 11:42:22 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9      
+00001000                            10      
+00001000  21FC 0000C350 3000        11      MOVE.L #50000, $3000 ;move the literal number 50000(00 00 C3 50 in hex) which represents total amount of the carbon in to the address memory $3000
+00001008  21FC 00001388 4000        12      MOVE.L #5000,  $4000 ;move the literal number 5000(00 00 13 88 in hex) which represents total amount of the money in to the address memory $3000
+00001010  31FC 0064 5000            13      MOVE.W #100,   $5000 ;move the literal number 100 (00 3C in hex) which represents the solar panel in to the address memory $5000
+00001016  31FC 004B 6000            14      MOVE.W #75,    $6000 ;move the literal number 75 (00 2D in hex) which represents the windmill in to the address memory $6000
+0000101C  33FC 0032 00008000        15      MOVE.W #50,    $8000 ;move the literal number 50 (00 19 in hex) which represents the tree in to the address memory $8000
+00001024                            16      
+00001024  223C 000084CF             17      MOVE.L #33999, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+0000102A  103C 0015                 18      MOVE.B #21, D0
+0000102E  4E4F                      19      TRAP #15
+00001030                            20      
+00001030                            21  
+00001030                            22      
+00001030  43F9 00001574             23      LEA welcome, A1 ;it loads variable welcome(10 AA in hex) in to A1
+00001036  303C 000E                 24      MOVE.W #14, D0  ;display the string variable welcome
+0000103A  4E4F                      25      TRAP #15 
+0000103C  6100 0400                 26      BSR WAIT
+00001040                            27      
+00001040  223C 0000FF00             28      MOVE.L #65280, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+00001046  103C 0015                 29      MOVE.B #21, D0
+0000104A  4E4F                      30      TRAP #15
+0000104C  43F9 000016F5             31      LEA earth, A1 ;it loads variable welcome(10 AA in hex) in to A1
+00001052  303C 000E                 32      MOVE.W #14, D0  ;display the string variable welcome
+00001056  4E4F                      33      TRAP #15 
+00001058  6100 03E4                 34      BSR WAIT
+0000105C                            35      
+0000105C  223C 000027F9             36      MOVE.L #10233, D1   ;FF00 in hex (set colour red)    0x00BBGGRR
+00001062  103C 0015                 37      MOVE.B #21, D0
+00001066  4E4F                      38      TRAP #15
+00001068  6100 00A6                 39      BSR NEWLINE
+0000106C  43F9 0000154E             40      LEA text1, A1   ;it loads variable text1(108E in hex) in to A1
+00001072  303C 000E                 41      MOVE.W #14, D0  ;display the string variable text1
+00001076  4E4F                      42      TRAP #15        
+00001078  103C 0002                 43      MOVE.B #2, D0   ;store the string in the memory location then stores that memory location in A1 it also store the number of characters in D1
+0000107C  4E4F                      44      TRAP #15
+0000107E                            45   
+0000107E  23D1 00009000             46      MOVE.L (A1),$9000  ;we move the value stored at the memory location stored in address register A1
+00001084  6100 008A                 47      BSR NEWLINE
+00001088  43F9 00001566             48      LEA text2, A1  ;it loads variable text2(10A6 in hex) in to A1
+0000108E  303C 000E                 49      MOVE.W #14, D0 ;display the string variable text2
+00001092  4E4F                      50      TRAP #15
+00001094                            51      
+00001094                            52      
+00001094  43F9 00009000             53      LEA $9000, A1 ;the string text2 which we stored at the moemory location 9000 we moved into the A1
+0000109A  303C 0001                 54      MOVE.W #1, D0 ;display the user input
+0000109E  4E4F                      55      TRAP #15
+000010A0  43F9 0000163E             56      LEA welcome2, A1   ;it loads variable text1(108E in hex) in to A1
+000010A6  303C 000E                 57      MOVE.W #14, D0  ;display the string variable text1
+000010AA  4E4F                      58      TRAP #15
+000010AC                            59      
+000010AC                            60      
+000010AC                            61  RESTART:
+000010AC                            62      
+000010AC  6100 0062                 63      BSR NEWLINE     ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000010B0  43F9 000026AA             64      LEA text4, A1   ;it loads variable text4(1139 in hex) in to A1
+000010B6  303C 000E                 65      MOVE.W #14, D0  ;display the string variable text4
+000010BA  4E4F                      66      TRAP #15 
+000010BC                            67      
+000010BC  6100 000C                 68      BSR INPUT    ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+000010C0                            69    
+000010C0  B27C 000D                 70      CMP #13, D1     ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+000010C4  6700 000E                 71      BEQ GAMELOOP    ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+000010C8  60E2                      72      BRA RESTART     ;it branch to RESTART
+000010CA                            73      
+000010CA                            74  INPUT:
+000010CA  7200                      75      MOVE.L #0,D1
+000010CC  103C 0005                 76      MOVE.B #5, D0 ;read a single character from the keyboard into D1
+000010D0  4E4F                      77      TRAP #15        
+000010D2  4E75                      78      RTS    ;it return from Subroutine (INPUT) in to line after BSR INPUT
+000010D4                            79      
+000010D4                            80  GAMELOOP:
+000010D4                            81      
+000010D4                            82   
+000010D4                            83  
+000010D4  6100 003A                 84      BSR NEWLINE 
+000010D8                            85       
+000010D8  6100 03F4                 86      BSR CLEARSCREEN
+000010DC  9241                      87      SUB D1, D1
+000010DE  6100 0030                 88      BSR NEWLINE
+000010E2  223C 00F6B26B             89      MOVE.L #$f6b26b, D1   ;0000FF in hex (set colour blue)
+000010E8  103C 0015                 90      MOVE.B #21, D0         
+000010EC  4E4F                      91      TRAP #15
+000010EE  9241                      92      SUB D1, D1
+000010F0  43F9 00002746             93      LEA description, A1   
+000010F6  303C 000E                 94      MOVE.W #14, D0  
+000010FA  4E4F                      95      TRAP #15
+000010FC  6100 0012                 96      BSR NEWLINE 
+00001100                            97         
+00001100  43F9 000027B3             98      LEA description2, A1   
+00001106  303C 000E                 99      MOVE.W #14, D0  
+0000110A  4E4F                     100      TRAP #15
+0000110C  6100 0010                101      BSR LEVEL
+00001110                           102      
+00001110                           103      
+00001110                           104  NEWLINE:
+00001110                           105      
+00001110  43F9 0000316C            106      LEA NEW, A1    ;it loads variable NEW(1182 in hex) in to A1
+00001116  103C 000E                107      MOVE.B #14, D0 ;display the string variable NEW
+0000111A  4E4F                     108      TRAP #15
+0000111C  4E75                     109      RTS            ;it returns from Subroutine (NEWLINE)into the line 'LEA text4, A1'under 'BSR NEWLINE'
+0000111E                           110  
+0000111E                           111  LEVEL:
+0000111E                           112      
+0000111E  61F0                     113      BSR NEWLINE
+00001120  223C 00008204            114      MOVE.L #33284, D1   ;0000FF in hex (set colour blue)
+00001126  103C 0015                115      MOVE.B #21, D0         
+0000112A  4E4F                     116      TRAP #15
+0000112C  9241                     117      SUB D1, D1
+0000112E  61E0                     118      BSR NEWLINE
+00001130  6100 030C                119      BSR WAIT
+00001134  61DA                     120      BSR NEWLINE 
+00001136  43F9 000026DC            121      LEA text6, A1   ;it loads variable text4(1139 in hex) in to A1
+0000113C  303C 000E                122      MOVE.W #14, D0  ;display the string variable text4
+00001140  4E4F                     123      TRAP #15
+00001142  9241                     124      SUB D1, D1
+00001144  6184                     125      BSR INPUT 
+00001146  B27C 0063                126      CMP #99, D1     ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+0000114A  6700 0004                127      BEQ PATH    ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+0000114E  60CE                     128      BRA LEVEL
+00001150                           129  
+00001150                           130  PATH:
+00001150                           131      
+00001150  61BE                     132      BSR NEWLINE 
+00001152  61BC                     133      BSR NEWLINE
+00001154  223C 0000FF00            134      MOVE.L #65280, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+0000115A  103C 0015                135      MOVE.B #21, D0
+0000115E  4E4F                     136      TRAP #15 
+00001160  223C 000062C0            137      MOVE.L #25280, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+00001166  103C 0015                138      MOVE.B #21, D0
+0000116A  4E4F                     139      TRAP #15     
+0000116C  43F9 0000271B            140      LEA text8, A1    ;it loads variable text4(1139 in hex) in to A1
+00001172  303C 000E                141      MOVE.W #14, D0
+00001176  4E4F                     142      TRAP #15
+00001178  2238 3000                143      MOVE.L $3000, D1 ;move address memory $3000 in to D1
+0000117C  6192                     144      BSR NEWLINE
+0000117E                           145      
+0000117E  43F9 00002696            146      LEA text3, A1    ;it loads variable text3(1129 in hex) in to A1
+00001184  303C 0011                147      MOVE.W #17, D0   ;display string at A1 and display decimal number in D1(00 00 C3 50)which represent the carbon amount 50000 
+00001188  4E4F                     148      TRAP #15
+0000118A  6184                     149      BSR NEWLINE
+0000118C  2238 4000                150      MOVE.L $4000, D1 
+00001190  43F9 000026C9            151      LEA text5, A1
+00001196  303C 0011                152      MOVE.W #17, D0
+0000119A  4E4F                     153      TRAP #15 
+0000119C  9241                     154      SUB D1, D1 
+0000119E  6100 FF70                155      BSR NEWLINE
+000011A2  6100 FF6C                156      BSR NEWLINE
+000011A6  6100 FF68                157      BSR NEWLINE
+000011AA  223C 00008204            158      MOVE.L #33284, D1   ;0000FF in hex (set colour blue)
+000011B0  103C 0015                159      MOVE.B #21, D0         
+000011B4  4E4F                     160      TRAP #15
+000011B6  6100 0286                161      BSR WAIT
+000011BA  43F9 000026F8            162      LEA text7, A1   ;it loads variable text4(1139 in hex) in to A1
+000011C0  303C 000E                163      MOVE.W #14, D0  ;display the string variable text4
+000011C4  4E4F                     164      TRAP #15  
+000011C6  6100 FF02                165      BSR INPUT 
+000011CA  6100 FF44                166      BSR NEWLINE
+000011CE  B27C 0066                167      CMP #102, D1     ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+000011D2  6700 014A                168      BEQ FOREST
+000011D6  B27C 0073                169      CMP #115, D1
+000011DA  6700 0006                170      BEQ SHOP
+000011DE  6000 010C                171      BRA CHOOSE 
+000011E2                           172      
+000011E2                           173  
+000011E2                           174  SHOP:
+000011E2  6100 02EA                175      BSR CLEARSCREEN
+000011E6  6100 FF28                176      BSR NEWLINE
+000011EA  223C 00FFD700            177      MOVE.L #$ffd700, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+000011F0  103C 0015                178      MOVE.B #21, D0
+000011F4  4E4F                     179      TRAP #15
+000011F6  6100 0292                180      BSR HUD
+000011FA  9241                     181      SUB D1, D1
+000011FC  6100 FF12                182      BSR NEWLINE
+00001200  6100 FF0E                183      BSR NEWLINE
+00001204  6100 02A6                184      BSR MONEY
+00001208  223C 000A19F0            185      MOVE.L #662000, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+0000120E  103C 0015                186      MOVE.B #21, D0
+00001212  4E4F                     187      TRAP #15
+00001214  6100 FEFA                188      BSR NEWLINE
+00001218  7200                     189      MOVE.L #0,D1  ;Clear d1
+0000121A  227C 00000000            190      MOVE.L #0,A1    
+00001220  43F9 00001D2F            191      LEA snoop, A1   ;it loads variable text4(1139 in hex) in to A1
+00001226  303C 000E                192      MOVE.W #14, D0  ;display the string variable text4
+0000122A  4E4F                     193      TRAP #15
+0000122C  6100 FEE2                194      BSR NEWLINE
+00001230  6100 FEDE                195      BSR NEWLINE     ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00001234  43F9 000016AF            196      LEA enter, A1   ;it loads variable text4(1139 in hex) in to A1
+0000123A  303C 000E                197      MOVE.W #14, D0  ;display the string variable text4
+0000123E  4E4F                     198      TRAP #15
+00001240  9241                     199      SUB D1, D1
+00001242  6100 FE86                200      BSR INPUT 
+00001246  B27C 000D                201      CMP #13, D1
+0000124A  6700 0008                202      BEQ ITEMS    ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+0000124E  6092                     203      BRA SHOP
+00001250  6100 FEBE                204      BSR NEWLINE
+00001254                           205      
+00001254                           206      
+00001254                           207      
+00001254                           208  ITEMS:
+00001254  6100 0278                209      BSR CLEARSCREEN
+00001258  43F9 0000285D            210      LEA soop, A1   ;it loads variable text4(1139 in hex) in to A1
+0000125E  303C 000E                211      MOVE.W #14, D0  ;display the string variable text4
+00001262  4E4F                     212      TRAP #15 
+00001264  6100 FEAA                213      BSR NEWLINE
+00001268  43F9 000030DB            214      LEA solar, A1
+0000126E  303C 000E                215      MOVE.W #14, D0
+00001272  4E4F                     216      TRAP #15
+00001274  6100 FE9A                217      BSR NEWLINE
+00001278  43F9 00003105            218      LEA wind, A1
+0000127E  303C 000E                219      MOVE.W #14, D0
+00001282  4E4F                     220      TRAP #15
+00001284  6100 FE8A                221      BSR NEWLINE
+00001288  43F9 0000312C            222      LEA tree, A1
+0000128E  303C 000E                223      MOVE.W #14, D0
+00001292  4E4F                     224      TRAP #15
+00001294  6100 FE7A                225      BSR NEWLINE
+00001298  43F9 0000314F            226      LEA exit, A1
+0000129E  303C 000E                227      MOVE.W #14, D0
+000012A2  4E4F                     228      TRAP #15
+000012A4  6100 FE6A                229      BSR NEWLINE
+000012A8  6100 FE20                230      BSR INPUT 
+000012AC  B27C 0061                231      CMP #97, D1
+000012B0  6700 0198                232      BEQ SOLO
+000012B4  B27C 0062                233      CMP #98, D1
+000012B8  6700 0220                234      BEQ WINDO
+000012BC  B27C 0063                235      CMP #99, D1
+000012C0  6700 024E                236      BEQ TRELE
+000012C4  B27C 0065                237      CMP #101, D1
+000012C8  6700 0008                238      BEQ EXITO
+000012CC  6000 FF14                239      BRA SHOP
+000012D0                           240      
+000012D0  4E75                     241      RTS
+000012D2                           242      
+000012D2                           243  
+000012D2                           244  EXITO:
+000012D2                           245  
+000012D2  323C FF00                246      MOVE.W #$FF00, D1
+000012D6  103C 000B                247      MOVE.B #11, D0
+000012DA  4E4F                     248      TRAP #15
+000012DC  43F9 0000316C            249      LEA NEW, A1    ;it loads variable NEW(1182 in hex) in to A1
+000012E2  103C 000E                250      MOVE.B #14, D0 ;display the string variable NEW
+000012E6  4E4F                     251      TRAP #15
+000012E8  6000 0002                252      BRA CHOOSE    
+000012EC                           253      
+000012EC                           254  CHOOSE:
+000012EC  223C 00FFF200            255      MOVE.L #$fff200, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+000012F2  103C 0015                256      MOVE.B #21, D0
+000012F6  4E4F                     257      TRAP #15
+000012F8  43F9 000026F8            258      LEA text7, A1   ;it loads variable text4(1139 in hex) in to A1
+000012FE  303C 000E                259      MOVE.W #14, D0  ;display the string variable text4
+00001302  4E4F                     260      TRAP #15
+00001304  6100 FE0A                261      BSR NEWLINE 
+00001308  6100 FDC0                262      BSR INPUT 
+0000130C  B27C 0066                263      CMP #102, D1    ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+00001310  6700 000C                264      BEQ FOREST 
+00001314  B27C 0073                265      CMP #115, D1
+00001318  6700 FEC8                266      BEQ SHOP
+0000131C  60CE                     267      BRA CHOOSE
+0000131E                           268  
+0000131E                           269  FOREST:
+0000131E  6100 01AE                270      BSR CLEARSCREEN
+00001322  6100 FDEC                271      BSR NEWLINE
+00001326  223C 0000F230            272      MOVE.L #62000, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+0000132C  103C 0015                273      MOVE.B #21, D0
+00001330  4E4F                     274      TRAP #15
+00001332  6100 FDDC                275      BSR NEWLINE
+00001336  43F9 00002230            276      LEA TREES, A1
+0000133C  303C 000E                277      MOVE.W #14, D0
+00001340  4E4F                     278      TRAP #15
+00001342  6100 FDCC                279      BSR NEWLINE
+00001346  223C 002986CC            280      MOVE.L #$2986cc, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+0000134C  103C 0015                281      MOVE.B #21, D0
+00001350  4E4F                     282      TRAP #15
+00001352  9241                     283      SUB D1, D1
+00001354  43F9 000016D1            284      LEA forent, A1
+0000135A  303C 000E                285      MOVE.W #14, D0
+0000135E  4E4F                     286      TRAP #15
+00001360  6100 FDAE                287      BSR NEWLINE
+00001364  9241                     288      SUB D1, D1
+00001366  6100 FD62                289      BSR INPUT 
+0000136A  B27C 000D                290      CMP #13, D1
+0000136E  6700 000A                291      BEQ DEEP    ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+00001372  6000 FF5E                292      BRA EXITO
+00001376  6100 FD98                293      BSR NEWLINE
+0000137A                           294  
+0000137A                           295  DEEP:
+0000137A  6100 0152                296      BSR CLEARSCREEN
+0000137E  6100 FD90                297      BSR NEWLINE
+00001382  223C 0000F230            298      MOVE.L #62000, D1   ;FF00 in hex (set colour green)    0x00BBGGRR
+00001388  103C 0015                299      MOVE.B #21, D0
+0000138C  4E4F                     300      TRAP #15
+0000138E  9241                     301      SUB D1, D1
+00001390  43F9 00002B36            302      LEA foorest, A1
+00001396  303C 000E                303      MOVE.W #14, D0
+0000139A  4E4F                     304      TRAP #15
+0000139C  6100 FD72                305      BSR NEWLINE
+000013A0  43F9 00002F0B            306      LEA foorest2, A1
+000013A6  303C 000E                307      MOVE.W #14, D0
+000013AA  4E4F                     308      TRAP #15
+000013AC  6100 FD62                309      BSR NEWLINE
+000013B0  6100 FD18                310      BSR INPUT
+000013B4  B27C 006C                311      CMP #108, D1    ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+000013B8  6700 0016                312      BEQ DRACO 
+000013BC  B27C 0072                313      CMP #114, D1
+000013C0  6700 0020                314      BEQ WIZ
+000013C4  B27C 0065                315      CMP #101, D1
+000013C8  6700 FF08                316      BEQ EXITO
+000013CC  6000 FF1E                317      BRA CHOOSE
+000013D0                           318      
+000013D0                           319      
+000013D0                           320      
+000013D0                           321      
+000013D0                           322      
+000013D0                           323  DRACO: 
+000013D0                           324     
+000013D0  6100 FD3E                325      BSR NEWLINE
+000013D4  43F9 00002738            326      LEA dragon, A1
+000013DA  303C 000E                327      MOVE.W #14, D0
+000013DE  4E4F                     328      TRAP #15
+000013E0  4E75                     329      RTS
+000013E2                           330      
+000013E2                           331      
+000013E2                           332  WIZ:    
+000013E2                           333      
+000013E2  6100 FD2C                334      BSR NEWLINE
+000013E6  43F9 0000273F            335      LEA wizard, A1
+000013EC  303C 000E                336      MOVE.W #14, D0
+000013F0  4E4F                     337      TRAP #15
+000013F2  6100 FD1C                338      BSR NEWLINE
+000013F6  43F9 00001566            339      LEA text2, A1  ;it loads variable text2(10A6 in hex) in to A1
+000013FC  303C 000E                340      MOVE.W #14, D0 ;display the string variable text2
+00001400  4E4F                     341      TRAP #15
+00001402                           342  
+00001402  303C 0001                343      MOVE.W #1, D0 ;display the user input
+00001406  4E4F                     344      TRAP #15
+00001408  6100 FD06                345      BSR NEWLINE
+0000140C  43F9 00002F9E            346      LEA wiztalk, A1
+00001412  303C 000E                347      MOVE.W #14, D0
+00001416  4E4F                     348      TRAP #15
+00001418  6100 FCF6                349      BSR NEWLINE 
+0000141C  9241                     350      SUB D1, D1
+0000141E  6100 FCAA                351      BSR INPUT
+00001422  B27C 001F                352      CMP #31, D1    ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+00001426  6700 124D                353      BEQ Question1 
+0000142A  B27C 0032                354      CMP #50, D1
+0000142E  6700 1250                355      BEQ Question2
+00001432  B27C 0033                356      CMP #51, D1
+00001436  6000 1253                357      BRA Question3
+0000143A  6000 FCD4                358      BRA NEWLINE
+0000143E                           359      
+0000143E                           360  WAIT: 
+0000143E                           361                     ;Waits the amount of time specified in D1 in 1/100ths of seconds
+0000143E  323C 0064                362      MOVE.W   #100,D1
+00001442  103C 0017                363      MOVE.B   #23,D0
+00001446  4E4F                     364      TRAP     #15
+00001448  4E75                     365      RTS
+0000144A                           366  
+0000144A                           367  SOLO:
+0000144A                           368  
+0000144A  43F9 0000307C            369      LEA solaris, A1   ;it loads variable text4(1139 in hex) in to A1
+00001450  303C 000E                370      MOVE.W #14, D0  ;display the string variable text4
+00001454  4E4F                     371      TRAP #15
+00001456  6100 FCB8                372      BSR NEWLINE
+0000145A  2A38 3000                373      MOVE.L $3000, D5
+0000145E  0445 00C8                374      SUB #200,D5
+00001462  21C5 3000                375      MOVE.L D5, $3000
+00001466  2A38 4000                376      MOVE.L $4000, D5
+0000146A  0445 0064                377      SUB #100, D5
+0000146E  21C5 4000                378      MOVE.L D5, $4000
+00001472  6100 005A                379      BSR CLEARSCREEN
+00001476  6100 0012                380      BSR HUD
+0000147A  6100 FC94                381      BSR NEWLINE
+0000147E  6100 002C                382      BSR MONEY
+00001482  6100 FC8C                383      BSR NEWLINE
+00001486  6000 FD5A                384      BRA SHOP
+0000148A                           385  HUD:
+0000148A  223C 0050FB94            386      MOVE.L #5307284, D1   ;0000FF in hex (set colour blue)
+00001490  103C 0015                387      MOVE.B #21, D0
+00001494  143C 0001                388      MOVE.B #1,D2    ;0001 in binary         
+00001498  4E4F                     389      TRAP #15
+0000149A  43F9 0000306B            390      LEA carbon, A1
+000014A0  2238 3000                391      MOVE.L $3000, D1
+000014A4  103C 0011                392      MOVE.B #17, D0
+000014A8  4E4F                     393      TRAP #15   
+000014AA  4E75                     394      RTS
+000014AC                           395      
+000014AC                           396  MONEY:
+000014AC  223C 0013F294            397      MOVE.L #1307284, D1   ;0000FF in hex (set colour blue)
+000014B2  103C 0015                398      MOVE.B #21, D0
+000014B6  143C 0001                399      MOVE.B #1,D2    ;0001 in binary         
+000014BA  4E4F                     400      TRAP #15
+000014BC  43F9 0000305B            401      LEA coins, A1
+000014C2  2238 4000                402      MOVE.L $4000, D1
+000014C6  103C 0011                403      MOVE.B #17, D0
+000014CA  4E4F                     404      TRAP #15   
+000014CC  4E75                     405      RTS
+000014CE                           406  
+000014CE                           407      
+000014CE                           408  CLEARSCREEN:
+000014CE  323C FF00                409      MOVE.W #$FF00, D1
+000014D2  103C 000B                410      MOVE.B #11, D0
+000014D6  4E4F                     411      TRAP #15
+000014D8  4E75                     412      RTS
+000014DA                           413      
+000014DA                           414  WINDO:
+000014DA                           415  
+000014DA  43F9 0000309F            416      LEA windows, A1   ;it loads variable text4(1139 in hex) in to A1
+000014E0  303C 000E                417      MOVE.W #14, D0  ;display the string variable text4
+000014E4  4E4F                     418      TRAP #15
+000014E6  2A38 3000                419      MOVE.L $3000, D5
+000014EA  0445 0096                420      SUB #150,D5
+000014EE  21C5 3000                421      MOVE.L D5, $3000
+000014F2  2A38 4000                422      MOVE.L $4000, D5
+000014F6  0445 004B                423      SUB #75, D5
+000014FA  21C5 4000                424      MOVE.L D5, $4000
+000014FE  61CE                     425      BSR CLEARSCREEN
+00001500  6188                     426      BSR HUD
+00001502  6100 FC0C                427      BSR NEWLINE
+00001506  61A4                     428      BSR MONEY
+00001508  6100 FC06                429      BSR NEWLINE
+0000150C  6000 FCD4                430      BRA SHOP
+00001510                           431  
+00001510                           432      
+00001510                           433  TRELE:
+00001510                           434      
+00001510  43F9 000030BF            435      LEA tele, A1   ;it loads variable text4(1139 in hex) in to A1
+00001516  303C 000E                436      MOVE.W #14, D0  ;display the string variable text4
+0000151A  4E4F                     437      TRAP #15
+0000151C  2A38 3000                438      MOVE.L $3000, D5
+00001520  0445 0096                439      SUB #150,D5
+00001524  21C5 3000                440      MOVE.L D5, $3000
+00001528  2A38 4000                441      MOVE.L $4000, D5
+0000152C  0445 0032                442      SUB #50, D5
+00001530  21C5 4000                443      MOVE.L D5, $4000
+00001534  6198                     444      BSR CLEARSCREEN
+00001536  6100 FF52                445      BSR HUD
+0000153A  6100 FBD4                446      BSR NEWLINE
+0000153E  6100 FF6C                447      BSR MONEY
+00001542  6100 FBCC                448      BSR NEWLINE
+00001546  6000 FC9A                449      BRA SHOP
+0000154A                           450  
+0000154A                           451   
+0000154A  FFFF FFFF                452      SIMHALT   ; halt simulator
+0000154E                           453  
+0000154E                           454  
+0000154E                           455      
+0000154E= 50 6C 65 61 73 65 ...    456  text1 dc.b 'Please enter your name ',0                      ;variable text1 terminated with null '0'
+00001566= 20 20 20 20 20 20 ...    457  text2 dc.b '          HI ' ,0                                         ;variable text2 terminated with null '0'
+00001574= 20 20 20 2B 2D 2D ...    458  welcome dc.b '   +------------------------------------------------------------+'     ;variable welcome terminated with null '0'
+000015B5= 0D 0A                    459          dc.b  $0d,$0a                                                             ;$0d stand for a new line and $0a move to the left
+000015B7= 20 20 20 7C 20 20 ...    460          dc.b '   |                 Welcome to the adventure game!!            |'  
+000015F8= 0D 0A                    461          dc.b  $0d,$0a                                                       
+000015FA= 20 20 20 2B 2D 2D ...    462          dc.b '   +------------------------------------------------------------+'
+0000163B= 0D 0A 00                 463          dc.b  $0d,$0a, 0
+0000163E= 20 41 52 45 20 59 ...    464  welcome2 dc.b ' ARE YOU READY TO JOIN THE PLANET DEFENDERS TEAM '
+0000166F= 0D 0A                    465           dc.b  $0d,$0a 
+00001671= 20 20 20 20 20 20 ...    466           dc.b '               AND SAVE THE WORLD FROM GLOBAL WARMING?!!!  '
+000016AC= 0D 0A 00                 467           dc.b  $0d,$0a ,0         
+000016AF= 50 72 65 73 73 20 ...    468  enter   dc.b 'Press ENTER to go inside the shop',0  
+000016D1= 50 72 65 73 73 20 ...    469  forent  dc.b 'Press ENTER to go inside the forest',0      
+000016F5= 20 20 20 20 20 20 ...    470  earth   dc.b '                                                              '
+00001733= 0D 0A                    471          dc.b  $0d,$0a  
+00001735= 20 20 20 20 20 20 ...    472          dc.b '                                                              '
+00001773= 0D 0A                    473          dc.b  $0d,$0a                                                       
+00001775= 20 20 20 20 20 20 ...    474          dc.b '                         _-o#&&*''''?d:>b\_                   '
+000017B1= 0D 0A                    475          dc.b  $0d,$0a 
+000017B3= 20 20 20 20 20 20 ...    476          dc.b '                     _o/"`''  '',, dMF9MMMMMHo_               '
+000017EF= 0D 0A                    477          dc.b  $0d,$0a
+000017F1= 20 20 20 20 20 20 ...    478          dc.b '                   .o&#         `"MbHMMMMMMMMMMMHo.           '
+0000182F= 0D 0A                    479          dc.b  $0d,$0a
+00001831= 20 20 20 20 20 20 ...    480          dc.b '                  .o""           vodM*$&&HMMMMMMMMMM?.        '
+0000186F= 0D 0A                    481          dc.b  $0d,$0a
+00001871= 20 20 20 20 20 20 ...    482          dc.b '                ,.              $M&ood,~ `(&##MMMMMMH\        '
+000018AF= 0D 0A                    483          dc.b  $0d,$0a
+000018B1= 20 20 20 20 20 20 ...    484          dc.b '               /               ,MMMMMMM#b?#bobMMMMHMMML       '
+000018EF= 0D 0A                    485          dc.b  $0d,$0a
+000018F1= 20 20 20 20 20 20 ...    486          dc.b '              &              ?MMMMMMMMMMMMMMMMM7MMM$R*Hk      '
+0000192F= 0D 0A                    487          dc.b  $0d,$0a
+00001931= 20 20 20 20 20 20 ...    488          dc.b '             ?$.            :MMMMMMMMMMMMMMMMMMM/HMMM|`*L     '
+0000196F= 0D 0A                    489          dc.b  $0d,$0a
+00001971= 20 20 20 20 20 20 ...    490          dc.b '            |               |MMMMMMMMMMMMMMMMMMMMbMH    T,    '
+000019AF= 0D 0A                    491          dc.b  $0d,$0a
+000019B1= 20 20 20 20 20 20 ...    492          dc.b '            $H#:            `*MMMMMMMMMMMMMMMMMMMMb#}   `?    '
+000019EF= 0D 0A                    493          dc.b  $0d,$0a
+000019F1= 20 20 20 20 20 20 ...    494          dc.b '            ]MMH#             ""*""""*#MMMMMMMMMMMMM     -    '
+00001A2F= 0D 0A                    495          dc.b  $0d,$0a
+00001A31= 20 20 20 20 20 20 ...    496          dc.b '            MMMMMb_                   |MMMMMMMMMMMP      :    '
+00001A6F= 0D 0A                    497          dc.b  $0d,$0a
+00001A71= 20 20 20 20 20 20 ...    498          dc.b '            HMMMMMMMHo                 `MMMMMMMMMT       .    '
+00001AAF= 0D 0A                    499          dc.b  $0d,$0a
+00001AB1= 20 20 20 20 20 20 ...    500          dc.b '            ?MMMMMMMMP                  9MMMMMMMM}       -    '
+00001AEF= 0D 0A                    501          dc.b  $0d,$0a
+00001AF1= 20 20 20 20 20 20 ...    502          dc.b '            -?MMMMMMM                  |MMMMMMMMM?,d-    '    '
+00001B2A= 0D 0A                    503          dc.b  $0d,$0a
+00001B2C= 20 20 20 20 20 20 ...    504          dc.b '            :|MMMMMM-                 `MMMMMMMT .M|.   :      ' 
+00001B6A= 0D 0A                    505          dc.b  $0d,$0a
+00001B6C= 20 20 20 20 20 20 ...    506          dc.b '             .9MMM[                    &MMMMM*  `     /       '
+00001BAA= 0D 0A                    507          dc.b  $0d,$0a
+00001BAC= 20 20 20 20 20 20 ...    508          dc.b '              :9MMk                    `MMM#"        -        '
+00001BEA= 0D 0A                    509          dc.b  $0d,$0a
+00001BEC= 20 20 20 20 20 20 ...    510          dc.b '                 &M}                     `          .-        '
+00001C2A= 0D 0A                    511          dc.b  $0d,$0a
+00001C2C= 20 20 20 20 20 20 ...    512          dc.b '                  `&.                             .           '
+00001C6A= 0D 0A                    513          dc.b  $0d,$0a
+00001C6C= 20 20 20 20 20 20 ...    514          dc.b '                    `~,   .                     ./            '
+00001CAA= 0D 0A                    515          dc.b  $0d,$0a
+00001CAC= 20 20 20 20 20 20 ...    516          dc.b '                        . _                  .-               '
+00001CEA= 0D 0A                    517          dc.b  $0d,$0a
+00001CEC= 20 20 20 20 20 20 ...    518          dc.b '                           `--._,dd###pp=""                   '
+00001D2A= 0D 0A                    519          dc.b  $0d,$0a                                                       
+00001D2C= 0D 0A 00                 520          dc.b  $0d,$0a, 0
+00001D2F                           521          
+00001D2F                           522          
+00001D2F                           523          
+00001D2F= 20 20 20 20 20 20 ...    524  snoop   dc.b '                                                              '
+00001D6D= 0D 0A                    525          dc.b  $0d,$0a
+00001D6F= 20 20 20 20 20 20 ...    526          dc.b '                                 .----.                       '
+00001DAD= 0D 0A                    527          dc.b  $0d,$0a
+00001DAF= 20 20 20 20 20 20 ...    528          dc.b '                                 |-.-.|                       '
+00001DED= 0D 0A                    529          dc.b  $0d,$0a                                 
+00001DEF= 20 20 20 20 20 20 ...    530          dc.b '               __________________|;-;-|__                     '
+00001E2D= 0D 0A                    531          dc.b  $0d,$0a               
+00001E2F= 20 20 20 20 20 20 ...    532          dc.b '             ."                  "----"  ".                   '
+00001E6D= 0D 0A                    533          dc.b  $0d,$0a             
+00001E6F= 20 20 20 20 20 20 ...    534          dc.b '             . """""""""""""""""""""""""""" .                 '
+00001EAD= 0D 0A                    535          dc.b  $0d,$0a             
+00001EAF= 20 20 20 20 20 20 ...    536          dc.b '           .   ."""""".   .--""""""""""-,   .                 '
+00001EED= 0D 0A                    537          dc.b  $0d,$0a           
+00001EEF= 20 20 20 20 20 20 ...    538          dc.b '             . """.       """  .--"""""--.. """ .             '
+00001F2D= 0D 0A                    539          dc.b  $0d,$0a             
+00001F2F= 20 20 20 20 20 20 ...    540          dc.b '            .""""""-"""""-  .-"   |"|"|   ."""""".            '
+00001F6D= 0D 0A                    541          dc.b  $0d,$0a            
+00001F6F= 20 20 20 20 20 20 ...    542          dc.b '         .   ."".".     ."      |"|"|    .      .             '
+00001FAD= 0D 0A                    543          dc.b  $0d,$0a         
+00001FAF= 20 20 20 20 20 20 ...    544          dc.b '          "._( ()   \""".  _     _"""  _   .____."            '
+00001FED= 0D 0A                    545          dc.b  $0d,$0a          
+00001FEF= 20 20 20 20 20 20 ...    546          dc.b '            |.".  ()"   " --------------------.|              '
+0000202D= 0D 0A                    547          dc.b  $0d,$0a           
+0000202F= 20 20 20 20 20 20 ...    548          dc.b '            ||  "--"""""""          |         ||              '
+0000206D= 0D 0A                    549          dc.b  $0d,$0a            
+0000206F= 20 20 20 20 20 20 ...    550          dc.b '            ||    ".------"     |""|""|""|    ||              '
+000020AD= 0D 0A                    551          dc.b  $0d,$0a            
+000020AF= 20 20 20 20 20 20 ...    552          dc.b '            ||     |.-.-.||-----|--|--|--|----||              '
+000020ED= 0D 0A                    553          dc.b  $0d,$0a            
+000020EF= 20 20 20 20 20 20 ...    554          dc.b '            ||     || | |||     |__|_-"-_|    ||              '
+0000212D= 0D 0A                    555          dc.b  $0d,$0a            
+0000212F= 20 20 20 20 20 20 ...    556          dc.b '            ||     ||_|_|||    .-"-" ()  ".   ||              '
+0000216D= 0D 0A                    557          dc.b  $0d,$0a            
+0000216F= 20 20 20 20 20 20 ...    558          dc.b '            || .--.| [-] ||   ." ()     () .  ||              '
+000021AD= 0D 0A                    559          dc.b  $0d,$0a            
+000021AF= 20 20 20 20 20 20 ...    560          dc.b '            | "    |     ||-------------------||              ' 
+000021ED= 20 20 20 20 20 20 ...    561          dc.b '                                                              '                                                      
+0000222B= 0D 0A                    562          dc.b  $0d,$0a                                                            
+0000222D= 0D 0A 00                 563          dc.b  $0d,$0a, 0
+00002230                           564  
+00002230= 09 20 20 20 20 20 ...    565  TREES   dc.b $09,'                                                                       ',$0A,$0D
+0000227A= 09 09 20 20 20 20 ...    566          dc.b $09,'                                                                       ',$0A,$0D
+000022B2= 09 20 20 20 20 36 ...    567          dc.b $09,'    69696969696             69696969696             69696969696        ',$0A,$0D
+000022FC= 09 20 20 36 39 36 ...    568          dc.b $09,'  696969969696969         696969969696969         696969969696969      ',$0A,$0D
+00002346= 09 20 39 36 39 36 ...    569          dc.b $09,' 969696969696696969     9696969696966969696     9696969696966969696    ',$0A,$0D
+00002390= 09 39 36 39 36 39 ...    570          dc.b $09,'96969696966696969696    96969696966696969696    96969696966696969696   ',$0A,$0D
+000023DA= 09 39 36 39 36 39 ...    571          dc.b $09,'969696969669696969696  696969696696969696966   696969696696969696966   ',$0A,$0D
+00002424= 09 36 39 36 39 36 ...    572          dc.b $09,'696969696969696969696  969696969696969696969   969696969696969696969   ',$0A,$0D
+0000246E= 09 20 36 39 36 39 ...    573          dc.b $09,' 6969696969696969696    69696969696969696969    69696969696969696969   ',$0A,$0D
+000024B8= 09 20 20 36 39 36 ...    574          dc.b $09,'  6969696966696969        6969696966696969        6969696966696969     ',$0A,$0D
+00002502= 09 20 20 20 20 39 ...    575          dc.b $09,'    9696969969696           9696969969696           9696969969696      ',$0A,$0D
+0000254C= 09 20 20 20 20 20 ...    576          dc.b $09,'       96969696                96969696                96969696        ',$0A,$0D
+00002596= 09 20 20 20 20 20 ...    577          dc.b $09,'         96                      96                      96            ',$0A,$0D
+000025E0= 09 20 20 20 20 20 ...    578          dc.b $09,'         69                      69                      69            ',$0A,$0D
+0000262A= 09 20 20 20 20 20 ...    579          dc.b $09,'        6969                    6969                    6969           ',$0A,$0D,0
+00002675                           580                                               
+00002675                           581  
+00002675                           582  
+00002675                           583  
+00002675                           584  
+00002675                           585  
+00002675                           586          
+00002675= 51 55 45 53 54 49 ...    587  Question1 dc.b 'QUESTION 1',0
+00002680= 51 55 45 53 54 49 ...    588  Question2 dc.b 'QUESTION 2',0           
+0000268B= 51 55 45 53 54 49 ...    589  Question3 dc.b 'QUESTION 3',0     
+00002696                           590          
+00002696= 54 48 45 20 43 41 ...    591  text3 dc.b 'THE CARBON TOTAL : ', 0                         ;variable text3 terminated with null '0'
+000026AA= 50 52 45 53 53 20 ...    592  text4 dc.b 'PRESS ENTER TO START THE GAME ', 0              ;variable text4 terminated with null '0'
+000026C9= 54 48 45 20 4D 4F ...    593  text5 dc.b 'THE MONEY TOTAL : ', 0
+000026DC= 50 4C 45 41 53 45 ...    594  text6 dc.b 'PLEASE ENTER C TO CONTINUE ', 0
+000026F8= 50 52 45 53 53 20 ...    595  text7 dc.b 'PRESS F FOR FOREST OR S FOR SHOOP ' ,0
+0000271B= 59 4F 55 20 41 52 ...    596  text8 dc.b 'YOU ARE STARTING GAME WITH: ',0
+00002738= 44 72 61 67 6F 6E 00     597  dragon dc.b 'Dragon', 0
+0000273F= 57 69 7A 61 72 64 00     598  wizard dc.b 'Wizard', 0
+00002746= 54 68 65 20 61 69 ...    599  description dc.b 'The aim for this game is to reduce '
+00002769= 0D 0A                    600              dc.b  $0d,$0a 
+0000276B= 74 68 65 20 61 6D ...    601              dc.b 'the amount of the carbon on the earth to prevent '
+0000279C= 0D 0A                    602              dc.b  $0d,$0a 
+0000279E= 54 48 45 20 47 4C ...    603              dc.b 'THE GLOBAL WARMING'
+000027B0= 0D 0A 00                 604              dc.b  $0d,$0a, 0
+000027B3= 54 6F 20 72 65 64 ...    605  description2 dc.b 'To reduce the carbon level we can buy some items from the shop.'
+000027F2= 0D 0A                    606               dc.b  $0d,$0a
+000027F4= 53 4F 4C 41 52 20 ...    607               dc.b 'SOLAR PANELS'
+00002800= 0D 0A                    608               dc.b  $0d,$0a
+00002802= 57 49 4E 44 4D 49 ...    609               dc.b 'WINDMILLS'
+0000280B= 0D 0A                    610               dc.b  $0d,$0a
+0000280D= 54 52 45 45 53           611               dc.b 'TREES'
+00002812= 0D 0A                    612               dc.b  $0d,$0a
+00002814= 57 65 20 63 61 6E ...    613               dc.b 'We can also play against some characters '
+0000283D= 61 74 20 74 68 65 ...    614               dc.b 'at the game and win the price'
+0000285A= 0D 0A 00                 615               dc.b  $0d,$0a, 0
+0000285D                           616  
+0000285D= 24 24 24 24 24 24 ...    617  soop dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'  
+0000288F= 0D 0A                    618       dc.b  $0d,$0a 
+00002891= 20 20 20 20 20 20 ...    619       dc.b '                                                  '
+000028C3= 0D 0A                    620       dc.b  $0d,$0a
+000028C5= 20 20 20 20 20 20 ...    621       dc.b '                                                  '     
+000028F7= 0D 0A                    622       dc.b  $0d,$0a         
+000028F9= 20 20 20 20 20 20 ...    623       dc.b '      $$$$$$\  $$\   $$\  $$$$$$\  $$$$$$$\       '
+0000292B= 0D 0A                    624       dc.b  $0d,$0a
+0000292D= 20 20 20 20 20 20 ...    625       dc.b '      $$  __$$\ $$ |  $$ |$$  __$$\ $$  __$$\     '
+0000295F= 0D 0A                    626       dc.b  $0d,$0a
+00002961= 20 20 20 20 20 20 ...    627       dc.b '      $$ /  \__|$$ |  $$ |$$ /  $$ |$$ |  $$ |    '
+00002993= 0D 0A                    628       dc.b  $0d,$0a
+00002995= 20 20 20 20 20 20 ...    629       dc.b '      \$$$$$$\  $$$$$$$$ |$$ |  $$ |$$$$$$$  |    '
+000029C7= 0D 0A                    630       dc.b  $0d,$0a
+000029C9= 20 20 20 20 20 20 ...    631       dc.b '      \____$$\ $$  __$$ |$$ |  $$ |$$  ____/      '
+000029FB= 0D 0A                    632       dc.b  $0d,$0a
+000029FD= 20 20 20 20 20 20 ...    633       dc.b '      $$\   $$ |$$ |  $$ |$$ |  $$ |$$ |          '
+00002A2F= 0D 0A                    634       dc.b  $0d,$0a
+00002A31= 20 20 20 20 20 20 ...    635       dc.b '      \$$$$$$  |$$ |  $$ | $$$$$$  |$$ |          '
+00002A63= 0D 0A                    636       dc.b  $0d,$0a
+00002A65= 20 20 20 20 20 20 ...    637       dc.b '      \______/ \__|  \__| \______/ \__|           '
+00002A97= 0D 0A                    638       dc.b  $0d,$0a
+00002A99= 20 20 20 20 20 20 ...    639       dc.b '                                                  '
+00002ACB= 0D 0A                    640       dc.b  $0d,$0a
+00002ACD= 20 20 20 20 20 20 ...    641       dc.b '                                                  '
+00002AFF= 0D 0A                    642       dc.b  $0d,$0a
+00002B01= 24 24 24 24 24 24 ...    643       dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'                                         
+00002B33= 0D 0A 00                 644       dc.b  $0d,$0a, 0
+00002B36                           645   
+00002B36= 24 24 24 24 24 24 ...    646  foorest dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$' 
+00002B7E= 0D 0A                    647          dc.b  $0d,$0a 
+00002B80= 20 20 20 20 20 20 ...    648          dc.b '                                                                        '
+00002BC8= 0D 0A                    649          dc.b  $0d,$0a
+00002BCA= 20 20 20 20 20 20 ...    650          dc.b '                                                                        '     
+00002C12= 0D 0A                    651          dc.b  $0d,$0a          
+00002C14= 38 38 38 38 38 38 ...    652          dc.b        '8888888888 .d88888b.  8888888b.  8888888888 .d8888b. 88888888888 '
+00002C55= 0D 0A                    653          dc.b  $0d,$0a 
+00002C57= 38 38 38 20 20 20 ...    654          dc.b        '888       d88P" "Y88b 888   Y88b 888       d88P  Y88b    888     '
+00002C98= 0D 0A                    655          dc.b  $0d,$0a 
+00002C9A= 38 38 38 20 20 20 ...    656          dc.b        '888       888     888 888    888 888       Y88b.         888     '
+00002CDB= 0D 0A                    657          dc.b  $0d,$0a
+00002CDD= 38 38 38 38 38 38 ...    658          dc.b        '8888888   888     888 888   d88P 8888888    "Y888b.      888     '
+00002D1E= 0D 0A                    659          dc.b  $0d,$0a
+00002D20= 38 38 38 20 20 20 ...    660          dc.b        '888       888     888 8888888P"  888           "Y88b.    888     '
+00002D61= 0D 0A                    661          dc.b  $0d,$0a
+00002D63= 38 38 38 20 20 20 ...    662          dc.b        '888       888     888 888 T88b   888             "888    888     '
+00002DA4= 0D 0A                    663          dc.b  $0d,$0a
+00002DA6= 38 38 38 20 20 20 ...    664          dc.b        '888       Y88b. .d88P 888  T88b  888       Y88b  d88P    888     '
+00002DE7= 0D 0A                    665          dc.b  $0d,$0a
+00002DE9= 38 38 38 20 20 20 ...    666          dc.b        '888        "Y88888P"  888   T88b 8888888888 "Y8888P"     888     '
+00002E2A= 0D 0A                    667          dc.b  $0d,$0a
+00002E2C= 20 20 20 20 20 20 ...    668          dc.b '                                                                        '
+00002E74= 0D 0A                    669          dc.b  $0d,$0a
+00002E76= 20 20 20 20 20 20 ...    670          dc.b '                                                                        '
+00002EBE= 0D 0A                    671          dc.b  $0d,$0a
+00002EC0= 24 24 24 24 24 24 ...    672          dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'                                         
+00002F08= 0D 0A 00                 673          dc.b  $0d,$0a, 0    
+00002F0B                           674                                                         
+00002F0B= 49 6E 20 74 68 65 ...    675  foorest2 dc.b 'In the forest you have to choose between right and left path '  
+00002F48= 0D 0A                    676           dc.b  $0d,$0a       
+00002F4A= 0D 0A                    677           dc.b  $0d,$0a
+00002F4C= 50 72 65 73 73 20 ...    678           dc.b 'Press L to go by left path '
+00002F67= 0D 0A                    679           dc.b  $0d,$0a
+00002F69= 0D 0A                    680           dc.b  $0d,$0a
+00002F6B= 50 72 65 73 73 20 ...    681           dc.b 'Press R to go by left path '
+00002F86= 0D 0A                    682           dc.b  $0d,$0a
+00002F88= 0D 0A                    683           dc.b  $0d,$0a
+00002F8A= 50 72 65 73 73 20 ...    684           dc.b 'Press E to exit'
+00002F99= 0D 0A                    685           dc.b  $0d,$0a
+00002F9B= 0D 0A 00                 686           dc.b  $0d,$0a, 0
+00002F9E= 49 20 63 61 6E 20 ...    687  wiztalk dc.b 'I can reward you with $1000 dolars price  '
+00002FC8= 0D 0A                    688          dc.b  $0d,$0a
+00002FCA= 69 66 20 79 6F 75 ...    689          dc.b 'if you answer one of my questions'
+00002FEB= 0D 0A                    690          dc.b $0d,$0a
+00002FED= 0D 0A                    691          dc.b $0d,$0a
+00002FEF= 50 72 65 73 73 20 ...    692          dc.b 'Press number 1 for question one'
+0000300E= 0D 0A                    693          dc.b $0d,$0a
+00003010= 0D 0A                    694          dc.b $0d,$0a
+00003012= 50 72 65 73 73 20 ...    695          dc.b 'Press number 2 for question two'
+00003031= 0D 0A                    696          dc.b $0d,$0a
+00003033= 0D 0A                    697          dc.b $0d,$0a
+00003035= 50 72 65 73 73 20 ...    698          dc.b 'Press number 3 for question three'
+00003056= 0D 0A                    699          dc.b $0d,$0a
+00003058= 0D 0A 00                 700          dc.b $0d,$0a, 0
+0000305B                           701          
+0000305B                           702  
+0000305B                           703  
+0000305B                           704  
+0000305B                           705  
+0000305B                           706  
+0000305B                           707  
+0000305B                           708  
+0000305B                           709  
+0000305B                           710  
+0000305B                           711  
+0000305B                           712  
+0000305B                           713  
+0000305B                           714  
+0000305B                           715  
+0000305B                           716  
+0000305B                           717  
+0000305B                           718  
+0000305B                           719  
+0000305B                           720  
+0000305B                           721  
+0000305B                           722  
+0000305B                           723  
+0000305B                           724  
+0000305B                           725  
+0000305B                           726  
+0000305B                           727  
+0000305B                           728  
+0000305B                           729  
+0000305B                           730  
+0000305B                           731  
+0000305B                           732  
+0000305B                           733  
+0000305B                           734         
+0000305B                           735               
+0000305B= 54 6F 74 61 6C 20 ...    736  coins    dc.b 'Total MONEY: $ ',0  
+0000306B= 54 6F 74 61 6C 20 ...    737  carbon  dc.b  'Total Carbon:   ',0                                                            
+0000307C= 59 6F 75 20 6A 75 ...    738  solaris dc.b 'You just have bought 1 SOLAR PANEL', 0                                                                 
+0000309F= 59 6F 75 20 6A 75 ...    739  windows dc.b 'You just have bought 1 WINDMILL', 0 
+000030BF= 59 6F 75 20 6A 75 ...    740  tele  dc.b 'You just have bought 1 TREE', 0       
+000030DB= 44 4F 20 59 4F 55 ...    741  solar dc.b 'DO YOU WANT TO BAY A SOLAR PANEL PRESS A ', 0   ;variable solar terminated with null '0'
+00003105= 44 4F 20 59 4F 55 ...    742  wind  dc.b 'DO YOU WANT TO BAY A WINDMILL PRESS B ', 0      ;variable wind terminated with null '0'
+0000312C= 44 4F 20 59 4F 55 ...    743  tree  dc.b 'DO YOU WANT TO BAY A TREE PRESS C ', 0   
+0000314F= 44 4F 20 59 4F 55 ...    744  exit  dc.b 'DO YOU WANT TO EXIT PRESS E ', 0       ;variable tree terminated with null '0'
+0000316C= 0D 0A 00                 745  NEW   dc.b $0d,$0a, 0                                       ;variable NEW terminated with null '0'
+0000316F                           746          
+0000316F                           747      END    START                                            ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CARBON              306B
+CHOOSE              12EC
+CLEARSCREEN         14CE
+COINS               305B
+DEEP                137A
+DESCRIPTION         2746
+DESCRIPTION2        27B3
+DRACO               13D0
+DRAGON              2738
+EARTH               16F5
+ENTER               16AF
+EXIT                314F
+EXITO               12D2
+FOOREST             2B36
+FOOREST2            2F0B
+FORENT              16D1
+FOREST              131E
+GAMELOOP            10D4
+HUD                 148A
+INPUT               10CA
+ITEMS               1254
+LEVEL               111E
+MONEY               14AC
+NEW                 316C
+NEWLINE             1110
+PATH                1150
+QUESTION1           2675
+QUESTION2           2680
+QUESTION3           268B
+RESTART             10AC
+SHOP                11E2
+SNOOP               1D2F
+SOLAR               30DB
+SOLARIS             307C
+SOLO                144A
+SOOP                285D
+START               1000
+TELE                30BF
+TEXT1               154E
+TEXT2               1566
+TEXT3               2696
+TEXT4               26AA
+TEXT5               26C9
+TEXT6               26DC
+TEXT7               26F8
+TEXT8               271B
+TREE                312C
+TREES               2230
+TRELE               1510
+WAIT                143E
+WELCOME             1574
+WELCOME2            163E
+WIND                3105
+WINDO               14DA
+WINDOWS             309F
+WIZ                 13E2
+WIZARD              273F
+WIZTALK             2F9E
