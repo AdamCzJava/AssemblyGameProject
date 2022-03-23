@@ -1,0 +1,1884 @@
+00010000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 3/23/2022 1:11:46 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : Global Warming Adventure Game
+00000000                             3  * Written by : Adam Czaplewski
+00000000                             4  * Date       : 3/20/2022
+00000000                             5  * Description: My goal in that adventure game is to lessen carbon emissions by shopping at the store. 
+00000000                             6  *              We can also fight Dragon in the battle to win the game, but first, we must purchase 
+00000000                             7  *              the magic spear from the shop. To obtain the funds needed, we must first meet with
+00000000                             8  *              the Vizard, who will put our knowledge of the global warming to the test. 
+00000000                             9  *              We'll be able to buy the spear and kill the monster if we answer the questions correctly. 
+00000000                            10  *              However, we must proceed with caution because each incorrect response will result
+00000000                            11  *              in a 1000-unit increase in our carbon level. We shall lose the game when we reach 30000 carbon units.
+00000000                            12  *              I wish you all best of luck with the game!!!! 
+00000000                            13  *-----------------------------------------------------------
+00000000                            14  
+00000000                            15  
+00000000                            16  
+00010000                            17      ORG    $10000        ;starting the program from the memory address $10000
+00010000                            18                           
+00010000                            19      
+00010000  =00002500                 20  SPEAR EQU $2500          ;the equate directive for address location for spear flag
+00010000  =00000032                 21  TCOST EQU 50             ;the equate directive for tree price
+00010000  =00000064                 22  SCOST EQU 100            ;the equate directive for solar panel price
+00010000  =0000004B                 23  WCOST EQU 75             ;the equate directive for windmill price
+00010000  =00000BB8                 24  SPCOST EQU 3000          ;the equate directive for speer price
+00010000                            25  
+00010000                            26      
+00010000                            27  START:                   ;first instruction of program
+00010000  11FC 0000 2500            28      MOVE.B #0,SPEAR      ;the equate directive for spear with the zero value which indicates that there is no spear
+00010006                            29      
+00010006  21FC 000061A8 3000        30      MOVE.L #25000, $3000 ;move the literal number 25000 which represents total amount of the carbon in to the address memory $3000
+0001000E  21FC 000001F4 4000        31      MOVE.L #500,   $4000 ;move the literal number 500 which represents total amount of the money in to the address memory $4000
+00010016  31FC 0064 5000            32      MOVE.W #100,   $5000 ;move the literal number 100 which represents the solar panel in to the address memory $5000
+0001001C  31FC 004B 6000            33      MOVE.W #75,    $6000 ;move the literal number 75 which represents the windmill in to the address memory $6000
+00010022  33FC 0032 00008000        34      MOVE.W #50,    $8000 ;move the literal number 50 which represents the tree in to the address memory $8000
+0001002A                            35      
+0001002A  223C 000084CF             36      MOVE.L #33999, D1    ;set colour to gold
+00010030  103C 0015                 37      MOVE.B #21, D0
+00010034  4E4F                      38      TRAP #15
+00010036  43F9 00010F6A             39      LEA welcome, A1      ;it loads string variable welcome (Load Effective Address) into A1
+0001003C  303C 000E                 40      MOVE.W #14, D0  
+00010040  4E4F                      41      TRAP #15             ;display the string variable welcome
+00010042  6100 0BE0                 42      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010046  223C 0000FF00             43      MOVE.L #65280, D1    ;set colour to green    
+0001004C  103C 0015                 44      MOVE.B #21, D0
+00010050  4E4F                      45      TRAP #15
+00010052  43F9 000110EB             46      LEA earth, A1        ;it loads string variable earth (Load Effective Address) into A1
+00010058  303C 000E                 47      MOVE.W #14, D0      
+0001005C  4E4F                      48      TRAP #15             ;display the string variable earth
+0001005E  6100 0BC4                 49      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010062  223C 000027F9             50      MOVE.L #10233, D1    ;set colour to red
+00010068  103C 0015                 51      MOVE.B #21, D0
+0001006C  4E4F                      52      TRAP #15
+0001006E  6100 00B6                 53      BSR NEWLINE          ;branch to subroutine NEWLINE by the instruction BSR (Branch to subroutine)
+00010072  43F9 00010F44             54      LEA text1, A1        ;it loads string variable text1(Load Effective Address) in to A1
+00010078  303C 000E                 55      MOVE.W #14, D0      
+0001007C  4E4F                      56      TRAP #15             ;display the string variable text1
+0001007E  43F9 00009000             57      LEA $9000,A1    
+00010084  103C 0002                 58      MOVE.B #2, D0        ;store the string in the memory location $9000 then stores that memory location in A1 it also store the number of characters in D1
+00010088  4E4F                      59      TRAP #15
+0001008A  23D1 00009000             60      MOVE.L (A1),$9000    ;we move the value stored at the memory location stored in address register A1 into the memory location $9000
+00010090  6100 0094                 61      BSR NEWLINE          ;branch to subroutine NEWLINE
+00010094  43F9 00010F5C             62      LEA text2, A1        ;it loads variable text2(Load Effective Address) into A1
+0001009A  303C 000E                 63      MOVE.W #14, D0    
+0001009E  4E4F                      64      TRAP #15             ;display the string variable text2
+000100A0  43F9 00009000             65      LEA $9000, A1        ;the string text2 which we stored at the moemory location 9000 we moved into the A1
+000100A6  303C 0001                 66      MOVE.W #1, D0 
+000100AA  4E4F                      67      TRAP #15             ;display the user input
+000100AC  43F9 00011034             68      LEA welcome2, A1     ;it loads variable welcome2 (Load Effective Address) into A1
+000100B2  303C 000E                 69      MOVE.W #14, D0     
+000100B6  4E4F                      70      TRAP #15             ;display the string variable welcome2
+000100B8                            71      
+000100B8                            72      
+000100B8                            73  RESTART:
+000100B8  6100 006C                 74      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000100BC  43F9 000129B4             75      LEA text4, A1        ;it loads string variable text4(Load Effective Address) into A1
+000100C2  303C 000E                 76      MOVE.W #14, D0     
+000100C6  4E4F                      77      TRAP #15             ;display the string variable text4
+000100C8  6100 000C                 78      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+000100CC  B27C 000D                 79      CMP #13, D1          ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+000100D0  6700 0018                 80      BEQ GAMELOOP         ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+000100D4  60E2                      81      BRA RESTART          ;BRA (Branch if not equal) it jumps to RESTART if the values which we compared above are not equal
+000100D6                            82  
+000100D6                            83      
+000100D6                            84  INPUT:
+000100D6  7200                      85      MOVE.L #0,D1
+000100D8  103C 0005                 86      MOVE.B #5, D0        ;read a single character from the keyboard into D1 
+000100DC  4E4F                      87      TRAP #15        
+000100DE  4E75                      88      RTS                  ;it returns from Subroutine (INPUT) 
+000100E0                            89  
+000100E0                            90  INPUTA:
+000100E0  7200                      91      MOVE.L #0,D1
+000100E2  103C 0004                 92      MOVE.B #4, D0        ;read a single digit from the keyboard into D1 
+000100E6  4E4F                      93      TRAP #15        
+000100E8  4E75                      94      RTS                  ;it return from Subroutine (INPUTA) in to the if statement where questions are displayed
+000100EA                            95          
+000100EA                            96  GAMELOOP:
+000100EA  6100 003A                 97      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000100EE  6100 0BD6                 98      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000100F2  9241                      99      SUB D1, D1           ;clearing D1
+000100F4  6100 0030                100      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000100F8  223C 00F6B26B            101      MOVE.L #$f6b26b,D1   ;set colour blue
+000100FE  103C 0015                102      MOVE.B #21, D0         
+00010102  4E4F                     103      TRAP #15
+00010104  9241                     104      SUB D1, D1           ;clearing D1
+00010106  43F9 00012A50            105      LEA description,A1   ;it loads string variable description1 (Load Effective Address) into A1
+0001010C  303C 000E                106      MOVE.W #14, D0       
+00010110  4E4F                     107      TRAP #15             ;display the string variable description
+00010112  6100 0012                108      BSR NEWLINE          ;calling the subroutines( NEWLINE )by the instruction BSR (Branch to subroutine)  
+00010116  43F9 00012ABD            109      LEA description2,A1  ;it loads string variable description2 (Load Effective Address) into A1 
+0001011C  303C 000E                110      MOVE.W #14, D0       
+00010120  4E4F                     111      TRAP #15             ;display the string variable description2
+00010122  6100 0010                112      BSR LEVEL            ;calling the subroutine (LEVEL) by the instruction BSR (Branch to subroutine)
+00010126                           113      
+00010126                           114      
+00010126                           115  NEWLINE:
+00010126  43F9 00015639            116      LEA NEW, A1          ;it loads string variable NEW (Load Effective Address) in to A1
+0001012C  103C 000E                117      MOVE.B #14, D0      
+00010130  4E4F                     118      TRAP #15             ;display the string variable NEW
+00010132  4E75                     119      RTS                  ;it returns from Subroutine( NEWLINE )
+00010134                           120  
+00010134                           121  LEVEL:
+00010134  61F0                     122      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010136  223C 00008204            123      MOVE.L #33284,D1     ;set colour to green
+0001013C  103C 0015                124      MOVE.B #21, D0         
+00010140  4E4F                     125      TRAP #15
+00010142  9241                     126      SUB D1, D1           ;clearing D1
+00010144  61E0                     127      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010146  6100 0ADC                128      BSR WAIT             ;calling the subroutines( WAIT ) by the instruction BSR (Branch to subroutine)
+0001014A  61DA                     129      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001014C  43F9 000129E6            130      LEA text6, A1        ;it loads string variable text6 (Load Effective Address) in to A1
+00010152  303C 000E                131      MOVE.W #14, D0       
+00010156  4E4F                     132      TRAP #15             ;display the string variable text6
+00010158  9241                     133      SUB D1, D1           ;clearing D1
+0001015A  6100 FF7A                134      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+0001015E  B27C 0063                135      CMP #99, D1          ;compare literal number 13 with number in hex which is stored in D1(the number is D)
+00010162  6700 0004                136      BEQ PATH             ;BEQ (Branch if equal) it jumps to PATH if the values which we compared above are equal
+00010166  60CC                     137      BRA LEVEL            ;BRA (Branch if not equal) it jumps to LEVEL if the values which we compare above are not equal
+00010168                           138  
+00010168                           139  PATH:
+00010168  61BC                     140      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001016A  61BA                     141      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine) 
+0001016C  223C 000062C0            142      MOVE.L #25280, D1    ;set colour to gold
+00010172  103C 0015                143      MOVE.B #21, D0
+00010176  4E4F                     144      TRAP #15     
+00010178  43F9 00012A25            145      LEA text8, A1        ;it loads string variable text8 (Load Effective Address)in to A1
+0001017E  303C 000E                146      MOVE.W #14, D0
+00010182  4E4F                     147      TRAP #15             ;display the string variable text8
+00010184  2238 3000                148      MOVE.L $3000, D1     ;move address memory $3000 in to D1
+00010188  619C                     149      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001018A  43F9 000129A0            150      LEA text3, A1        ;it loads string variable text3 (Load Effective Address) into A1
+00010190  303C 0011                151      MOVE.W #17, D0       
+00010194  4E4F                     152      TRAP #15             ;display string at A1 (text3) and display decimal number in D1 which represent the carbon amount 25000
+00010196  618E                     153      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010198  2238 4000                154      MOVE.L $4000, D1 
+0001019C  43F9 000129D3            155      LEA text5, A1        ;it loads string variable text5 (Load Effective Address)in to A1
+000101A2  303C 0011                156      MOVE.W #17, D0
+000101A6  4E4F                     157      TRAP #15             ;display string at A1 (text5) and display decimal number in D1 which represents the money 500
+000101A8  9241                     158      SUB D1, D1           ;clearing D1
+000101AA  6100 FF7A                159      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000101AE  6100 FF76                160      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000101B2  6100 FF72                161      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000101B6  223C 00008204            162      MOVE.L #33284, D1    ;set colour to green
+000101BC  103C 0015                163      MOVE.B #21, D0         
+000101C0  4E4F                     164      TRAP #15
+000101C2  6100 0A60                165      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+000101C6  43F9 00012A02            166      LEA text7, A1        ;it loads string variable text7 (Load Effective Address)in to A1
+000101CC  303C 000E                167      MOVE.W #14, D0       
+000101D0  4E4F                     168      TRAP #15             ;display the string variable text7
+000101D2  6100 FF02                169      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+000101D6  6100 FF4E                170      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000101DA  B27C 0066                171      CMP #102, D1         ;compare literal number 102 in ascii(character f) with number in hex which is stored in D1
+000101DE  6700 0216                172      BEQ FOREST           ;BEQ (Branch if equal) it jumps to FOREST if the values which we compared above are equal
+000101E2  B27C 0073                173      CMP #115, D1         ;compare literal number 115 in ascii(character s) with number in hex which is stored in D1
+000101E6  6700 0006                174      BEQ SHOP             ;BEQ (Branch if equal) it jumps to SHOP if the values which we compared above are equal
+000101EA  6000 01D4                175      BRA CHOOSE           ;BRA (Branch if not equal) it jumps to CHOOSE if the values which we compare above are not equal
+000101EE                           176  
+000101EE                           177      
+000101EE                           178  
+000101EE                           179  SHOP:
+000101EE  6100 0AD6                180      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000101F2  6100 FF32                181      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000101F6  223C 00FFD700            182      MOVE.L #$ffd700,D1   ;set colour to light yellow
+000101FC  103C 0015                183      MOVE.B #21, D0
+00010200  4E4F                     184      TRAP #15
+00010202  6100 0A7E                185      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010206  9241                     186      SUB D1, D1           ;clearing D1
+00010208  6100 FF1C                187      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001020C  6100 FF18                188      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010210  6100 0A92                189      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010214  223C 000A19F0            190      MOVE.L #662000, D1   ;set colour to red
+0001021A  103C 0015                191      MOVE.B #21, D0
+0001021E  4E4F                     192      TRAP #15
+00010220  6100 FF04                193      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010224  7200                     194      MOVE.L #0,D1         ;clearing D1
+00010226  227C 00000000            195      MOVE.L #0,A1         ;clearing A1
+0001022C  43F9 00011725            196      LEA snoop, A1        ;it loads string variable snoop (Load Effective Address)in to A1
+00010232  303C 000E                197      MOVE.W #14, D0      
+00010236  4E4F                     198      TRAP #15             ;display the string variable snoop
+00010238  6100 FEEC                199      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001023C  6100 FEE8                200      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010240  43F9 000110A5            201      LEA enter, A1        ;it loads string variable enter (Load Effective Address)in to A1
+00010246  303C 000E                202      MOVE.W #14, D0      
+0001024A  4E4F                     203      TRAP #15             ;display the string variable enter
+0001024C  9241                     204      SUB D1, D1           ;clearing D1
+0001024E  6100 FE86                205      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010252  B27C 000D                206      CMP #13, D1          ;compare literal number 13(Enter key) with number in hex which is stored in D1(the number is D)
+00010256  6700 0072                207      BEQ ITEMS            ;BEQ (Branch if equal) it jumps to GAMELOOP if the values which we compared above are equal
+0001025A  6092                     208      BRA SHOP             ;BRA (Branch if not equal) it jumps to SHOP if the values which we compare above are not equal
+0001025C  6100 FEC8                209      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010260                           210  
+00010260                           211  
+00010260                           212  NOMONEY:
+00010260  2638 4000                213      MOVE.L $4000, D3     ;moving memory location $4000 where we store money into D3
+00010264  B642                     214      CMP D2, D3           ;compare D2 with D3
+00010266  6D00 0004                215      BLT NMONEY           ;branching to NMONEY if no money
+0001026A  4E75                     216      RTS                  ;it returns from Subroutine( NOMONEY )
+0001026C                           217      
+0001026C                           218  NMONEY:
+0001026C  43F9 00012447            219      LEA FOUNDS, A1       ;it loads string variable FOUNDS (Load Effective Address)in to A1
+00010272  103C 000E                220      MOVE.B #14, D0
+00010276  4E4F                     221      TRAP #15             ;display the string variable FOUNDS
+00010278  6100 09AA                222      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+0001027C  6000 FF70                223      BRA SHOP             ;branching to the SHOP subroutine
+00010280                           224  
+00010280                           225  NOMONEY2:
+00010280  2638 4000                226      MOVE.L $4000, D3     ;moving memory location $4000 where we store money into D3
+00010284  B642                     227      CMP D2, D3           ;compare D2 with D3
+00010286  6D00 0004                228      BLT NMONEY2          ;branching to NMONEY if no money
+0001028A  4E75                     229      RTS                  ;it returns from Subroutine( NOMONEY )
+0001028C                           230      
+0001028C                           231  NMONEY2:
+0001028C  43F9 00012466            232      LEA FOUNDS2, A1      ;it loads string variable FOUNDS (Load Effective Address)in to A1
+00010292  103C 000E                233      MOVE.B #14, D0
+00010296  4E4F                     234      TRAP #15            ;display the string variable FOUNDS
+00010298  6100 098A                235      BSR WAIT            ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+0001029C  43F9 000129E6            236      LEA text6, A1       ;it loads string variable text6 (Load Effective Address)in to A1
+000102A2  303C 000E                237      MOVE.W #14, D0     
+000102A6  4E4F                     238      TRAP #15            ;display the string variable text6
+000102A8  6100 FE2C                239      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+000102AC  9241                     240      SUB D1,D1           ;clearing D1
+000102AE  B27C 0063                241      CMP #99, D1         ;compare literal number 99(character c) with number in hex which is stored in D1
+000102B2  6100 FE72                242      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000102B6  6100 FE6E                243      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000102BA  6100 0A0A                244      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000102BE  6700 03F2                245      BEQ HANDS           ;BEQ (Branch if equal) it jumps to DRACO if the values which we compared above are equal
+000102C2  6000 00FC                246      BRA CHOOSE          ;BRA (Branch if not equal) it jumps to CHOOSE if the values which we compare above are not equal
+000102C6  6000 01DC                247      BRA DRACO           ;branching to the DRACO subroutine
+000102CA                           248      
+000102CA                           249  ITEMS:
+000102CA  6100 09FA                250      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000102CE  43F9 00012B67            251      LEA soop, A1        ;it loads string variable soop (Load Effective Address) into A1
+000102D4  303C 000E                252      MOVE.W #14, D0     
+000102D8  4E4F                     253      TRAP #15            ;display the string variable soop
+000102DA  6100 FE4A                254      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000102DE  223C 00FF3300            255      MOVE.L #$ff3300,D1  ;set colour to boiling magma
+000102E4  103C 0015                256      MOVE.B #21, D0         
+000102E8  4E4F                     257      TRAP #15
+000102EA  7200                     258      MOVE.L #0,D1        ;cleaning D1
+000102EC  43F9 000154CC            259      LEA solar, A1       ;it loads string variable solar (Load Effective Address) into A1
+000102F2  303C 000E                260      MOVE.W #14, D0
+000102F6  4E4F                     261      TRAP #15            ;display the string variable solar
+000102F8  6100 FE2C                262      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000102FC  223C 000066FF            263      MOVE.L #$0066ff,D1  ;set colour to blue
+00010302  103C 0015                264      MOVE.B #21, D0         
+00010306  4E4F                     265      TRAP #15
+00010308  7200                     266      MOVE.L #0,D1        ;cleaning D1
+0001030A  43F9 0001551F            267      LEA wind, A1        ;it loads string variable wind (Load Effective Address) into A1
+00010310  303C 000E                268      MOVE.W #14, D0
+00010314  4E4F                     269      TRAP #15            ;display the string variable wind
+00010316  6100 FE0E                270      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001031A  223C 00008204            271      MOVE.L #33284, D1   ;set colour to green
+00010320  103C 0015                272      MOVE.B #21, D0         
+00010324  4E4F                     273      TRAP #15
+00010326  7200                     274      MOVE.L #0,D1        ;cleaning D1
+00010328  43F9 0001556E            275      LEA tree, A1        ;it loads string variable tree (Load Effective Address) into A1
+0001032E  303C 000E                276      MOVE.W #14, D0
+00010332  4E4F                     277      TRAP #15            ;display the string variable tree
+00010334  6100 FDF0                278      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010338  223C 00FFBF00            279      MOVE.L #$ffbf00, D1 ;set colour to orange
+0001033E  103C 0015                280      MOVE.B #21, D0         
+00010342  4E4F                     281      TRAP #15
+00010344  7200                     282      MOVE.L #0,D1        ;cleaning D1
+00010346  43F9 000155B8            283      LEA wapon, A1       ;it loads string variable wapon (Load Effective Address) into A1
+0001034C  303C 000E                284      MOVE.W #14, D0
+00010350  4E4F                     285      TRAP #15            ;display the string variable wapon
+00010352  6100 FDD2                286      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010356  223C 00FF0066            287      MOVE.L #$ff0066,D1  ;set colour to pink
+0001035C  103C 0015                288      MOVE.B #21, D0         
+00010360  4E4F                     289      TRAP #15
+00010362  7200                     290      MOVE.L #0,D1        ;cleaning D1
+00010364  43F9 00015618            291      LEA exit, A1        ;it loads string variable exit (Load Effective Address) into A1
+0001036A  303C 000E                292      MOVE.W #14, D0
+0001036E  4E4F                     293      TRAP #15            ;display the string variable exit
+00010370  6100 FDB4                294      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010374  6100 FD60                295      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010378  B27C 0061                296      CMP #97, D1         ;compare literal number 97(character a) with number in hex which is stored in D1
+0001037C  6700 08B2                297      BEQ SOLO            ;BEQ (Branch if equal) it jumps to SOLO if the values which we compared above are equal
+00010380  B27C 0062                298      CMP #98, D1         ;compare literal number 98(character b) with number in hex which is stored in D1
+00010384  6700 094C                299      BEQ WINDO           ;BEQ (Branch if equal) it jumps to WINDO if the values which we compared above are equal
+00010388  B27C 0063                300      CMP #99, D1         ;compare literal number 99(character c) with number in hex which is stored in D1
+0001038C  6700 0990                301      BEQ TRELE           ;BEQ (Branch if equal) it jumps to TRELE if the values which we compared above are equal
+00010390  B27C 0064                302      CMP #100, D1        ;compare literal number 100(character d) with number in hex which is stored in D1
+00010394  6700 09D8                303      BEQ SPEER           ;BEQ (Branch if equal) it jumps to SPEER if the values which we compared above are equal
+00010398  B27C 0065                304      CMP #101, D1        ;compare literal number 101(character e) with number in hex which is stored in D1
+0001039C  6700 0008                305      BEQ EXITO           ;BEQ (Branch if equal) it jumps to EXITO if the values which we compared above are equal
+000103A0  6000 FE4C                306      BRA SHOP            ;BRA (Branch if not equal) it jumps to SHOP if the values which we compare above are not equal
+000103A4  4E75                     307      RTS                 ;it returns from Subroutine( ITEMS )
+000103A6                           308      
+000103A6                           309  
+000103A6                           310  EXITO:
+000103A6  323C FF00                311      MOVE.W #$FF00, D1   ;it will clear the screen
+000103AA  103C 000B                312      MOVE.B #11, D0
+000103AE  4E4F                     313      TRAP #15
+000103B0  43F9 00015639            314      LEA NEW, A1         ;it loads string variable NEW (Load Effective Address) into A1
+000103B6  103C 000E                315      MOVE.B #14, D0 
+000103BA  4E4F                     316      TRAP #15            ;display the string variable NEW
+000103BC  6000 0002                317      BRA CHOOSE          ;branching to the CHOOSE subroutine
+000103C0                           318      
+000103C0                           319  CHOOSE:
+000103C0  6100 FD64                320      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000103C4  223C 00008204            321      MOVE.L #33284,D1    ;set colour to green
+000103CA  103C 0015                322      MOVE.B #21, D0
+000103CE  4E4F                     323      TRAP #15
+000103D0  43F9 00012A02            324      LEA text7, A1       ;it loads string variable text7 (Load Effective Address) into A1
+000103D6  303C 000E                325      MOVE.W #14, D0     
+000103DA  4E4F                     326      TRAP #15            ;display the string variable text7
+000103DC  6100 FD48                327      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000103E0  6100 FCF4                328      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+000103E4  B27C 0066                329      CMP #102, D1        ;compare literal number 102 in ascii(character f) with number in hex which is stored in D1
+000103E8  6700 000C                330      BEQ FOREST          ;BEQ (Branch if equal) it jumps to FOREST if the values which we compared above are equal
+000103EC  B27C 0073                331      CMP #115, D1        ;compare literal number 115 in ascii(character s) with number in hex which is stored in D1
+000103F0  6700 FDFC                332      BEQ SHOP            ;BEQ (Branch if equal) it jumps to SHOP if the values which we compared above are equal
+000103F4  60CA                     333      BRA CHOOSE          ;BRA (Branch if not equal) it jumps to CHOOSE if the values which we compare above are not equal
+000103F6                           334  
+000103F6                           335  FOREST:
+000103F6  6100 08CE                336      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000103FA  6100 FD2A                337      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000103FE  223C 0000F230            338      MOVE.L #62000, D1   ;set colour green
+00010404  103C 0015                339      MOVE.B #21, D0
+00010408  4E4F                     340      TRAP #15
+0001040A  6100 FD1A                341      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001040E  43F9 00011C26            342      LEA TREES, A1       ;it loads string variable TREES (Load Effective Address) into A1
+00010414  303C 000E                343      MOVE.W #14, D0
+00010418  4E4F                     344      TRAP #15            ;display string variable TREES
+0001041A  6100 FD0A                345      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001041E  223C 002986CC            346      MOVE.L #$2986cc,D1  ;set colour to gold
+00010424  103C 0015                347      MOVE.B #21, D0
+00010428  4E4F                     348      TRAP #15
+0001042A  9241                     349      SUB D1, D1          ;clearing D1
+0001042C  43F9 000110C7            350      LEA forent, A1      ;it loads string variable forent (Load Effective Address) into A1
+00010432  303C 000E                351      MOVE.W #14, D0
+00010436  4E4F                     352      TRAP #15            ;display string variable forent
+00010438  6100 FCEC                353      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001043C  9241                     354      SUB D1, D1          ;clearing D1
+0001043E  6100 FC96                355      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010442  B27C 000D                356      CMP #13, D1         ;compare literal number 13(Enter key) with number in hex which is stored in D1
+00010446  6700 0008                357      BEQ DEEP            ;BEQ (Branch if equal) it jumps to DEEP if the values which we compared above are equal
+0001044A  60AA                     358      BRA FOREST          ;BRA (Branch if not equal) it jumps to FOREST if the values which we compare above are not equal
+0001044C  6100 FCD8                359      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010450                           360  
+00010450                           361  
+00010450                           362  DEEP:
+00010450  6100 0874                363      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010454  6100 FCD0                364      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010458  223C 0000F230            365      MOVE.L #62000,D1    ;set colour green
+0001045E  103C 0015                366      MOVE.B #21, D0
+00010462  4E4F                     367      TRAP #15
+00010464  9241                     368      SUB D1, D1          ;clearing D1
+00010466  43F9 00012E40            369      LEA foorest, A1     ;it loads string variable foorest (Load Effective Address) into A1
+0001046C  303C 000E                370      MOVE.W #14, D0
+00010470  4E4F                     371      TRAP #15            ;display string variable foorest
+00010472  6100 FCB2                372      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010476  43F9 00013924            373      LEA foorest2, A1    ;it loads string variable foorest2 (Load Effective Address) into A1
+0001047C  303C 000E                374      MOVE.W #14, D0
+00010480  4E4F                     375      TRAP #15            ;display string variable foorest2
+00010482  6100 FCA2                376      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010486  6100 FC4E                377      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+0001048A  B27C 006C                378      CMP #108, D1        ;compare literal number 108(character l) with number in hex which is stored in D1
+0001048E  6700 0014                379      BEQ DRACO           ;BEQ (Branch if equal) it jumps to DRACO if the values which we compared above are equal
+00010492  B27C 0072                380      CMP #114, D1        ;compare literal number 114(character r) with number in hex which is stored in D1
+00010496  6700 02F8                381      BEQ WIZ             ;BEQ (Branch if equal) it jumps to WIZ if the values which we compared above are equal
+0001049A  B27C 0065                382      CMP #101, D1        ;compare literal number 101(character e) with number in hex which is stored in D1
+0001049E  6700 FF06                383      BEQ EXITO           ;BEQ (Branch if equal) it jumps to EXITO if the values which we compared above are equal
+000104A2  60AC                     384      BRA DEEP            ;BRA (Branch if not equal) it jumps to DEEP if the values which we compare above are not equal
+000104A4                           385      
+000104A4                           386      
+000104A4                           387      
+000104A4                           388      
+000104A4                           389      
+000104A4                           390  DRACO:   
+000104A4  6100 0820                391      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000104A8  6100 FC7C                392      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000104AC  223C 00880000            393      MOVE.L #$880000,D1  ;set colour to blue
+000104B2  103C 0015                394      MOVE.B #21, D0         
+000104B6  4E4F                     395      TRAP #15
+000104B8  43F9 00015046            396      LEA dracon, A1      ;it loads string variable dracon (Load Effective Address) into A1
+000104BE  303C 000E                397      MOVE.W #14, D0
+000104C2  4E4F                     398      TRAP #15            ;display the string variable dracon
+000104C4  6100 FC60                399      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000104C8  9241                     400      SUB D1,D1           ;clearing D1
+000104CA  223C 00FFFF80            401      MOVE.L #$FFFF80,D1  ;set colour to baby blue
+000104D0  103C 0015                402      MOVE.B #21, D0         
+000104D4  4E4F                     403      TRAP #15
+000104D6  43F9 000140C3            404      LEA fooorest2,A1    ;it loads string variable fooorest2 (Load Effective Address) into A1
+000104DC  303C 000E                405      MOVE.W #14, D0
+000104E0  4E4F                     406      TRAP #15            ;display the string variable fooorest2
+000104E2  303C 0004                407      MOVE.W #4, D0
+000104E6  4E4F                     408      TRAP #15            ;read the single character from 
+000104E8  B27C 0001                409      CMP #1, D1          ;compare literal number 1 with number in hex which is stored in D1
+000104EC  6700 0014                410      BEQ TALK            ;BEQ (Branch if equal) it jumps to TALK if the values which we compared above are equal
+000104F0  B27C 0002                411      CMP #2, D1          ;compare literal number 2 with number in hex which is stored in D1
+000104F4  6700 008A                412      BEQ RUN             ;BEQ (Branch if equal) it jumps to RUN if the values which we compared above are equal
+000104F8  B27C 0003                413      CMP #3, D1          ;compare literal number 3 with number in hex which is stored in D1
+000104FC  6700 013A                414      BEQ ATTACK          ;BEQ (Branch if equal) it jumps to ATTACK if the values which we compared above are equal
+00010500  60A2                     415      BRA DRACO           ;BRA (Branch if not equal) it jumps to DRACO if the values which we compare above are not equal
+00010502                           416  
+00010502                           417      
+00010502                           418  TALK:
+00010502  6100 07C2                419      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010506  223C 00999999            420      MOVE.L #$999999,D1  ;set colour to light shade of gray
+0001050C  103C 0015                421      MOVE.B #21, D0         
+00010510  4E4F                     422      TRAP #15
+00010512  43F9 00014205            423      LEA foorest2a, A1   ;it loads string variable foorest2a (Load Effective Address) into A1
+00010518  303C 000E                424      MOVE.W #14, D0
+0001051C  4E4F                     425      TRAP #15            ;display the string variable foorest2a
+0001051E  9241                     426      SUB D1,D1           ;clearing D1
+00010520  223C 002986CC            427      MOVE.L #$2986cc,D1  ;set colour to gold
+00010526  103C 0015                428      MOVE.B #21, D0         
+0001052A  4E4F                     429      TRAP #15
+0001052C  43F9 00014255            430      LEA foorest3a, A1   ;it loads string variable foorest3a (Load Effective Address) into A1
+00010532  303C 000E                431      MOVE.W #14, D0
+00010536  4E4F                     432      TRAP #15            ;display the string variable foorest3a
+00010538  9241                     433      SUB D1,D1           ;clearing D1
+0001053A  223C 00999999            434      MOVE.L #$999999,D1  ;set colour to light shade of gray
+00010540  103C 0015                435      MOVE.B #21, D0         
+00010544  4E4F                     436      TRAP #15
+00010546  43F9 00014741            437      LEA foorest4a, A1   ;it loads string variable foorest4a (Load Effective Address) into A1
+0001054C  303C 000E                438      MOVE.W #14, D0
+00010550  4E4F                     439      TRAP #15            ;display the string variable foorest4a
+00010552  9241                     440      SUB D1,D1           ;clearing D1
+00010554  223C 00008204            441      MOVE.L #33284,D1    ;set colour to green
+0001055A  103C 0015                442      MOVE.B #21, D0         
+0001055E  4E4F                     443      TRAP #15
+00010560  9241                     444      SUB D1,D1           ;clearing D1
+00010562  6100 FBC2                445      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010566  43F9 000129E6            446      LEA text6, A1       ;it loads string variable text6 (Load Effective Address) into A1
+0001056C  303C 000E                447      MOVE.W #14, D0      
+00010570  4E4F                     448      TRAP #15            ;display the string variable text6
+00010572                           449      
+00010572                           450  TALK2:
+00010572  6100 FB62                451      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010576  B27C 0063                452      CMP #99, D1         ;compare literal number 99(character c) with number in hex which is stored in D1
+0001057A  6700 FF28                453      BEQ DRACO           ;BEQ (Branch if equal) it jumps to TALK if the values which we compared above are equal
+0001057E  6082                     454      BRA TALK            ;BRA (Branch if not equal) it jumps to TALK if the values which we compare above are not equal
+00010580                           455      
+00010580                           456  RUN:
+00010580  6100 0744                457      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010584  223C 00999999            458      MOVE.L #$999999,D1  ;set colour to gray
+0001058A  103C 0015                459      MOVE.B #21, D0         
+0001058E  4E4F                     460      TRAP #15
+00010590  9241                     461      SUB D1,D1           ;clearing D1
+00010592  43F9 0001478B            462      LEA foorest2b, A1   ;it loads string variable foorest2b (Load Effective Address)in to A1
+00010598  303C 000E                463      MOVE.W #14, D0
+0001059C  4E4F                     464      TRAP #15            ;display the string variable foorest2b
+0001059E  9241                     465      SUB D1,D1           ;clearing D1
+000105A0  223C 000027F9            466      MOVE.L #10233,D1    ;set colour to red
+000105A6  103C 0015                467      MOVE.B #21, D0
+000105AA  4E4F                     468      TRAP #15
+000105AC  43F9 00014889            469      LEA foorest3b,A1    ;it loads string variable foorest3b (Load Effective Address)in to A1
+000105B2  303C 000E                470      MOVE.W #14, D0     
+000105B6  4E4F                     471      TRAP #15            ;display the string variable foorest3b
+000105B8  9241                     472      SUB D1,D1           ;clearing D1
+000105BA  223C 0000F230            473      MOVE.L #62000,D1    ;set colour to green
+000105C0  103C 0015                474      MOVE.B #21, D0
+000105C4  4E4F                     475      TRAP #15
+000105C6  9241                     476      SUB D1,D1           ;clearing D1
+000105C8  43F9 00011C26            477      LEA TREES, A1       ;it loads string variable TREES (Load Effective Address)in to A1
+000105CE  303C 000E                478      MOVE.W #14, D0     
+000105D2  4E4F                     479      TRAP #15            ;display the string variable TREES
+000105D4  9241                     480      SUB D1,D1           ;clearing D1
+000105D6  6100 FB4E                481      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000105DA  223C 00999999            482      MOVE.L #$999999,D1  ;set colour to gray
+000105E0  103C 0015                483      MOVE.B #21, D0         
+000105E4  4E4F                     484      TRAP #15
+000105E6  9241                     485      SUB D1,D1           ;clearing D1
+000105E8  43F9 00014849            486      LEA foorest4b, A1   ;it loads string variable foorest4b (Load Effective Address)in to A1
+000105EE  303C 000E                487      MOVE.W #14, D0     
+000105F2  4E4F                     488      TRAP #15            ;display the string variable foorest4b
+000105F4  2A38 3000                489      MOVE.L $3000, D5    ;moving address location $3000 where we store carbon level into D5
+000105F8  0645 03E8                490      ADD #1000,D5        ;adding literal number 1000 into D5
+000105FC  21C5 3000                491      MOVE.L D5, $3000    ;moving back carbon level from D5 to the address location $3000
+00010600  6100 04A6                492      BSR UPDATE          ;calling the subroutines( UPDATE ) by the instruction BSR (Branch to subroutine)
+00010604  9241                     493      SUB D1,D1           ;clearing D1
+00010606  6100 FB1E                494      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001060A  6100 FB1A                495      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001060E  223C 00008204            496      MOVE.L #33284, D1   ;set colour to green
+00010614  103C 0015                497      MOVE.B #21, D0         
+00010618  4E4F                     498      TRAP #15
+0001061A  9241                     499      SUB D1,D1           ;clearing D1
+0001061C  43F9 000129E6            500      LEA text6, A1       ;it loads string variable text6 (Load Effective Address)in to A1
+00010622  303C 000E                501      MOVE.W #14, D0     
+00010626  4E4F                     502      TRAP #15            ;display the string variable text6
+00010628                           503      
+00010628                           504  RUN2:
+00010628  6100 FAAC                505      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+0001062C  B27C 0063                506      CMP #99, D1         ;compare literal number 99(character c) with number in hex which is stored in D1
+00010630  6700 FE72                507      BEQ DRACO           ;BEQ (Branch if equal) it jumps to DRACO if the values which we compared above are equal
+00010634  6000 FF4A                508      BRA RUN             ;BRA (Branch if not equal) it jumps to RUN if the values which we compare above are not equal
+00010638                           509  
+00010638                           510  ATTACK:
+00010638  6100 068C                511      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+0001063C  223C 00901DA9            512      MOVE.L #$901DA9,D1  ;set colour to purple
+00010642  103C 0015                513      MOVE.B #21, D0         
+00010646  4E4F                     514      TRAP #15
+00010648  9241                     515      SUB D1,D1           ;clearing D1
+0001064A  43F9 000149FC            516      LEA foorest2c, A1   ;it loads string variable foorest2c (Load Effective Address)in to A1
+00010650  303C 000E                517      MOVE.W #14, D0
+00010654  4E4F                     518      TRAP #15            ;display the string variable foorest2c
+00010656  9241                     519      SUB D1,D1           ;clearing D1
+00010658  223C 00A9A71D            520      MOVE.L #$A9A71D,D1  ;set colour to baby blue
+0001065E  103C 0015                521      MOVE.B #21, D0         
+00010662  4E4F                     522      TRAP #15
+00010664  43F9 00014A56            523      LEA foorest3c, A1   ;it loads string variable foorest3c (Load Effective Address)in to A1
+0001066A  303C 000E                524      MOVE.W #14, D0
+0001066E  4E4F                     525      TRAP #15            ;display the string variable foorest3c
+00010670  9241                     526      SUB D1,D1           ;clearing D1
+00010672  43F9 00014B84            527      LEA foorest4c, A1   ;it loads string variable foorest4c (Load Effective Address)in to A1
+00010678  303C 000E                528      MOVE.W #14, D0
+0001067C  4E4F                     529      TRAP #15            ;display the string variable foorest4c
+0001067E  7400                     530      MOVE.L #0, D2       ;clearing D2
+00010680  1438 2500                531      MOVE.B SPEAR, D2    ;moving the equate directive for spear into D2
+00010684  B47C 0001                532      CMP #1, D2          ;compare literal number 1 with number in hex which is store in D2
+00010688  6700 00F6                533      BEQ ATTACK2         ;BEQ (Branch if equal) it jumps to ATTACK2 if the values which we compared above are equal
+0001068C                           534      
+0001068C                           535  ATTACK1:
+0001068C  303C 0004                536      MOVE.W #4, D0
+00010690  4E4F                     537      TRAP #15            ;read the single digit from the keyboard to D1
+00010692  B27C 0001                538      CMP #1, D1          ;compare literal number 1 with number in hex which is stored in D1
+00010696  6700 FD0E                539      BEQ EXITO           ;BEQ (Branch if equal) it jumps to EXITO if the values which we compared above are equal
+0001069A  B27C 0002                540      CMP #2, D1          ;compare literal number 2 with number in hex which is stored in D1
+0001069E  6700 0012                541      BEQ HANDS           ;BEQ (Branch if equal) it jumps to HANDS if the values which we compared above are equal
+000106A2  7400                     542      MOVE.L #0, D2       ;clearing D2
+000106A4  1438 2500                543      MOVE.B SPEAR, D2    ;;moving the equate directive for spear into D2
+000106A8  B47C 0001                544      CMP #1, D2          ;compare literal number 1 with number in hex which is store in D2
+000106AC  6700 0094                545      BEQ ATTACK1A        ;BEQ (Branch if equal) it jumps to ATTACK1A if the values which we compared above are equal
+000106B0  6086                     546      BRA ATTACK          ;BRA (Branch if not equal) it jumps to ATTACK if the values which we compare above are not equal
+000106B2                           547      
+000106B2                           548  HANDS:
+000106B2  6100 0612                549      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000106B6  223C 00901DA9            550      MOVE.L #$901DA9,D1  ;set colour to purple
+000106BC  103C 0015                551      MOVE.B #21, D0         
+000106C0  4E4F                     552      TRAP #15
+000106C2  9241                     553      SUB D1,D1           ;clearing D1
+000106C4  43F9 00013215            554      LEA handy, A1       ;it loads string variable handy (Load Effective Address)in to A1
+000106CA  303C 000E                555      MOVE.W #14, D0      
+000106CE  4E4F                     556      TRAP #15            ;display the string variable handy
+000106D0  223C 00A91D2C            557      MOVE.L #$A91D2C,D1  ;set colour to blue
+000106D6  103C 0015                558      MOVE.B #21, D0         
+000106DA  4E4F                     559      TRAP #15
+000106DC  9241                     560      SUB D1,D1           ;clearing D1
+000106DE  43F9 00013320            561      LEA handy2, A1      ;it loads string variable handy2 (Load Effective Address)in to A1
+000106E4  303C 000E                562      MOVE.W #14, D0        
+000106E8  4E4F                     563      TRAP #15            ;display the string variable handy2
+000106EA  2A38 4000                564      MOVE.L $4000, D5    ;moving memory address $4000 where we store money to D5
+000106EE  0445 0064                565      SUB #100, D5        ;sub subtracting literal number 100 from D5
+000106F2  21C5 4000                566      MOVE.L D5, $4000    ;moving back money into the memory location $4000
+000106F6  6100 FA2E                567      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000106FA  6100 FB84                568      BSR NOMONEY2        ;calling the subroutines( NOMONEY2 ) by the instruction BSR (Branch to subroutine)
+000106FE  6100 03A8                569      BSR UPDATE
+00010702  6100 FA22                570      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010706  6100 FA1E                571      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001070A  223C 00008204            572      MOVE.L #33284, D1   ;set colour to green
+00010710  103C 0015                573      MOVE.B #21, D0         
+00010714  4E4F                     574      TRAP #15
+00010716  9241                     575      SUB D1,D1           ;clearing D1
+00010718  43F9 000129E6            576      LEA text6, A1       ;it loads string variable text6 (Load Effective Address)in to A1
+0001071E  303C 000E                577      MOVE.W #14, D0     
+00010722  4E4F                     578      TRAP #15            ;display the string variable text6
+00010724  6100 F9B0                579      BSR INPUT           ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010728  9241                     580      SUB D1,D1           ;clearing D1
+0001072A  B27C 0063                581      CMP #99, D1         ;compare literal number 99(character c) with number in hex which is stored in D1
+0001072E  6100 F9F6                582      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010732  6100 F9F2                583      BSR NEWLINE         ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010736  6100 058E                584      BSR CLEARSCREEN     ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+0001073A  6700 FF76                585      BEQ HANDS           ;BEQ (Branch if equal) it jumps to DRACO if the values which we compared above are equal
+0001073E  6000 FC80                586      BRA CHOOSE          ;BRA (Branch if not equal) it jumps to CHOOSE if the values which we compare above are not equal
+00010742                           587  
+00010742                           588      
+00010742                           589      
+00010742                           590  ATTACK1A:
+00010742  B27C 0003                591      CMP #3, D1           ;compare literal number 3 with number in hex which is stored in D1
+00010746  6700 0006                592      BEQ DEAD             ;BEQ (Branch if equal) it jumps to DEAD if the values which we compared above are equal
+0001074A  6000 FF40                593      BRA ATTACK1          ;BRA (Branch if not equal) it jumps to ATTACK1 if the values which we compare above are not equal
+0001074E                           594  
+0001074E                           595  
+0001074E                           596  DEAD:
+0001074E  6100 0576                597      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010752  43F9 00013A13            598      LEA dragondead, A1   ;it loads string variable dragondead (Load Effective Address)in to A1
+00010758  303C 000E                599      MOVE.W #14, D0
+0001075C  4E4F                     600      TRAP #15             ;display the string variable dragondead
+0001075E  223C 0000FF00            601      MOVE.L #$00ff00,D1   ;set colour to blue
+00010764  103C 0015                602      MOVE.B #21, D0         
+00010768  4E4F                     603      TRAP #15
+0001076A  9241                     604      SUB D1,D1            ;clearing D1
+0001076C  6100 F9B8                605      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010770  43F9 00013A95            606      LEA xxxripxx, A1     ;it loads string variable xxxripxx (Load Effective Address)in to A1
+00010776  303C 000E                607      MOVE.W #14, D0
+0001077A  4E4F                     608      TRAP #15             ;display the string variable xxxripxx
+0001077C  6000 0642                609      BRA END              ;branch to END
+00010780                           610     
+00010780                           611  ATTACK2:
+00010780  43F9 00014F9F            612      LEA forest2d, A1     ;it loads string variable forest2d (Load Effective Address)in to A1
+00010786  303C 000E                613      MOVE.W #14, D0
+0001078A  4E4F                     614      TRAP #15             ;display the string variable forest2d
+0001078C  6000 FEFE                615      BRA ATTACK1          ;branch to ATTACK1
+00010790                           616      
+00010790                           617      
+00010790                           618  WIZ:    
+00010790  6100 0534                619      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010794  223C 00901DA9            620      MOVE.L #$901DA9,D1   ;set colour to purple
+0001079A  103C 0015                621      MOVE.B #21, D0         
+0001079E  4E4F                     622      TRAP #15
+000107A0  9241                     623      SUB D1,D1            ;clearing D1
+000107A2  43F9 0001206B            624      LEA wizz, A1         ;it loads string variable wizz (Load Effective Address)in to A1
+000107A8  103C 000E                625      MOVE.B #14, D0
+000107AC  4E4F                     626      TRAP #15             ;display the string variable wizz
+000107AE  6100 F976                627      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000107B2  223C 00008204            628      MOVE.L #33284,D1     ;set colour to green
+000107B8  103C 0015                629      MOVE.B #21, D0         
+000107BC  4E4F                     630      TRAP #15
+000107BE  9241                     631      SUB D1,D1            ;clearing D1
+000107C0  43F9 000139B8            632      LEA wiztalk, A1      ;it loads string variable wiztalk (Load Effective Address)in to A1
+000107C6  303C 000E                633      MOVE.W #14, D0
+000107CA  4E4F                     634      TRAP #15             ;display the string variable wiztalk
+000107CC  6100 F958                635      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000107D0  6100 F954                636      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000107D4  43F9 000129E6            637      LEA text6, A1        ;it loads string variable text6 (Load Effective Address)in to A1
+000107DA  303C 000E                638      MOVE.W #14, D0   
+000107DE  4E4F                     639      TRAP #15             ;display the string variable text6
+000107E0  9241                     640      SUB D1, D1           ;clearing D1
+000107E2  6100 F8F2                641      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+000107E6  B27C 0063                642      CMP #99, D1          ;compare literal number 99(character c) with number in hex which is stored in D1
+000107EA  6700 0004                643      BEQ WIZQ1            ;BEQ (Branch if equal) it jumps to WIZQ1 if the values which we compared above are equal
+000107EE  60A0                     644      BRA WIZ              ;BRA (Branch if not equal) it jumps to WIZ if the values which we compare above are not equal
+000107F0                           645      
+000107F0                           646  WIZQ1: 
+000107F0  6100 04D4                647      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000107F4  6100 048C                648      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+000107F8  6100 F92C                649      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000107FC  6100 F928                650      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010800  6100 04A2                651      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010804  9241                     652      SUB D1,D1            ;clearing D1 
+00010806  223C 00A9A71D            653      MOVE.L #$A9A71D,D1   ;set colour to baby blue
+0001080C  103C 0015                654      MOVE.B #21, D0         
+00010810  4E4F                     655      TRAP #15 
+00010812  9241                     656      SUB D1,D1            ;clearing D1 
+00010814  43F9 000124AD            657      LEA Question1, A1    ;it loads string variable Question1 (Load Effective Address)in to A1
+0001081A  303C 000E                658      MOVE.W #14, D0  
+0001081E  4E4F                     659      TRAP #15             ;display the string variable Question1
+00010820  9241                     660      SUB D1, D1           ;clearing D1
+00010822  6100 F8BC                661      BSR INPUTA           ;calling the subroutines( INPUTA ) by the instruction BSR (Branch to subroutine)
+00010826  B27C 0001                662      CMP #1, D1           ;compare literal number 1 to the digit  which is stored in D1
+0001082A  6700 017C                663      BEQ WRONG1           ;BEQ (Branch if equal) it jumps to WRONG1 if the values which we compared above are equal
+0001082E  B27C 0002                664      CMP #2, D1           ;compare literal number 2 to the digit  which is stored in D1
+00010832  6700 0314                665      BEQ CORECT1          ;BEQ (Branch if equal) it jumps to CORECT1 if the values which we compared above are equal
+00010836  B27C 0003                666      CMP #3, D1           ;compare literal number 3 to the digit  which is stored in D1
+0001083A  6700 016C                667      BEQ WRONG1           ;BEQ (Branch if equal) it jumps to WRONG1 if the values which we compared above are equal
+0001083E  B27C 0004                668      CMP #4, D1           ;compare literal number 4 to the digit  which is stored in D1
+00010842  6700 0164                669      BEQ WRONG1           ;BEQ (Branch if equal) it jumps to WRONG1 if the values which we compared above are equal
+00010846  60A8                     670      BRA WIZQ1            ;BRA (Branch if not equal) it jumps to WIZQ1 if the values which we compare above are not equal
+00010848                           671  
+00010848                           672      
+00010848                           673  WIZQ2: 
+00010848  6100 047C                674      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+0001084C  6100 0434                675      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010850  6100 F8D4                676      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010854  6100 F8D0                677      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010858  6100 044A                678      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+0001085C  9241                     679      SUB D1,D1            ;clearing D1 
+0001085E  223C 00A9A71D            680      MOVE.L #$A9A71D,D1   ;set colour to baby blue
+00010864  103C 0015                681      MOVE.B #21, D0         
+00010868  4E4F                     682      TRAP #15 
+0001086A  9241                     683      SUB D1,D1            ;clearing D1    
+0001086C  43F9 000125B0            684      LEA Question2, A1    ;it loads string variable Question2 (Load Effective Address)in to A1
+00010872  303C 000E                685      MOVE.W #14, D0      
+00010876  4E4F                     686      TRAP #15             ;display the string variable Question2
+00010878  9241                     687      SUB D1, D1           ;clearing D1
+0001087A  6100 F864                688      BSR INPUTA           ;calling the subroutines( INPUTA ) by the instruction BSR (Branch to subroutine)
+0001087E  B27C 0001                689      CMP #1, D1           ;compare literal number 1 to the digit  which is stored in D1
+00010882  6700 0158                690      BEQ WRONG2           ;BEQ (Branch if equal) it jumps to WRONG2 if the values which we compared above are equal
+00010886  B27C 0002                691      CMP #2, D1           ;compare literal number 2 to the digit  which is stored in D1
+0001088A  6700 02E8                692      BEQ CORECT2          ;BEQ (Branch if equal) it jumps to CORECT2 if the values which we compared above are equal
+0001088E  B27C 0003                693      CMP #3, D1           ;compare literal number 3 to the digit  which is stored in D1
+00010892  6700 0148                694      BEQ WRONG2           ;BEQ (Branch if equal) it jumps to WRONG2 if the values which we compared above are equal
+00010896  B27C 0004                695      CMP #4, D1           ;compare literal number 4 to the digit  which is stored in D1
+0001089A  6700 0140                696      BEQ WRONG2           ;BEQ (Branch if equal) it jumps to WRONG2 if the values which we compared above are equal
+0001089E  60A8                     697      BRA WIZQ2            ;BRA (Branch if not equal) it jumps to WIZQ2 if the values which we compare above are not equal
+000108A0                           698  
+000108A0                           699  
+000108A0                           700  WIZQ3: 
+000108A0  6100 0424                701      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000108A4  6100 03DC                702      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+000108A8  6100 F87C                703      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000108AC  6100 F878                704      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+000108B0  6100 03F2                705      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+000108B4  9241                     706      SUB D1,D1            ;clearing D1 
+000108B6  223C 00A9A71D            707      MOVE.L #$A9A71D,D1   ;set colour to baby blue
+000108BC  103C 0015                708      MOVE.B #21, D0         
+000108C0  4E4F                     709      TRAP #15 
+000108C2  9241                     710      SUB D1,D1            ;clearing D1  
+000108C4  43F9 000126A2            711      LEA Question3, A1    ;it loads string variable Question3 (Load Effective Address)in to A1
+000108CA  303C 000E                712      MOVE.W #14, D0      
+000108CE  4E4F                     713      TRAP #15             ;display the string variable Question3
+000108D0  9241                     714      SUB D1, D1           ;clearing D1
+000108D2  6100 F80C                715      BSR INPUTA           ;calling the subroutines( INPUTA ) by the instruction BSR (Branch to subroutine)
+000108D6  B27C 0001                716      CMP #1, D1           ;compare literal number 1 to the digit  which is stored in D1
+000108DA  6700 0134                717      BEQ WRONG3           ;BEQ (Branch if equal) it jumps to WRONG3 if the values which we compared above are equal
+000108DE  B27C 0002                718      CMP #2, D1           ;compare literal number 2 to the digit  which is stored in D1
+000108E2  6700 02BC                719      BEQ CORECT3          ;BEQ (Branch if equal) it jumps to CORECT3 if the values which we compared above are equal
+000108E6  B27C 0003                720      CMP #3, D1           ;compare literal number 3 to the digit  which is stored in D1
+000108EA  6700 0124                721      BEQ WRONG3           ;BEQ (Branch if equal) it jumps to WRONG3 if the values which we compared above are equal
+000108EE  B27C 0004                722      CMP #4, D1           ;compare literal number 4 to the digit  which is stored in D1
+000108F2  6700 011C                723      BEQ WRONG3           ;BEQ (Branch if equal) it jumps to WRONG3 if the values which we compared above are equal
+000108F6  60A8                     724      BRA WIZQ3            ;BRA (Branch if not equal) it jumps to WIZQ3 if the values which we compare above are not equal
+000108F8                           725  
+000108F8                           726      
+000108F8                           727  WIZQ4: 
+000108F8  6100 03CC                728      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+000108FC  6100 0384                729      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010900  6100 F824                730      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010904  6100 F820                731      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010908  6100 039A                732      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+0001090C  9241                     733      SUB D1,D1            ;clearing D1 
+0001090E  223C 00A9A71D            734      MOVE.L #$A9A71D,D1   ;set colour to baby blue
+00010914  103C 0015                735      MOVE.B #21, D0         
+00010918  4E4F                     736      TRAP #15 
+0001091A  9241                     737      SUB D1,D1            ;clearing D1  
+0001091C  43F9 0001278A            738      LEA Question4, A1    ;it loads string variable Question4 (Load Effective Address)in to A1
+00010922  303C 000E                739      MOVE.W #14, D0      
+00010926  4E4F                     740      TRAP #15             ;display the string variable Question4
+00010928  9241                     741      SUB D1, D1           ;clearing D1
+0001092A  6100 F7B4                742      BSR INPUTA           ;calling the subroutines( INPUTA ) by the instruction BSR (Branch to subroutine)
+0001092E  B27C 0001                743      CMP #1, D1           ;compare literal number 1 to the digit  which is stored in D1
+00010932  6700 0110                744      BEQ WRONG4           ;BEQ (Branch if equal) it jumps to WRONG4 if the values which we compared above are equal
+00010936  B27C 0002                745      CMP #2, D1           ;compare literal number 2 to the digit  which is stored in D1
+0001093A  6700 0290                746      BEQ CORECT4          ;BEQ (Branch if equal) it jumps to CORECT4 if the values which we compared above are equal
+0001093E  B27C 0003                747      CMP #3, D1           ;compare literal number 3 to the digit  which is stored in D1
+00010942  6700 0100                748      BEQ WRONG4           ;BEQ (Branch if equal) it jumps to WRONG4 if the values which we compared above are equal
+00010946  B27C 0004                749      CMP #4, D1           ;compare literal number 4 to the digit  which is stored in D1
+0001094A  6700 00F8                750      BEQ WRONG4           ;BEQ (Branch if equal) it jumps to WRONG4 if the values which we compared above are equal
+0001094E  60A8                     751      BRA WIZQ4            ;BRA (Branch if not equal) it jumps to WIZQ4 if the values which we compare above are not equal
+00010950                           752  
+00010950                           753      
+00010950                           754  WIZQ5: 
+00010950  6100 0374                755      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010954  6100 032C                756      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010958  6100 F7CC                757      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+0001095C  6100 F7C8                758      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010960  6100 0342                759      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010964  9241                     760      SUB D1,D1            ;clearing D1 
+00010966  223C 00A9A71D            761      MOVE.L #$A9A71D,D1   ;set colour to baby blue
+0001096C  103C 0015                762      MOVE.B #21, D0         
+00010970  4E4F                     763      TRAP #15 
+00010972  9241                     764      SUB D1,D1            ;clearing D1     
+00010974  43F9 000128E5            765      LEA Question5, A1    ;it loads string variable Question5 (Load Effective Address)in to A1
+0001097A  303C 000E                766      MOVE.W #14, D0  
+0001097E  4E4F                     767      TRAP #15             ;display the string variable Question5
+00010980  9241                     768      SUB D1, D1           ;clear D1
+00010982  6100 F75C                769      BSR INPUTA           ;calling the subroutines( INPUTA ) by the instruction BSR (Branch to subroutine)
+00010986  B27C 0001                770      CMP #1, D1           ;compare literal number 1 to the digit  which is stored in D1
+0001098A  6700 00EC                771      BEQ WRONG5           ;BEQ (Branch if equal) it jumps to WRONG5 if the values which we compared above are equal
+0001098E  B27C 0002                772      CMP #2, D1           ;compare literal number 2 to the digit  which is stored in D1
+00010992  6700 0264                773      BEQ CORECT5          ;BEQ (Branch if equal) it jumps to CORECT5 if the values which we compared above are equal
+00010996  B27C 0003                774      CMP #3, D1           ;compare literal number 3 to the digit  which is stored in D1
+0001099A  6700 00DC                775      BEQ WRONG5           ;BEQ (Branch if equal) it jumps to WRONG5 if the values which we compared above are equal
+0001099E  B27C 0004                776      CMP #4, D1           ;compare literal number 4 to the digit  which is stored in D1
+000109A2  6700 00D4                777      BEQ WRONG5           ;BEQ (Branch if equal) it jumps to WRONG5 if the values which we compared above are equal
+000109A6  60A8                     778      BRA WIZQ5            ;BRA (Branch if not equal) it jumps to WIZQ1 if the values which we compare above are not equal
+000109A8                           779  
+000109A8                           780  
+000109A8                           781  WRONG1:
+000109A8  6100 027A                782      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+000109AC  223C 000027F9            783      MOVE.L #10233, D1    ;set colour to red
+000109B2  103C 0015                784      MOVE.B #21, D0
+000109B6  4E4F                     785      TRAP #15
+000109B8  43F9 00010EDA            786      LEA invalid, A1      ;it loads string variable invalid (Load Effective Address)in to A1
+000109BE  303C 000E                787      MOVE.W #14, D0      
+000109C2  4E4F                     788      TRAP #15             ;display the string variable invalid
+000109C4  2A38 3000                789      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+000109C8  0645 03E8                790      ADD #1000,D5         ;adding literal number 1000 into D5
+000109CC  21C5 3000                791      MOVE.L D5, $3000     ;moving back carbon value to memory location $3000
+000109D0  6100 0252                792      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+000109D4  6100 00D2                793      BSR UPDATE           ;branch to subroutine UPDATE by the instruction BSR (Branch to subroutine)
+000109D8  6000 FE6E                794      BRA WIZQ2            ;BRA (Branch if not equal) it jumps to WIZQ1 if the values which we compare above are not equal
+000109DC                           795  
+000109DC                           796      
+000109DC                           797  WRONG2:
+000109DC  6100 0246                798      BSR WAIT             ;branch to subroutine( WAIT ) by the instruction BSR (Branch to subroutine)
+000109E0  223C 000027F9            799      MOVE.L #10233, D1    ;set colour to red
+000109E6  103C 0015                800      MOVE.B #21, D0
+000109EA  4E4F                     801      TRAP #15
+000109EC  43F9 00010EDA            802      LEA invalid, A1      ;it loads string variable invalid (Load Effective Address)in to A1
+000109F2  303C 000E                803      MOVE.W #14, D0      
+000109F6  4E4F                     804      TRAP #15             ;display the string variable invalid
+000109F8  2A38 3000                805      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+000109FC  0645 03E8                806      ADD #1000,D5         ;adding literal number 1000 into D5
+00010A00  21C5 3000                807      MOVE.L D5, $3000     ;moveing back carbon level value to memory address $3000
+00010A04  6100 021E                808      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010A08  6100 009E                809      BSR UPDATE           ;branch to subroutine UPDATE by the instruction BSR (Branch to subroutine)
+00010A0C  6000 FE92                810      BRA WIZQ3            ;BRA (Branch if not equal) it jumps to WIZQ3 if the values which we compare above are not equal
+00010A10                           811  
+00010A10                           812      
+00010A10                           813  WRONG3:
+00010A10  6100 0212                814      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010A14  223C 000027F9            815      MOVE.L #10233, D1    ;set colour to red
+00010A1A  103C 0015                816      MOVE.B #21, D0
+00010A1E  4E4F                     817      TRAP #15
+00010A20  43F9 00010EDA            818      LEA invalid, A1      ;it loads string variable invalid (Load Effective Address)in to A1
+00010A26  303C 000E                819      MOVE.W #14, D0      
+00010A2A  4E4F                     820      TRAP #15             ;display the string variable invalid
+00010A2C  2A38 3000                821      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+00010A30  0645 03E8                822      ADD #1000,D5         ;adding literal number 1000 into D5
+00010A34  21C5 3000                823      MOVE.L D5, $3000     ;moveing back carbon level value to memory address $3000
+00010A38  6100 01EA                824      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010A3C  6100 006A                825      BSR UPDATE           ;branch to subroutine UPDATE by the instruction BSR (Branch to subroutine)
+00010A40  6000 FEB6                826      BRA WIZQ4            ;BRA (Branch if not equal) it jumps to WIZQ4 if the values which we compare above are not equal
+00010A44                           827  
+00010A44                           828      
+00010A44                           829  WRONG4:
+00010A44  6100 01DE                830      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010A48  223C 000027F9            831      MOVE.L #10233, D1    ;set colour to red
+00010A4E  103C 0015                832      MOVE.B #21, D0
+00010A52  4E4F                     833      TRAP #15
+00010A54  43F9 00010EDA            834      LEA invalid, A1      ;it loads string variable invalid (Load Effective Address)in to A1
+00010A5A  303C 000E                835      MOVE.W #14, D0     
+00010A5E  4E4F                     836      TRAP #15             ;display the string variable invalid
+00010A60  2A38 3000                837      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+00010A64  0645 03E8                838      ADD #1000,D5         ;adding literal number 1000 into D5
+00010A68  21C5 3000                839      MOVE.L D5, $3000     ;moveing back carbon level value to memory address $3000
+00010A6C  6100 01B6                840      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010A70  6100 0036                841      BSR UPDATE           ;branch to subroutine UPDATE by the instruction BSR (Branch to subroutine)
+00010A74  6000 FEDA                842      BRA WIZQ5            ;BRA (Branch if not equal) it jumps to WIZQ5 if the values which we compare above are not equal
+00010A78                           843  
+00010A78                           844      
+00010A78                           845  WRONG5: 
+00010A78  223C 000027F9            846      MOVE.L #10233, D1    ;set colour to red
+00010A7E  103C 0015                847      MOVE.B #21, D0
+00010A82  4E4F                     848      TRAP #15 
+00010A84  43F9 00010EDA            849      LEA invalid, A1      ;it loads string variable invalid (Load Effective Address)in to A1
+00010A8A  303C 000E                850      MOVE.W #14, D0       
+00010A8E  4E4F                     851      TRAP #15             ;display the string variable invalid
+00010A90  2A38 3000                852      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+00010A94  0645 03E8                853      ADD #1000,D5         ;adding literal number 1000 into D5
+00010A98  21C5 3000                854      MOVE.L D5, $3000     ;moveing back carbon level value to memory address $3000
+00010A9C  6100 0186                855      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010AA0  6100 0006                856      BSR UPDATE           ;branch to subroutine UPDATE by the instruction BSR (Branch to subroutine)
+00010AA4  6100 F91A                857      BSR CHOOSE           ;branch to subroutine CHOOSE by the instruction BSR (Branch to subroutine)
+00010AA8                           858      
+00010AA8                           859  UPDATE:
+00010AA8  2A38 3000                860      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+00010AAC  BA7C 7530                861      CMP #30000, D5       ;compare literal number 30000 which represents MAX value of carbon (30000 of the carbon level finish the game) 
+00010AB0  6C00 005A                862      BGE GAMEOVER         ;branch on greater than or equal to the GAMEOVER
+00010AB4  BA7C 0000                863      CMP #0, D5           ;compare literal number 0 to the digit  which is stored in D5 
+00010AB8  6F00 0004                864      BLE NITRO            ;branch if less than to GAMEOVER
+00010ABC  4E75                     865      RTS                  ;it returns from Subroutine( UPDATE )    
+00010ABE                           866      
+00010ABE                           867  NITRO:
+00010ABE  6100 0206                868      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010AC2  7400                     869      MOVE.L #0,D2         ;cleaning D2
+00010AC4  7200                     870      MOVE.L #0,D1         ;cleaning D1
+00010AC6  223C 000084CF            871      MOVE.L #33999, D1    ;set colour to gold
+00010ACC  103C 0015                872      MOVE.B #21, D0
+00010AD0  4E4F                     873      TRAP #15
+00010AD2  43F9 00010DD2            874      LEA endgame2, A1     ;it loads string variable endgame (Load Effective Address)in to A1
+00010AD8  303C 000E                875      MOVE.W #14, D0  
+00010ADC  4E4F                     876      TRAP #15             ;display the string variable endgame
+00010ADE  9241                     877      SUB D1,D1            ;clearing D1
+00010AE0  6100 F644                878      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010AE4  223C 0000FF00            879      MOVE.L #65280, D1    ;set colour to gold
+00010AEA  103C 0015                880      MOVE.B #21, D0
+00010AEE  4E4F                     881      TRAP #15
+00010AF0  43F9 000129B4            882      LEA text4, A1        ;it loads string variable text4 (Load Effective Address)in to A1
+00010AF6  303C 000E                883      MOVE.W #14, D0  
+00010AFA  4E4F                     884      TRAP #15             ;display the string variable text4
+00010AFC  6100 F5D8                885      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010B00  B27C 000D                886      CMP #13, D1          ;compare literal number 13(Enter key) to the digit  which is stored in D5
+00010B04  6700 0030                887      BEQ RIP              ;BEQ (Branch if equal) it jumps to RIP if the values which we compare above are not 
+00010B08  6000 0002                888      BRA GAMEOVER         ;BRA (Branch if not equal) it jumps to GAMEOVER if the values which we compare above are not 
+00010B0C                           889  
+00010B0C                           890  
+00010B0C                           891  GAMEOVER:
+00010B0C  43F9 00010DC4            892      LEA endgame, A1      ;it loads string variable endgame (Load Effective Address)in to A1
+00010B12  303C 000E                893      MOVE.W #14, D0  
+00010B16  4E4F                     894      TRAP #15             ;display the string variable endgame
+00010B18  6100 F60C                895      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010B1C  43F9 000129B4            896      LEA text4, A1        ;it loads string variable text4 (Load Effective Address)in to A1
+00010B22  303C 000E                897      MOVE.W #14, D0  
+00010B26  4E4F                     898      TRAP #15             ;display the string variable text4
+00010B28  6100 F5AC                899      BSR INPUT            ;calling the subroutines( INPUT ) by the instruction BSR (Branch to subroutine)
+00010B2C  B27C 000D                900      CMP #13, D1          ;compare literal number 13(Enter key) to the digit  which is stored in D5
+00010B30  6700 0004                901      BEQ RIP              ;BEQ (Branch if equal) it jumps to RIP if the values which we compare above are not 
+00010B34  60D6                     902      BRA GAMEOVER         ;BRA (Branch if not equal) it jumps to GAMEOVER if the values which we compare above are not 
+00010B36                           903  
+00010B36                           904  RIP:
+00010B36  23FC 00000000 00009000   905      MOVE.L #0,$9000      ;clearing memory location $9000
+00010B40  6100 0184                906      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010B44  6000 F4BA                907      BRA START            ;branching to START
+00010B48                           908      
+00010B48                           909  CORECT1:
+00010B48  223C 000084CF            910      MOVE.L #33999, D1    ;set colour to gold
+00010B4E  103C 0015                911      MOVE.B #21, D0
+00010B52  4E4F                     912      TRAP #15 
+00010B54  43F9 00010E0C            913      LEA valid, A1        ;it loads string variable valid (Load Effective Address)in to A1
+00010B5A  303C 000E                914      MOVE.W #14, D0  
+00010B5E  4E4F                     915      TRAP #15             ;display the string variable valid
+00010B60  2A38 4000                916      MOVE.L $4000, D5     ;moving memory address $4000 where we store money to D5
+00010B64  0645 03E8                917      ADD #1000, D5        ;adding literal number 1000 into D5
+00010B68  21C5 4000                918      MOVE.L D5, $4000     ;moving back money value to memory address $4000
+00010B6C  6100 00B6                919      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)  
+00010B70  6000 FCD6                920      BRA WIZQ2            ;branch to WIZQ2
+00010B74                           921      
+00010B74                           922  CORECT2:
+00010B74  223C 000084CF            923      MOVE.L #33999, D1    ;set colour to gold
+00010B7A  103C 0015                924      MOVE.B #21, D0
+00010B7E  4E4F                     925      TRAP #15 
+00010B80  43F9 00010E0C            926      LEA valid, A1        ;it loads string variable valid (Load Effective Address)in to A1
+00010B86  303C 000E                927      MOVE.W #14, D0   
+00010B8A  4E4F                     928      TRAP #15             ;display the string variable valid
+00010B8C  2A38 4000                929      MOVE.L $4000, D5     ;moving memory address $4000 where we store money to D5
+00010B90  0645 03E8                930      ADD #1000, D5        ;adding literal number 1000 into D5
+00010B94  21C5 4000                931      MOVE.L D5, $4000     ;moving back money value to memory address $4000
+00010B98  6100 008A                932      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010B9C  6000 FD02                933      BRA WIZQ3            ;branch to WIZQ3
+00010BA0                           934  
+00010BA0                           935  CORECT3:
+00010BA0  223C 000084CF            936      MOVE.L #33999, D1    ;set colour to gold
+00010BA6  103C 0015                937      MOVE.B #21, D0
+00010BAA  4E4F                     938      TRAP #15 
+00010BAC  43F9 00010E0C            939      LEA valid, A1        ;it loads string variable valid (Load Effective Address)in to A1
+00010BB2  303C 000E                940      MOVE.W #14, D0       
+00010BB6  4E4F                     941      TRAP #15             ;display the string variable valid
+00010BB8  2A38 4000                942      MOVE.L $4000, D5     ;moving memory address $4000 where we store money to D5
+00010BBC  0645 03E8                943      ADD #1000, D5        ;adding literal number 1000 into D5
+00010BC0  21C5 4000                944      MOVE.L D5, $4000     ;moveing back money value to memory address $4000
+00010BC4  6100 005E                945      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010BC8  6000 FD2E                946      BRA WIZQ4            ;branch to WIZQ4
+00010BCC                           947  
+00010BCC                           948  CORECT4:
+00010BCC  223C 000084CF            949      MOVE.L #33999, D1    ;set colour to gold
+00010BD2  103C 0015                950      MOVE.B #21, D0
+00010BD6  4E4F                     951      TRAP #15 
+00010BD8  43F9 00010E0C            952      LEA valid, A1        ;it loads string variable valid (Load Effective Address)in to A1
+00010BDE  303C 000E                953      MOVE.W #14, D0  
+00010BE2  4E4F                     954      TRAP #15             ;display the string variable valid
+00010BE4  2A38 4000                955      MOVE.L $4000, D5     ;moving memory address $4000 where we store money to D5
+00010BE8  0645 03E8                956      ADD #1000, D5        ;adding literal number 1000 into D5
+00010BEC  21C5 4000                957      MOVE.L D5, $4000     ;moveing back money value to memory address $4000
+00010BF0  6100 0032                958      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010BF4  6000 FD5A                959      BRA WIZQ5            ;branch to WIZQ5
+00010BF8                           960  
+00010BF8                           961  CORECT5:
+00010BF8  223C 000084CF            962      MOVE.L #33999, D1    ;set colour to gold
+00010BFE  103C 0015                963      MOVE.B #21, D0
+00010C02  4E4F                     964      TRAP #15
+00010C04  43F9 00010E74            965      LEA winner, A1       ;it loads string variable winner (Load Effective Address)in to A1
+00010C0A  303C 000E                966      MOVE.W #14, D0   
+00010C0E  4E4F                     967      TRAP #15             ;display the string variable winner
+00010C10  2A38 4000                968      MOVE.L $4000, D5     ;moving memory address $4000 where we store money to D5
+00010C14  0645 03E8                969      ADD #1000, D5        ;adding literal number 1000 into D5
+00010C18  21C5 4000                970      MOVE.L D5, $4000     ;moveing back money value to memory address $4000
+00010C1C  6100 0006                971      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010C20  6000 F79E                972      BRA CHOOSE           ;branch to CHOOSE
+00010C24                           973  
+00010C24                           974       
+00010C24                           975  WAIT:                      
+00010C24  323C 0064                976      MOVE.W   #100,D1     ;Waits the amount of time specified in D1 in 1/100ths of seconds
+00010C28  103C 0017                977      MOVE.B   #23,D0
+00010C2C  4E4F                     978      TRAP     #15
+00010C2E  4E75                     979      RTS                  ;it returns from Subroutine( WAIT )
+00010C30                           980  
+00010C30                           981  SOLO:
+00010C30  7464                     982      MOVE.L #SCOST,D2     ;move the equate directive of the solar panel cost into D2
+00010C32  6100 F62C                983      BSR NOMONEY          ;branch to subroutine NOMONEY by the instruction BSR (Branch to subroutine)
+00010C36  7200                     984      MOVE.L #0,D1         ;cleaning D1
+00010C38  6100 F4EC                985      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010C3C  43F9 0001546D            986      LEA solaris, A1      ;it loads string variable solaris (Load Effective Address)in to A1
+00010C42  303C 000E                987      MOVE.W #14, D0   
+00010C46  4E4F                     988      TRAP #15             ;display the string variable solaris
+00010C48  61DA                     989      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010C4A  6100 F4DA                990      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010C4E  2A38 3000                991      MOVE.L $3000, D5     ;moving memory address $3000 where we store carbon level to D5
+00010C52  0445 07D0                992      SUB #2000,D5         ;subtracting literal number 2000 from D5
+00010C56  21C5 3000                993      MOVE.L D5, $3000     ;moving back the carbon level value into the memory location $3000
+00010C5A  2A38 4000                994      MOVE.L $4000, D5     ;moving memory address $4000 where we store money to D5
+00010C5E  0445 0190                995      SUB #400, D5         ;subtracting literal number 400 from D5
+00010C62  21C5 4000                996      MOVE.L D5, $4000     ;moving back the money into the memory location $4000
+00010C66  6100 FE40                997      BSR UPDATE           ;calling the subroutines( UPDATE ) by the instruction BSR (Branch to subroutine)
+00010C6A  6100 005A                998      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010C6E  6100 0012                999      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010C72  6100 F4B2               1000      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010C76  6100 002C               1001      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010C7A  6100 F4AA               1002      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010C7E  6000 F56E               1003      BRA SHOP             ;branch to SHOP
+00010C82                          1004      
+00010C82                          1005  HUD:
+00010C82  223C 0050FB94           1006      MOVE.L #5307284,D1   ;set colour to greenish
+00010C88  103C 0015               1007      MOVE.B #21, D0
+00010C8C  143C 0001               1008      MOVE.B #1,D2         ;change font to bold        
+00010C90  4E4F                    1009      TRAP #15
+00010C92  43F9 0001545C           1010      LEA carbon, A1       ;it loads string variable carbon (Load Effective Address)in to A1
+00010C98  2238 3000               1011      MOVE.L $3000, D1     ;moving memory address $3000 where we store carbon level to D1
+00010C9C  103C 0011               1012      MOVE.B #17, D0       
+00010CA0  4E4F                    1013      TRAP #15             ;it prints string and number
+00010CA2  4E75                    1014      RTS                  ;it returns from Subroutine( HUD )
+00010CA4                          1015      
+00010CA4                          1016  MONEY:
+00010CA4  223C 0013F294           1017      MOVE.L #1307284,D1   ;set colour to blue
+00010CAA  103C 0015               1018      MOVE.B #21, D0       
+00010CAE  143C 0001               1019      MOVE.B #1,D2         ;change font to bold         
+00010CB2  4E4F                    1020      TRAP #15
+00010CB4  43F9 0001544C           1021      LEA coins, A1        ;it loads string variable coins (Load Effective Address)in to A1
+00010CBA  2238 4000               1022      MOVE.L $4000, D1     ;moving memory address $4000 where we store the money to D1
+00010CBE  103C 0011               1023      MOVE.B #17, D0
+00010CC2  4E4F                    1024      TRAP #15             ;it prints string and number
+00010CC4  4E75                    1025      RTS                  ;it returns from Subroutine( MONEY )
+00010CC6                          1026  
+00010CC6                          1027      
+00010CC6                          1028  CLEARSCREEN:
+00010CC6  323C FF00               1029      MOVE.W #$FF00, D1    ;it will clear the screen
+00010CCA  103C 000B               1030      MOVE.B #11, D0
+00010CCE  4E4F                    1031      TRAP #15
+00010CD0  4E75                    1032      RTS                  ;it returns from Subroutine( CLEARSCREEN )
+00010CD2                          1033      
+00010CD2                          1034  WINDO:
+00010CD2  744B                    1035      MOVE.L #WCOST, D2    ;move the equate directive for windmill cost into the D2
+00010CD4  6100 F58A               1036      BSR NOMONEY          ;calling the subroutines( NOMONEY ) by the instruction BSR (Branch to subroutine)
+00010CD8  7200                    1037      MOVE.L #0,D1         ;cleaning D1
+00010CDA  6100 F44A               1038      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010CDE  43F9 00015490           1039      LEA windows, A1      ;it loads string variable windows (Load Effective Address)in to A1
+00010CE4  303C 000E               1040      MOVE.W #14, D0    
+00010CE8  4E4F                    1041      TRAP #15             ;display the string variable windows
+00010CEA  6100 FF38               1042      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010CEE  2A38 3000               1043      MOVE.L $3000, D5     ;moving memory address $3000 where we store the carbon level value to D5
+00010CF2  0445 03E8               1044      SUB #1000,D5         ;subtracting literal number 1000 from D5
+00010CF6  21C5 3000               1045      MOVE.L D5, $3000     ;moving back the carbon level value into the memory location $3000
+00010CFA  2A38 4000               1046      MOVE.L $4000, D5     ;moving memory address $4000 where we store the money to D5
+00010CFE  0445 012C               1047      SUB #300, D5         ;subtracting literal number 300 from D5
+00010D02  21C5 4000               1048      MOVE.L D5, $4000     ;moving back the money into the memory location $4000
+00010D06  6100 FDA0               1049      BSR UPDATE           ;calling the subroutines( UPDATE ) by the instruction BSR (Branch to subroutine)
+00010D0A  61BA                    1050      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010D0C  6100 FF74               1051      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010D10  6100 F414               1052      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D14  618E                    1053      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010D16  6100 F40E               1054      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D1A  6000 F4D2               1055      BRA SHOP             ;branch to SHOP
+00010D1E                          1056  
+00010D1E                          1057      
+00010D1E                          1058  TRELE:
+00010D1E  7432                    1059      MOVE.L #TCOST, D2    ;moving the equate directive of the tree cost into the D2
+00010D20  6100 F53E               1060      BSR NOMONEY          ;calling the subroutines( NOMONEY ) by the instruction BSR (Branch to subroutine)
+00010D24  7200                    1061      MOVE.L #0,D1         ;cleaning D1
+00010D26  6100 F3FE               1062      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D2A  43F9 000154B0           1063      LEA tele, A1         ;it loads string variable tele (Load Effective Address)in to A1
+00010D30  303C 000E               1064      MOVE.W #14, D0  
+00010D34  4E4F                    1065      TRAP #15             ;display the string variable tele
+00010D36  6100 FEEC               1066      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010D3A  2A38 3000               1067      MOVE.L $3000, D5     ;moving memory address $3000 where we store the carbon level value to D5
+00010D3E  0445 01F4               1068      SUB #500,D5          ;subtracting literal number 500 from D5
+00010D42  21C5 3000               1069      MOVE.L D5, $3000     ;moving back the carbon level value into the memory location $3000
+00010D46  2A38 4000               1070      MOVE.L $4000, D5     ;moving memory address $4000 where we store the money to D5
+00010D4A  0445 00C8               1071      SUB #200, D5         ;subtracting literal number 200 from D5
+00010D4E  21C5 4000               1072      MOVE.L D5, $4000     ;moving back the money into the memory location $4000
+00010D52  6100 FD54               1073      BSR UPDATE           ;calling the subroutines( UPDATE ) by the instruction BSR (Branch to subroutine)
+00010D56  6100 FF6E               1074      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010D5A  6100 FF26               1075      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010D5E  6100 F3C6               1076      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D62  6100 FF40               1077      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010D66  6100 F3BE               1078      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D6A  6000 F482               1079      BRA SHOP
+00010D6E                          1080  
+00010D6E                          1081  
+00010D6E                          1082  SPEER:
+00010D6E  243C 00000BB8           1083      MOVE.L #SPCOST, D2   ;moving the equate directive of the spear cost into the D2
+00010D74  6100 F3B0               1084      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D78  6100 F4E6               1085      BSR NOMONEY          ;calling the subroutines( NOMONEY ) by the instruction BSR (Branch to subroutine)
+00010D7C  7200                    1086      MOVE.L #0,D1         ;cleaning D1
+00010D7E  6100 F3A6               1087      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010D82  43F9 00012484           1088      LEA tesla, A1        ;it loads string variable tesla (Load Effective Address)in to A1
+00010D88  303C 000E               1089      MOVE.W #14, D0       
+00010D8C  4E4F                    1090      TRAP #15             ;display the string variable tesla
+00010D8E  6100 FE94               1091      BSR WAIT             ;branch to subroutine WAIT by the instruction BSR (Branch to subroutine)
+00010D92  2A38 4000               1092      MOVE.L $4000, D5     ;moving memory address $4000 where we store the money to D5
+00010D96  0445 0BB8               1093      SUB #SPCOST, D5      ;subtracting spear cost from D5
+00010D9A  21C5 4000               1094      MOVE.L D5, $4000     ;moving back the money into the memory location $4000
+00010D9E  7200                    1095      MOVE.L #0, D1        ;cleaning D1
+00010DA0  123C 0001               1096      MOVE.B #1, D1        ;moving literal number 1 to D1
+00010DA4  11C1 2500               1097      MOVE.B D1, SPEAR     ;moving D1 into the SPEAR  
+00010DA8  6100 FF1C               1098      BSR CLEARSCREEN      ;calling the subroutines( CLEARSCREEN ) by the instruction BSR (Branch to subroutine)
+00010DAC  6100 FED4               1099      BSR HUD              ;calling the subroutines( HUD ) by the instruction BSR (Branch to subroutine)
+00010DB0  6100 F374               1100      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010DB4  6100 FEEE               1101      BSR MONEY            ;calling the subroutines( MONEY ) by the instruction BSR (Branch to subroutine)
+00010DB8  6100 F36C               1102      BSR NEWLINE          ;calling the subroutines( NEWLINE ) by the instruction BSR (Branch to subroutine)
+00010DBC  6000 F430               1103      BRA SHOP             ;branch to SHOP
+00010DC0                          1104  
+00010DC0                          1105  
+00010DC0                          1106  END:
+00010DC0  FFFF FFFF               1107      SIMHALT              ;halt simulator
+00010DC4                          1108      
+00010DC4= 0D 0A 0D 0A             1109  endgame dc.b $0d,$0a,$0d,$0a
+00010DC8= 47 41 4D 45 20 4F ...   1110          dc.b 'GAME OVER',0         ;variable endgame terminated with null '0'
+00010DD2                          1111          
+00010DD2= 0D 0A                   1112  endgame2 dc.b $0d,$0a
+00010DD4= 09 09 09 43 41 52 ...   1113           dc.b $09,$09,$09,'CARBON REDUSED TO ZERO',$0d,$0a
+00010DEF= 09 09 09 59 4F 55 ...   1114           dc.b $09,$09,$09,'YOU WON THE GAME!!!!   ',$0d,$0a,0      ;variable endgame terminated with null '0'        
+00010E0C                          1115          
+00010E0C= 0D 0A                   1116  valid  dc.b $0d,$0a
+00010E0E= 09 09 09 43 6F 6E ...   1117         dc.b $09,$09,$09,'Congratulation you have answered correct',$0d,$0a    ;$0d stand for a new line and $0a move to the left
+00010E3B= 09 09 09 66 6F 72 ...   1118         dc.b $09,$09,$09,'for the question',$0d,$0a  
+00010E50= 09 09 09 09 09 09 ...   1119         dc.b $09,$09,$09,$09,$09,$09,'YOU are rewarded by $1000  ',$0d,$0a,0   ;variable valid terminated with null '0'
+00010E74                          1120         
+00010E74= 0D 0A                   1121  winner dc.b $0d,$0a
+00010E76= 09 09 09 43 6F 6E ...   1122         dc.b $09,$09,$09,'Congratulation you have answered correct',$0d,$0a    ;$0d stand for a new line and $0a move to the left
+00010EA3= 09 09 09 66 6F 72 ...   1123         dc.b $09,$09,$09,'for the last questions',$0d,$0a  
+00010EBE= 09 09 09 09 09 09 ...   1124         dc.b $09,$09,$09,$09,$09,$09,'YOU WON THE PRICE  ',$0d,$0a,0           ;variable winner terminated with null '0'
+00010EDA                          1125   
+00010EDA= 0D 0A                   1126  invalid dc.b $0d,$0a
+00010EDC= 09 09 09 49 20 61 ...   1127          dc.b $09,$09,$09,'I am sorry you have answered wrong',$0d,$0a         ;$0d stand for a new line and $0a move to the left
+00010F03= 09 09 09 66 6F 72 ...   1128          dc.b $09,$09,$09,'for the question',$0d,$0a  
+00010F18= 09 09 09 09 09 09 ...   1129          dc.b $09,$09,$09,$09,$09,$09,'We increased carbon level by 1000  ',$0d,$0a,0  ;variable invalid terminated with null '0'
+00010F44                          1130     
+00010F44= 50 6C 65 61 73 65 ...   1131  text1 dc.b 'Please enter your name ',0    ;variable text1 terminated with null '0'
+00010F5C                          1132  
+00010F5C= 20 20 20 20 20 20 ...   1133  text2 dc.b '          HI ' ,0             ;variable text2 terminated with null '0'
+00010F6A                          1134  
+00010F6A= 20 20 20 2B 2D 2D ...   1135  welcome dc.b '   +------------------------------------------------------------+'     
+00010FAB= 0D 0A                   1136          dc.b  $0d,$0a                                                                ;$0d stand for a new line and $0a move to the left
+00010FAD= 20 20 20 7C 20 20 ...   1137          dc.b '   |                 Welcome to the adventure game!!            |'  
+00010FEE= 0D 0A                   1138          dc.b  $0d,$0a                                                       
+00010FF0= 20 20 20 2B 2D 2D ...   1139          dc.b '   +------------------------------------------------------------+'     ;variable welcome terminated with null '0'
+00011031= 0D 0A 00                1140          dc.b  $0d,$0a, 0 
+00011034                          1141                                                              
+00011034= 20 41 52 45 20 59 ...   1142  welcome2 dc.b ' ARE YOU READY TO JOIN THE PLANET DEFENDERS TEAM '
+00011065= 0D 0A                   1143           dc.b  $0d,$0a                                                               ;$0d stand for a new line and $0a move to the left
+00011067= 20 20 20 20 20 20 ...   1144           dc.b '               AND SAVE THE WORLD FROM GLOBAL WARMING?!!!  '
+000110A2= 0D 0A 00                1145           dc.b  $0d,$0a ,0                                                            ;variable welcome2 terminated with null '0'
+000110A5                          1146           
+000110A5= 50 72 65 73 73 20 ...   1147  enter   dc.b 'Press ENTER to go inside the shop',0       ;variable enter terminated with null '0'
+000110C7                          1148  
+000110C7= 50 72 65 73 73 20 ...   1149  forent  dc.b 'Press ENTER to go inside the forest',0     ;variable forent terminated with null '0'     
+000110EB                          1150  
+000110EB= 20 20 20 20 20 20 ...   1151  earth   dc.b '                                                              '
+00011129= 0D 0A                   1152          dc.b  $0d,$0a                                                           
+0001112B= 20 20 20 20 20 20 ...   1153          dc.b '                                                              '
+00011169= 0D 0A                   1154          dc.b  $0d,$0a                                                       
+0001116B= 20 20 20 20 20 20 ...   1155          dc.b '                         _-o#&&*''''?d:>b\_                   '
+000111A7= 0D 0A                   1156          dc.b  $0d,$0a 
+000111A9= 20 20 20 20 20 20 ...   1157          dc.b '                     _o/"`''  '',, dMF9MMMMMHo_               '
+000111E5= 0D 0A                   1158          dc.b  $0d,$0a
+000111E7= 20 20 20 20 20 20 ...   1159          dc.b '                   .o&#         `"MbHMMMMMMMMMMMHo.           '
+00011225= 0D 0A                   1160          dc.b  $0d,$0a
+00011227= 20 20 20 20 20 20 ...   1161          dc.b '                  .o""           vodM*$&&HMMMMMMMMMM?.        '
+00011265= 0D 0A                   1162          dc.b  $0d,$0a
+00011267= 20 20 20 20 20 20 ...   1163          dc.b '                ,.              $M&ood,~ `(&##MMMMMMH\        '
+000112A5= 0D 0A                   1164          dc.b  $0d,$0a
+000112A7= 20 20 20 20 20 20 ...   1165          dc.b '               /               ,MMMMMMM#b?#bobMMMMHMMML       '
+000112E5= 0D 0A                   1166          dc.b  $0d,$0a
+000112E7= 20 20 20 20 20 20 ...   1167          dc.b '              &              ?MMMMMMMMMMMMMMMMM7MMM$R*Hk      '
+00011325= 0D 0A                   1168          dc.b  $0d,$0a
+00011327= 20 20 20 20 20 20 ...   1169          dc.b '             ?$.            :MMMMMMMMMMMMMMMMMMM/HMMM|`*L     '
+00011365= 0D 0A                   1170          dc.b  $0d,$0a
+00011367= 20 20 20 20 20 20 ...   1171          dc.b '            |               |MMMMMMMMMMMMMMMMMMMMbMH    T,    '
+000113A5= 0D 0A                   1172          dc.b  $0d,$0a
+000113A7= 20 20 20 20 20 20 ...   1173          dc.b '            $H#:            `*MMMMMMMMMMMMMMMMMMMMb#}   `?    '
+000113E5= 0D 0A                   1174          dc.b  $0d,$0a
+000113E7= 20 20 20 20 20 20 ...   1175          dc.b '            ]MMH#             ""*""""*#MMMMMMMMMMMMM     -    '
+00011425= 0D 0A                   1176          dc.b  $0d,$0a
+00011427= 20 20 20 20 20 20 ...   1177          dc.b '            MMMMMb_                   |MMMMMMMMMMMP      :    '
+00011465= 0D 0A                   1178          dc.b  $0d,$0a
+00011467= 20 20 20 20 20 20 ...   1179          dc.b '            HMMMMMMMHo                 `MMMMMMMMMT       .    '
+000114A5= 0D 0A                   1180          dc.b  $0d,$0a
+000114A7= 20 20 20 20 20 20 ...   1181          dc.b '            ?MMMMMMMMP                  9MMMMMMMM}       -    '
+000114E5= 0D 0A                   1182          dc.b  $0d,$0a
+000114E7= 20 20 20 20 20 20 ...   1183          dc.b '            -?MMMMMMM                  |MMMMMMMMM?,d-    '    '
+00011520= 0D 0A                   1184          dc.b  $0d,$0a
+00011522= 20 20 20 20 20 20 ...   1185          dc.b '            :|MMMMMM-                 `MMMMMMMT .M|.   :      ' 
+00011560= 0D 0A                   1186          dc.b  $0d,$0a
+00011562= 20 20 20 20 20 20 ...   1187          dc.b '             .9MMM[                    &MMMMM*  `     /       '
+000115A0= 0D 0A                   1188          dc.b  $0d,$0a
+000115A2= 20 20 20 20 20 20 ...   1189          dc.b '              :9MMk                    `MMM#"        -        '
+000115E0= 0D 0A                   1190          dc.b  $0d,$0a
+000115E2= 20 20 20 20 20 20 ...   1191          dc.b '                 &M}                     `          .-        '
+00011620= 0D 0A                   1192          dc.b  $0d,$0a
+00011622= 20 20 20 20 20 20 ...   1193          dc.b '                  `&.                             .           '
+00011660= 0D 0A                   1194          dc.b  $0d,$0a
+00011662= 20 20 20 20 20 20 ...   1195          dc.b '                    `~,   .                     ./            '
+000116A0= 0D 0A                   1196          dc.b  $0d,$0a
+000116A2= 20 20 20 20 20 20 ...   1197          dc.b '                        . _                  .-               '
+000116E0= 0D 0A                   1198          dc.b  $0d,$0a
+000116E2= 20 20 20 20 20 20 ...   1199          dc.b '                           `--._,dd###pp=""                   '
+00011720= 0D 0A                   1200          dc.b  $0d,$0a                                                       
+00011722= 0D 0A 00                1201          dc.b  $0d,$0a, 0                                                      ;variable earth terminated with null '0'
+00011725                          1202                                                                                ;REFERENCES: https://www.asciiart.eu/space/planets
+00011725                          1203          
+00011725                          1204          
+00011725                          1205          
+00011725= 20 20 20 20 20 20 ...   1206  snoop   dc.b '                                                              '
+00011763= 0D 0A                   1207          dc.b  $0d,$0a
+00011765= 20 20 20 20 20 20 ...   1208          dc.b '                                 .----.                       '
+000117A3= 0D 0A                   1209          dc.b  $0d,$0a
+000117A5= 20 20 20 20 20 20 ...   1210          dc.b '                                 |-.-.|                       '
+000117E3= 0D 0A                   1211          dc.b  $0d,$0a                                 
+000117E5= 20 20 20 20 20 20 ...   1212          dc.b '               __________________|;-;-|__                     '
+00011823= 0D 0A                   1213          dc.b  $0d,$0a               
+00011825= 20 20 20 20 20 20 ...   1214          dc.b '             ."                  "----"  ".                   '
+00011863= 0D 0A                   1215          dc.b  $0d,$0a             
+00011865= 20 20 20 20 20 20 ...   1216          dc.b '             . """""""""""""""""""""""""""" .                 '
+000118A3= 0D 0A                   1217          dc.b  $0d,$0a             
+000118A5= 20 20 20 20 20 20 ...   1218          dc.b '           .   ."""""".   .--""""""""""-,   .                 '
+000118E3= 0D 0A                   1219          dc.b  $0d,$0a           
+000118E5= 20 20 20 20 20 20 ...   1220          dc.b '             . """.       """  .--"""""--.. """ .             '
+00011923= 0D 0A                   1221          dc.b  $0d,$0a             
+00011925= 20 20 20 20 20 20 ...   1222          dc.b '            .""""""-"""""-  .-"   |"|"|   ."""""".            '
+00011963= 0D 0A                   1223          dc.b  $0d,$0a            
+00011965= 20 20 20 20 20 20 ...   1224          dc.b '         .   ."".".     ."      |"|"|    .      .             '
+000119A3= 0D 0A                   1225          dc.b  $0d,$0a         
+000119A5= 20 20 20 20 20 20 ...   1226          dc.b '          "._( ()   \""".  _     _"""  _   .____."            '
+000119E3= 0D 0A                   1227          dc.b  $0d,$0a          
+000119E5= 20 20 20 20 20 20 ...   1228          dc.b '            |.".  ()"   " --------------------.|              '
+00011A23= 0D 0A                   1229          dc.b  $0d,$0a           
+00011A25= 20 20 20 20 20 20 ...   1230          dc.b '            ||  "--"""""""          |         ||              '
+00011A63= 0D 0A                   1231          dc.b  $0d,$0a            
+00011A65= 20 20 20 20 20 20 ...   1232          dc.b '            ||    ".------"     |""|""|""|    ||              '
+00011AA3= 0D 0A                   1233          dc.b  $0d,$0a            
+00011AA5= 20 20 20 20 20 20 ...   1234          dc.b '            ||     |.-.-.||-----|--|--|--|----||              '
+00011AE3= 0D 0A                   1235          dc.b  $0d,$0a            
+00011AE5= 20 20 20 20 20 20 ...   1236          dc.b '            ||     || | |||     |__|_-"-_|    ||              '
+00011B23= 0D 0A                   1237          dc.b  $0d,$0a            
+00011B25= 20 20 20 20 20 20 ...   1238          dc.b '            ||     ||_|_|||    .-"-" ()  ".   ||              '
+00011B63= 0D 0A                   1239          dc.b  $0d,$0a            
+00011B65= 20 20 20 20 20 20 ...   1240          dc.b '            || .--.| [-] ||   ." ()     () .  ||              '
+00011BA3= 0D 0A                   1241          dc.b  $0d,$0a            
+00011BA5= 20 20 20 20 20 20 ...   1242          dc.b '            | "    |     ||-------------------||              ' 
+00011BE3= 20 20 20 20 20 20 ...   1243          dc.b '                                                              '                                                      
+00011C21= 0D 0A                   1244          dc.b  $0d,$0a                                                            
+00011C23= 0D 0A 00                1245          dc.b  $0d,$0a, 0                                                            ;variable snoop terminated with null '0'
+00011C26                          1246                                                                                      ;REFERENCES https://asciiart.cc/view/11654
+00011C26                          1247  
+00011C26= 09 20 20 20 20 20 ...   1248  TREES   dc.b $09,'                                                                       ',$0A,$0D
+00011C70= 09 09 20 20 20 20 ...   1249          dc.b $09,'                                                                       ',$0A,$0D
+00011CA8= 09 20 20 20 20 36 ...   1250          dc.b $09,'    69696969696             69696969696             69696969696        ',$0A,$0D
+00011CF2= 09 20 20 36 39 36 ...   1251          dc.b $09,'  696969969696969         696969969696969         696969969696969      ',$0A,$0D
+00011D3C= 09 20 39 36 39 36 ...   1252          dc.b $09,' 969696969696696969     9696969696966969696     9696969696966969696    ',$0A,$0D
+00011D86= 09 39 36 39 36 39 ...   1253          dc.b $09,'96969696966696969696    96969696966696969696    96969696966696969696   ',$0A,$0D
+00011DD0= 09 39 36 39 36 39 ...   1254          dc.b $09,'969696969669696969696  696969696696969696966   696969696696969696966   ',$0A,$0D
+00011E1A= 09 36 39 36 39 36 ...   1255          dc.b $09,'696969696969696969696  969696969696969696969   969696969696969696969   ',$0A,$0D
+00011E64= 09 20 36 39 36 39 ...   1256          dc.b $09,' 6969696969696969696    69696969696969696969    69696969696969696969   ',$0A,$0D
+00011EAE= 09 20 20 36 39 36 ...   1257          dc.b $09,'  6969696966696969        6969696966696969        6969696966696969     ',$0A,$0D
+00011EF8= 09 20 20 20 20 39 ...   1258          dc.b $09,'    9696969969696           9696969969696           9696969969696      ',$0A,$0D
+00011F42= 09 20 20 20 20 20 ...   1259          dc.b $09,'       96969696                96969696                96969696        ',$0A,$0D
+00011F8C= 09 20 20 20 20 20 ...   1260          dc.b $09,'         96                      96                      96            ',$0A,$0D
+00011FD6= 09 20 20 20 20 20 ...   1261          dc.b $09,'         69                      69                      69            ',$0A,$0D
+00012020= 09 20 20 20 20 20 ...   1262          dc.b $09,'        6969                    6969                    6969           ',$0A,$0D,0    ;variable TREES terminated with null '0'
+0001206B                          1263                                                                                                          ;REFERENCES https://textart.io/art/tag/tree/1
+0001206B                          1264                                               
+0001206B                          1265  
+0001206B= 09 20 20 20 20 20 ...   1266  wizz   dc.b $09,'                  . * *.                    ',$0A,$0D
+0001209A= 09 20 20 20 20 20 ...   1267         dc.b $09,'                __/_*_*(_                   ',$0A,$0D
+000120C9= 09 20 20 20 20 20 ...   1268         dc.b $09,'               / _______ \                  ',$0A,$0D
+000120F8= 09 20 20 20 20 20 ...   1269         dc.b $09,'              _\_)/___\(_/_                 ',$0A,$0D
+00012127= 09 20 20 20 20 20 ...   1270         dc.b $09,'             / _((\- -/))_ \                ',$0A,$0D
+00012156= 09 20 20 20 20 20 ...   1271         dc.b $09,'             \ \())(-)(()/ /                ',$0A,$0D
+00012185= 09 20 20 20 20 20 ...   1272         dc.b $09,'              |  \(((()))/ |                ',$0A,$0D
+000121B4= 09 20 20 20 20 20 ...   1273         dc.b $09,'             /   \)).))/   \                ',$0A,$0D
+000121E3= 09 20 20 20 20 20 ...   1274         dc.b $09,'            / _ \ - | - /_  \               ',$0A,$0D
+00012212= 09 20 20 20 20 20 ...   1275         dc.b $09,'           (   ( .;   ;. .   )              ',$0A,$0D
+00012241= 09 20 20 20 20 20 ...   1276         dc.b $09,'           _\ __ /    )\ __ /_              ',$0A,$0D
+00012270= 09 20 20 20 20 20 ...   1277         dc.b $09,'             \/  \     /  \/                ',$0A,$0D
+0001229F= 09 20 20 20 20 20 ...   1278         dc.b $09,'             ( .    ...   )                 ',$0A,$0D
+000122CE= 09 20 20 20 20 20 ...   1279         dc.b $09,'               / /  |  \ \                  ',$0A,$0D
+000122FD= 09 20 20 20 20 20 ...   1280         dc.b $09,'              / .   .   . \                 ',$0A,$0D
+0001232C= 09 20 20 20 20 20 ...   1281         dc.b $09,'             /   .     .   \                ',$0A,$0D
+0001235B= 09 20 20 20 20 20 ...   1282         dc.b $09,'            /   /   |   \   \               ',$0A,$0D
+0001238A= 09 20 20 20 20 20 ...   1283         dc.b $09,'           .|   /    .     .   .            ',$0A,$0D
+000123B9= 09 20 20 20 20 20 ...   1284         dc.b $09,'       _.-|    /     |     -. -._           ',$0A,$0D
+000123E8= 09 20 20 20 20 20 ...   1285         dc.b $09,'     _.-|       |    |       |-.  |-.       ',$0A,$0D
+00012417= 09 20 20 20 28 5F ...   1286         dc.b $09,'   (___________\____.___.________)____)     ',$0A,$0D,0            ;variable wizz terminated with null '0'
+00012447                          1287                                                                                      ;REFERENCES https://www.asciiart.eu/people/occupations/wizards
+00012447                          1288  
+00012447                          1289  
+00012447= 0D 0A                   1290  FOUNDS dc.b $0d,$0a                                    
+00012449= 59 6F 75 20 68 61 ...   1291         dc.b 'You have insuficient money',$0d,$0a,0      ;variable FOUNDS terminated with null '0'
+00012466                          1292         
+00012466= 0D 0A                   1293  FOUNDS2 dc.b $0d,$0a                                    
+00012468= 59 6F 75 20 64 6F ...   1294          dc.b 'You do not have any money',$0d,$0a,0      ;variable FOUNDS2 terminated with null '0'       
+00012484                          1295                                                                                      
+00012484= 0D 0A                   1296  tesla dc.b $0d,$0a
+00012486= 59 6F 75 20 68 61 ...   1297        dc.b 'You have bought the speer of destiny',$0d,$0a,0     ;variable tesla terminated with null '0'
+000124AD                          1298                                                                                          
+000124AD                          1299  
+000124AD= 0D 0A 0D 0A 0D 0A       1300  Question1 dc.b  $0d,$0a,$0d,$0a,$0d,$0a       
+000124B3= 51 55 45 53 54 49 ...   1301            dc.b 'QUESTION 1',$0d,$0a
+000124BF= 57 68 61 74 20 65 ...   1302            dc.b 'What effects does climate change on rainfall?',$0d,$0a,$0d,$0a   
+000124F0= 5B 50 72 65 73 73 ...   1303            dc.b '[Press 1]  The rain that falls is warmer'
+00012518= 0D 0A                   1304            dc.b  $0d,$0a
+0001251A= 0D 0A                   1305            dc.b  $0d,$0a
+0001251C= 5B 50 72 65 73 73 ...   1306            dc.b '[Press 2]  In some places rainfall is increased and in others it is decreased'
+00012569= 0D 0A                   1307            dc.b  $0d,$0a
+0001256B= 0D 0A                   1308            dc.b  $0d,$0a
+0001256D= 5B 50 72 65 73 73 ...   1309            dc.b '[Press 3]  None'
+0001257C= 0D 0A                   1310            dc.b  $0d,$0a
+0001257E= 0D 0A                   1311            dc.b  $0d,$0a
+00012580= 5B 50 72 65 73 73 ...   1312            dc.b '[Press 4]  There is more rainfall everywhere '
+000125AD= 0D 0A 00                1313            dc.b  $0d,$0a,0                                                           ;variable Question1 terminated with null '0'
+000125B0                          1314                                                                                      
+000125B0                          1315  
+000125B0= 0D 0A 0D 0A 0D 0A       1316  Question2 dc.b  $0d,$0a,$0d,$0a,$0d,$0a 
+000125B6= 51 55 45 53 54 49 ...   1317            dc.b 'QUESTION 2',$0d,$0a
+000125C2= 49 72 65 6C 61 6E ...   1318            dc.b 'Ireland is the sixth most generous aid donor per person in the OECD.',$0d,$0a
+00012608= 57 68 65 72 65 20 ...   1319            dc.b 'Where do we come in the OECD rankings of greenhouse gas pollution per person?',$0d,$0a,$0d,$0a       
+00012659= 5B 50 72 65 73 73 ...   1320            dc.b '[Press 1]  17th'
+00012668= 0D 0A                   1321            dc.b  $0d,$0a
+0001266A= 0D 0A                   1322            dc.b  $0d,$0a
+0001266C= 5B 50 72 65 73 73 ...   1323            dc.b '[Press 2]  6th'
+0001267A= 0D 0A                   1324            dc.b  $0d,$0a
+0001267C= 0D 0A                   1325            dc.b  $0d,$0a
+0001267E= 5B 50 72 65 73 73 ...   1326            dc.b '[Press 3]  9th'
+0001268C= 0D 0A                   1327            dc.b  $0d,$0a
+0001268E= 0D 0A                   1328            dc.b  $0d,$0a
+00012690= 5B 50 72 65 73 73 ...   1329            dc.b '[Press 4]  20th'
+0001269F= 0D 0A 00                1330            dc.b  $0d,$0a,0                            ;variable Question2 terminated with null '0'
+000126A2                          1331  
+000126A2                          1332            
+000126A2= 0D 0A 0D 0A 0D 0A       1333  Question3 dc.b  $0d,$0a,$0d,$0a,$0d,$0a 
+000126A8= 51 55 45 53 54 49 ...   1334            dc.b 'QUESTION 3',$0d,$0a
+000126B4= 48 6F 77 20 63 61 ...   1335            dc.b 'How can less rainfall cause famine in Africa?',$0d,$0a,$0d,$0a   
+000126E5= 5B 50 72 65 73 73 ...   1336            dc.b '[Press 1]  It doesn’t'
+000126FA= 0D 0A                   1337            dc.b  $0d,$0a
+000126FC= 0D 0A                   1338            dc.b  $0d,$0a
+000126FE= 5B 50 72 65 73 73 ...   1339            dc.b '[Press 2]  Many local farmers depend on rain-fed agriculture'
+0001273A= 0D 0A                   1340            dc.b  $0d,$0a
+0001273C= 0D 0A                   1341            dc.b  $0d,$0a
+0001273E= 5B 50 72 65 73 73 ...   1342            dc.b '[Press 3]  Less weeds can grow'
+0001275C= 0D 0A                   1343            dc.b  $0d,$0a
+0001275E= 0D 0A                   1344            dc.b  $0d,$0a
+00012760= 5B 50 72 65 73 73 ...   1345            dc.b '[Press 4]  It causes wells to overflow '
+00012787= 0D 0A 00                1346            dc.b  $0d,$0a,0                                 ;variable Question3 terminated with null '0'
+0001278A                          1347  
+0001278A                          1348            
+0001278A= 0D 0A 0D 0A 0D 0A       1349  Question4 dc.b  $0d,$0a,$0d,$0a,$0d,$0a 
+00012790= 51 55 45 53 54 49 ...   1350            dc.b 'QUESTION 4',$0d,$0a
+0001279C= 57 68 79 20 69 73 ...   1351            dc.b 'Why is climate change a cause for concern in Ireland?',$0d,$0a,$0d,$0a   
+000127D5= 5B 50 72 65 73 73 ...   1352            dc.b '[Press 1]  We are likely to run out of ice cream'
+00012805= 0D 0A                   1353            dc.b  $0d,$0a
+00012807= 0D 0A                   1354            dc.b  $0d,$0a
+00012809= 5B 50 72 65 73 73 ...   1355            dc.b '[Press 2]  There will be more unpredictable flooding events and possibilities'
+00012856= 20 20 20 20 20 20 ...   1356            dc.b '           of drought in the east in summer'
+00012881= 0D 0A                   1357            dc.b  $0d,$0a
+00012883= 0D 0A                   1358            dc.b  $0d,$0a
+00012885= 5B 50 72 65 73 73 ...   1359            dc.b '[Press 3]  It is no cause for concern'
+000128AA= 0D 0A                   1360            dc.b  $0d,$0a
+000128AC= 0D 0A                   1361            dc.b  $0d,$0a
+000128AE= 5B 50 72 65 73 73 ...   1362            dc.b '[Press 4]  We won’t be able to grow any food anymore'
+000128E2= 0D 0A 00                1363            dc.b  $0d,$0a,0                                ;variable Question4 terminated with null '0'
+000128E5                          1364  
+000128E5                          1365  
+000128E5= 0D 0A 0D 0A 0D 0A       1366  Question5 dc.b  $0d,$0a,$0d,$0a,$0d,$0a 
+000128EB= 51 55 45 53 54 49 ...   1367            dc.b 'QUESTION 5',$0d,$0a
+000128F7= 57 68 69 63 68 20 ...   1368            dc.b 'Which of these gases does not contribute to the greenhouse effect?',$0d,$0a,$0d,$0a   
+0001293D= 5B 50 72 65 73 73 ...   1369            dc.b '[Press 1]  Water vapour'
+00012954= 0D 0A                   1370            dc.b  $0d,$0a
+00012956= 0D 0A                   1371            dc.b  $0d,$0a
+00012958= 5B 50 72 65 73 73 ...   1372            dc.b '[Press 2]  Oxygen'
+00012969= 0D 0A                   1373            dc.b  $0d,$0a
+0001296B= 0D 0A                   1374            dc.b  $0d,$0a
+0001296D= 5B 50 72 65 73 73 ...   1375            dc.b '[Press 3]  Carbon dioxide'
+00012986= 0D 0A                   1376            dc.b  $0d,$0a
+00012988= 0D 0A                   1377            dc.b  $0d,$0a
+0001298A= 5B 50 72 65 73 73 ...   1378            dc.b '[Press 4]  Methane '
+0001299D= 0D 0A 00                1379            dc.b  $0d,$0a,0                                   ;variable Question5 terminated with null '0'
+000129A0                          1380  
+000129A0                          1381      
+000129A0                          1382          
+000129A0= 54 48 45 20 43 41 ...   1383  text3 dc.b 'THE CARBON TOTAL : ', 0                         ;variable text3 terminated with null '0'
+000129B4                          1384  
+000129B4= 50 52 45 53 53 20 ...   1385  text4 dc.b 'PRESS ENTER TO START THE GAME ', 0              ;variable text4 terminated with null '0'
+000129D3                          1386  
+000129D3= 54 48 45 20 4D 4F ...   1387  text5 dc.b 'THE MONEY TOTAL : ', 0                          ;variable text5 terminated with null '0'
+000129E6                          1388  
+000129E6= 50 4C 45 41 53 45 ...   1389  text6 dc.b 'PLEASE ENTER C TO CONTINUE ', 0                 ;variable text6 terminated with null '0'
+00012A02                          1390  
+00012A02= 50 52 45 53 53 20 ...   1391  text7 dc.b 'PRESS F FOR FOREST OR S FOR SHOOP ' ,0          ;variable text7 terminated with null '0'
+00012A25                          1392  
+00012A25= 59 4F 55 20 41 52 ...   1393  text8 dc.b 'YOU ARE STARTING GAME WITH: ',0                 ;variable text8 terminated with null '0'
+00012A42                          1394  
+00012A42= 44 72 61 67 6F 6E 00    1395  dragon dc.b 'Dragon', 0                                     ;variable dragon terminated with null '0'
+00012A49                          1396  
+00012A49= 57 69 7A 61 72 64 00    1397  wizard dc.b 'Wizard', 0                                     ;variable wizard terminated with null '0'
+00012A50                          1398  
+00012A50= 54 68 65 20 61 69 ...   1399  description dc.b 'The aim for this game is to reduce '
+00012A73= 0D 0A                   1400              dc.b  $0d,$0a 
+00012A75= 74 68 65 20 61 6D ...   1401              dc.b 'the amount of the carbon on the earth to prevent '
+00012AA6= 0D 0A                   1402              dc.b  $0d,$0a 
+00012AA8= 54 48 45 20 47 4C ...   1403              dc.b 'THE GLOBAL WARMING'
+00012ABA= 0D 0A 00                1404              dc.b  $0d,$0a, 0                                ;variable description terminated with null '0'
+00012ABD                          1405              
+00012ABD= 54 6F 20 72 65 64 ...   1406  description2 dc.b 'To reduce the carbon level we can buy some items from the shop.'
+00012AFC= 0D 0A                   1407               dc.b  $0d,$0a
+00012AFE= 53 4F 4C 41 52 20 ...   1408               dc.b 'SOLAR PANELS'
+00012B0A= 0D 0A                   1409               dc.b  $0d,$0a
+00012B0C= 57 49 4E 44 4D 49 ...   1410               dc.b 'WINDMILLS'
+00012B15= 0D 0A                   1411               dc.b  $0d,$0a
+00012B17= 54 52 45 45 53          1412               dc.b 'TREES'
+00012B1C= 0D 0A                   1413               dc.b  $0d,$0a
+00012B1E= 57 65 20 63 61 6E ...   1414               dc.b 'We can also play against some characters '
+00012B47= 61 74 20 74 68 65 ...   1415               dc.b 'at the game and win the price'
+00012B64= 0D 0A 00                1416               dc.b  $0d,$0a, 0                                ;variable description2 terminated with null '0'
+00012B67                          1417  
+00012B67= 24 24 24 24 24 24 ...   1418  soop dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'  
+00012B99= 0D 0A                   1419       dc.b  $0d,$0a 
+00012B9B= 20 20 20 20 20 20 ...   1420       dc.b '                                                  '
+00012BCD= 0D 0A                   1421       dc.b  $0d,$0a
+00012BCF= 20 20 20 20 20 20 ...   1422       dc.b '                                                  '     
+00012C01= 0D 0A                   1423       dc.b  $0d,$0a         
+00012C03= 20 20 20 20 20 20 ...   1424       dc.b '      $$$$$$\  $$\   $$\  $$$$$$\  $$$$$$$\       '
+00012C35= 0D 0A                   1425       dc.b  $0d,$0a
+00012C37= 20 20 20 20 20 20 ...   1426       dc.b '      $$  __$$\ $$ |  $$ |$$  __$$\ $$  __$$\     '
+00012C69= 0D 0A                   1427       dc.b  $0d,$0a
+00012C6B= 20 20 20 20 20 20 ...   1428       dc.b '      $$ /  \__|$$ |  $$ |$$ /  $$ |$$ |  $$ |    '
+00012C9D= 0D 0A                   1429       dc.b  $0d,$0a
+00012C9F= 20 20 20 20 20 20 ...   1430       dc.b '      \$$$$$$\  $$$$$$$$ |$$ |  $$ |$$$$$$$  |    '
+00012CD1= 0D 0A                   1431       dc.b  $0d,$0a
+00012CD3= 20 20 20 20 20 20 ...   1432       dc.b '      \____$$\ $$  __$$ |$$ |  $$ |$$  ____/      '
+00012D05= 0D 0A                   1433       dc.b  $0d,$0a
+00012D07= 20 20 20 20 20 20 ...   1434       dc.b '      $$\   $$ |$$ |  $$ |$$ |  $$ |$$ |          '
+00012D39= 0D 0A                   1435       dc.b  $0d,$0a
+00012D3B= 20 20 20 20 20 20 ...   1436       dc.b '      \$$$$$$  |$$ |  $$ | $$$$$$  |$$ |          '
+00012D6D= 0D 0A                   1437       dc.b  $0d,$0a
+00012D6F= 20 20 20 20 20 20 ...   1438       dc.b '      \______/ \__|  \__| \______/ \__|           '
+00012DA1= 0D 0A                   1439       dc.b  $0d,$0a
+00012DA3= 20 20 20 20 20 20 ...   1440       dc.b '                                                  '
+00012DD5= 0D 0A                   1441       dc.b  $0d,$0a
+00012DD7= 20 20 20 20 20 20 ...   1442       dc.b '                                                  '
+00012E09= 0D 0A                   1443       dc.b  $0d,$0a
+00012E0B= 24 24 24 24 24 24 ...   1444       dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'                                         
+00012E3D= 0D 0A 00                1445       dc.b  $0d,$0a, 0                                             ;variable soop terminated with null '0'
+00012E40                          1446                                                                    ;REFERENCES https://patorjk.com/software/taag/#p=testall&f=Graffiti&t=Shop
+00012E40                          1447   
+00012E40= 24 24 24 24 24 24 ...   1448  foorest dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$' 
+00012E88= 0D 0A                   1449          dc.b  $0d,$0a 
+00012E8A= 20 20 20 20 20 20 ...   1450          dc.b '                                                                        '
+00012ED2= 0D 0A                   1451          dc.b  $0d,$0a
+00012ED4= 20 20 20 20 20 20 ...   1452          dc.b '                                                                        '     
+00012F1C= 0D 0A                   1453          dc.b  $0d,$0a          
+00012F1E= 38 38 38 38 38 38 ...   1454          dc.b        '8888888888 .d88888b.  8888888b.  8888888888 .d8888b. 88888888888 '
+00012F5F= 0D 0A                   1455          dc.b  $0d,$0a 
+00012F61= 38 38 38 20 20 20 ...   1456          dc.b        '888       d88P" "Y88b 888   Y88b 888       d88P  Y88b    888     '
+00012FA2= 0D 0A                   1457          dc.b  $0d,$0a 
+00012FA4= 38 38 38 20 20 20 ...   1458          dc.b        '888       888     888 888    888 888       Y88b.         888     '
+00012FE5= 0D 0A                   1459          dc.b  $0d,$0a
+00012FE7= 38 38 38 38 38 38 ...   1460          dc.b        '8888888   888     888 888   d88P 8888888    "Y888b.      888     '
+00013028= 0D 0A                   1461          dc.b  $0d,$0a
+0001302A= 38 38 38 20 20 20 ...   1462          dc.b        '888       888     888 8888888P"  888           "Y88b.    888     '
+0001306B= 0D 0A                   1463          dc.b  $0d,$0a
+0001306D= 38 38 38 20 20 20 ...   1464          dc.b        '888       888     888 888 T88b   888             "888    888     '
+000130AE= 0D 0A                   1465          dc.b  $0d,$0a
+000130B0= 38 38 38 20 20 20 ...   1466          dc.b        '888       Y88b. .d88P 888  T88b  888       Y88b  d88P    888     '
+000130F1= 0D 0A                   1467          dc.b  $0d,$0a
+000130F3= 38 38 38 20 20 20 ...   1468          dc.b        '888        "Y88888P"  888   T88b 8888888888 "Y8888P"     888     '
+00013134= 0D 0A                   1469          dc.b  $0d,$0a
+00013136= 20 20 20 20 20 20 ...   1470          dc.b '                                                                        '
+0001317E= 0D 0A                   1471          dc.b  $0d,$0a
+00013180= 20 20 20 20 20 20 ...   1472          dc.b '                                                                        '
+000131C8= 0D 0A                   1473          dc.b  $0d,$0a
+000131CA= 24 24 24 24 24 24 ...   1474          dc.b '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'                                         
+00013212= 0D 0A 00                1475          dc.b  $0d,$0a, 0                                                            ;variable foorest terminated with null '0'
+00013215                          1476                                                                                      ;REFERENCES https://patorjk.com/software/taag/#p=testall&f=Graffiti&t=FOREST
+00013215                          1477  
+00013215                          1478  
+00013215= 0D 0A                   1479  handy      dc.b  $0d,$0a
+00013217= 09 09 09 59 6F 75 ...   1480             dc.b $09,$09,$09,'You strike the dragon with your bare hands.                  ',$0d,$0a 
+00013259= 09 09 09 54 68 65 ...   1481             dc.b $09,$09,$09,'The angry dragon hits you with its tail, tearing apart       ',$0d,$0a 
+0001329B= 09 09 09 74 68 65 ...   1482             dc.b $09,$09,$09,'the contents of your sack. You lose some of your money($100) ',$0d,$0a 
+000132DD= 09 09 09 61 6E 64 ...   1483             dc.b $09,$09,$09,'and the dragon flies away.                                   ',$0d,$0a,0  ;variable handy terminated with null '0'
+00013320                          1484                                                                                      
+00013320                          1485   
+00013320= 20 20 20 20 20 20 ...   1486  handy2 dc.b '                        _______________________                                ',$0A,$0D
+00013371= 20 20 20 20 20 20 ...   1487         dc.b '                       /                      /                                ',$0A,$0D
+000133C2= 20 20 20 20 20 20 ...   1488         dc.b '                       | DON NOT TURN BACK    |                                ',$0A,$0D
+00013413= 20 20 20 20 20 20 ...   1489         dc.b '               //////  | FROM ME!! YOU COWARD!|  ____               ____       ',$0A,$0D
+00013464= 20 20 20 20 20 20 ...   1490         dc.b '               |  # o  | I DARE YOU DRAGON !!!| |    *****\_      --/ *\-__    ',$0A,$0D
+000134B5= 20 20 20 20 20 20 ...   1491         dc.b '               C   - | /_____________________/ /_          (_    ./ ,/----     ',$0A,$0D
+00013506= 20 20 20 5F 5F 20 ...   1492         dc.b '   __          I  =__        ___               \__         (_./  /             ',$0A,$0D
+00013557= 28 60 20 5F 20 5C ...   1493         dc.b '(` _ \_       |   |        _/   )                 \__           \___----^__    ',$0A,$0D
+000135A8= 20 20 5C 20 20 28 ...   1494         dc.b '  \  (__\  ,---- _ |----.  /__)- |                   _/   _                 \  ',$0A,$0D
+000135F9= 20 20 20 5C 5F 5F ...   1495         dc.b '   \__  ( (           /  ) )  __/             |    _/  __/ )\"\ _____        | ',$0A,$0D
+0001364A= 20 20 20 20 20 7C ...   1496         dc.b '     |_X_\/ \.   #  _.|  \/_X_|               |\__/   /    ^ ^       \____   | ',$0A,$0D
+0001369B= 20 20 20 20 20 20 ...   1497         dc.b '       |  \ /(   /    /\ /  |                  \___--"                    \_/  ',$0A,$0D
+000136EC= 20 20 20 20 20 20 ...   1498         dc.b '        \ /  (  ,    /  \ _/                                                   ',$0A,$0D
+0001373D= 20 20 20 20 20 20 ...   1499         dc.b '             /______/                                                          ',$0A,$0D
+0001378E= 20 20 20 20 20 20 ...   1500         dc.b '            [:::::::]                                                          ',$0A,$0D
+000137DF= 20 20 20 20 20 20 ...   1501         dc.b '           /*%*%*%*%*\                                                         ',$0A,$0D
+00013830= 20 20 20 20 20 20 ...   1502         dc.b '           >%*%#%*%*%|                                                         ',$0A,$0D
+00013881= 20 20 20 20 20 20 ...   1503         dc.b '          /%*%*#*%*%*\                                                         ',$0A,$0D
+000138D2= 20 20 20 20 20 20 ...   1504         dc.b '         ######^######£                                                        ',$0A,$0D,0   ;variable handy2 terminated with null '0'
+00013924                          1505                                                                                                            ;REFERENCES https://ascii.co.uk/art/boxer
+00013924                          1506                                                                                                            ;REFERENCES https://www.asciiart.eu/mythology/dragons
+00013924                          1507  
+00013924                          1508                                                        
+00013924= 49 6E 20 74 68 65 ...   1509  foorest2 dc.b 'In the forest you have to choose between right and left path '  
+00013961= 0D 0A                   1510           dc.b  $0d,$0a       
+00013963= 0D 0A                   1511           dc.b  $0d,$0a
+00013965= 50 72 65 73 73 20 ...   1512           dc.b 'Press L to go by left path '
+00013980= 0D 0A                   1513           dc.b  $0d,$0a
+00013982= 0D 0A                   1514           dc.b  $0d,$0a
+00013984= 50 72 65 73 73 20 ...   1515           dc.b 'Press R to go by right path '
+000139A0= 0D 0A                   1516           dc.b  $0d,$0a
+000139A2= 0D 0A                   1517           dc.b  $0d,$0a
+000139A4= 50 72 65 73 73 20 ...   1518           dc.b 'Press E to exit'
+000139B3= 0D 0A                   1519           dc.b  $0d,$0a
+000139B5= 0D 0A 00                1520           dc.b  $0d,$0a, 0                         ;variable foorest2 terminated with null '0'
+000139B8                          1521                                                                                      
+000139B8                          1522           
+000139B8= 0D 0A                   1523  wiztalk dc.b  $0d,$0a
+000139BA= 49 20 63 61 6E 20 ...   1524          dc.b 'I can reward you with $1000 dolars price  '
+000139E4= 0D 0A                   1525          dc.b  $0d,$0a
+000139E6= 69 66 20 79 6F 75 ...   1526          dc.b 'if you answer one of my questions         '
+00013A10= 0D 0A 00                1527          dc.b  $0d,$0a,0                           ;variable wiztalk terminated with null '0'
+00013A13                          1528  
+00013A13                          1529  
+00013A13= 0D 0A                   1530  dragondead dc.b $0d,$0a
+00013A15= 09 09 09 43 6F 6E ...   1531             dc.b $09,$09,$09,'Congratulation you have terminated the dragon',$0d,$0a
+00013A47= 09 09 09 54 68 65 ...   1532             dc.b $09,$09,$09,'The planet is safe now from the global warming',$0d,$0a  
+00013A7A= 09 09 09 09 09 09 ...   1533             dc.b $09,$09,$09,$09,$09,$09,'YOU WON THE GAME  ',$0d,$0a,0              ;variable dragondead terminated with null '0'
+00013A95                          1534             
+00013A95                          1535            
+00013A95= 09 09 09 09 20 20 ...   1536  xxxripxx  dc.b $09,$09,'                                                                 ',$0A,$0D
+00013AD4= 09 09 20 20 20 20 ...   1537            dc.b $09,$09,'                       ____________                              ',$0A,$0D
+00013B19= 09 09 20 20 20 20 ...   1538            dc.b $09,$09,'                       >          (                              ',$0A,$0D
+00013B5E= 09 09 20 20 20 20 ...   1539            dc.b $09,$09,'                      |   _     _  |                             ',$0A,$0D
+00013BA3= 09 09 20 20 20 20 ...   1540            dc.b $09,$09,'                      |  |_) | |_) |                             ',$0A,$0D
+00013BE8= 09 09 20 20 20 20 ...   1541            dc.b $09,$09,'                      |  | \ | |   |                             ',$0A,$0D
+00013C2D= 09 09 20 20 20 20 ...   1542            dc.b $09,$09,'                      |            |                             ',$0A,$0D
+00013C72= 09 09 20 20 20 20 ...   1543            dc.b $09,$09,'       ______.______%_|            |__________  _____            ',$0A,$0D
+00013CB7= 09 09 20 20 20 20 ...   1544            dc.b $09,$09,'     _/                                       \|     |           ',$0A,$0D
+00013CFC= 09 09 20 20 20 20 ...   1545            dc.b $09,$09,'    |                 DRAGON DRACOVIC                <           ',$0A,$0D
+00013D41= 09 09 20 20 20 20 ...   1546            dc.b $09,$09,'    |_____.-._________              ____/|___________|           ',$0A,$0D
+00013D86= 09 09 20 20 20 20 ...   1547            dc.b $09,$09,'                      | * 20/ll/01 |                             ',$0A,$0D
+00013DCB= 09 09 20 20 20 20 ...   1548            dc.b $09,$09,'                      | + 19/10/21 |                             ',$0A,$0D
+00013E10= 09 09 20 20 20 20 ...   1549            dc.b $09,$09,'                      |            |                             ',$0A,$0D
+00013E55= 09 09 20 20 20 20 ...   1550            dc.b $09,$09,'                      |            |                             ',$0A,$0D
+00013E9A= 09 09 20 20 20 20 ...   1551            dc.b $09,$09,'                      |   _        <                             ',$0A,$0D
+00013EDF= 09 09 20 20 20 20 ...   1552            dc.b $09,$09,'                      |__/         |                             ',$0A,$0D
+00013F24= 09 09 20 20 20 20 ...   1553            dc.b $09,$09,'                       / `--.      |                             ',$0A,$0D
+00013F69= 09 09 20 20 20 20 ...   1554            dc.b $09,$09,'                     %|            |%                            ',$0A,$0D
+00013FAE= 09 09 20 20 20 20 ...   1555            dc.b $09,$09,'                 |/.%%|          -< @%%%                         ',$0A,$0D
+00013FF3= 09 09 20 20 20 20 ...   1556            dc.b $09,$09,'                 `\%`@|     v      |@@%@%%                       ',$0A,$0D
+00014038= 09 09 20 20 20 20 ...   1557            dc.b $09,$09,'               .%%%@@@|%    |    % @@@%%@%%%%                    ',$0A,$0D
+0001407D= 09 09 20 20 20 20 ...   1558            dc.b $09,$09,'          _.%%%%%%@@@@@@%%_/%\_%@@%%@@@@@@@%%%%%%                ',$0A,$0D,0      ;variable xxxripxx terminated with null '0'
+000140C3                          1559                                                                                                            ;REFERENCES https://ascii.co.uk/art/rip
+000140C3                          1560  
+000140C3                          1561  
+000140C3                          1562          
+000140C3                          1563                  
+000140C3= 41 73 20 49 20 77 ...   1564  fooorest2 dc.b 'As I walking through the forest suddenly hear a terrible ROAR',$0d,$0a 
+00014102= 41 20 6C 6F 6F 6D ...   1565            dc.b 'A looming shadow swooped over my head and with a great ',$0d,$0a 
+0001413B= 67 75 73 68 20 6F ...   1566            dc.b 'gush of wind and the crushing thud a dragon lands in front of you',$0d,$0a 
+0001417E= 48 65 20 64 6F 65 ...   1567            dc.b 'He doesn not look very friendly',$0d,$0a,$0d,$0a  
+000141A1= 50 72 65 73 73 20 ...   1568            dc.b 'Press 1 to charm the dragon '
+000141BD= 0D 0A                   1569            dc.b  $0d,$0a
+000141BF= 0D 0A                   1570            dc.b  $0d,$0a
+000141C1= 50 72 65 73 73 20 ...   1571            dc.b 'Press 2 to run past the dragon'
+000141DF= 0D 0A                   1572            dc.b  $0d,$0a
+000141E1= 0D 0A                   1573            dc.b  $0d,$0a
+000141E3= 50 72 65 73 73 20 ...   1574            dc.b 'Press 3 to attack the dragon '
+00014200= 0D 0A                   1575            dc.b  $0d,$0a
+00014202= 0D 0A 00                1576            dc.b  $0d,$0a,0        ;variable fooorest2 terminated with null '0'
+00014205                          1577  
+00014205= 0D 0A 0D 0A 0D 0A       1578  foorest2a dc.b $0d,$0a,$0d,$0a,$0d,$0a
+0001420B= 09 09 09 59 6F 75 ...   1579            dc.b $09,$09,$09,'You talk to the dragon he ROAR angry                                ',$0d,$0a,0 ;variable foorest2a terminated with null '0'
+00014255                          1580            
+00014255= 09 09 09 09 09 09 ...   1581  foorest3a dc.b '                                                                                 ',$0A,$0D
+00014272= 20 20 20 28 20 20 ...   1582            dc.b '   (  )   /\   _                 (                                              ',$0A,$0D
+000142C4= 20 20 20 20 5C 20 ...   1583            dc.b '    \ |  (  \ ( \.(               )                      _____                  ',$0A,$0D
+00014316= 20 20 5C 20 20 5C ...   1584            dc.b '  \  \ \  `  `   ) \             (  ___                 / _   \                 ',$0A,$0D
+00014368= 20 28 5F 60 20 20 ...   1585            dc.b ' (_`    \+   . x  ( .\            \/   \____-----------/ (o)   \_               ',$0A,$0D
+000143BA= 20 20 2E 2D 20 20 ...   1586            dc.b '  .-               \+  ;          (  O                           \____          ',$0A,$0D
+0001440C= 20 20 20 20 20 20 ...   1587            dc.b '                          )        \_____________  `              \  /          ',$0A,$0D
+0001445E= 20 5F 5F 20 20 20 ...   1588            dc.b ' __                +- .( - .- <. - _  VVVVVVV VV V\                 \/          ',$0A,$0D
+000144B0= 20 5F 5F 5F 5F 5F ...   1589            dc.b ' _____            ._._: <_ - <- _  (--  _AAAAAAA__A_/                  |        ',$0A,$0D
+00014502= 20 20 2E 20 20 20 ...   1590            dc.b '  .    /./.+-  . .- /  +--  - .     \______________//_              \_______    ',$0A,$0D
+00014554= 20 20 28 5F 5F 20 ...   1591            dc.b '  (__ / /x  / x _/ (                                  \___           \     /    ',$0A,$0D
+000145A6= 20 2C 20 78 20 2F ...   1592            dc.b ' , x / (    . / .  /                                      |           \   /     ',$0A,$0D
+000145F8= 20 20 20 20 2F 20 ...   1593            dc.b '    /  /  _/ /    +                                      /              \/      ',$0A,$0D
+0001464A= 20 20 20 20 20 20 ...   1594            dc.b '      (__/                                             /                  \     ',$0A,$0D
+0001469C= 20 20 20 20 20 20 ...   1595            dc.b '                                                                                ',$0A,$0D
+000146EE= 20 20 20 20 20 20 ...   1596            dc.b '                                                                                ',$0A,$0D,0 ;variable foorest3a terminated with null '0'
+00014741                          1597                                                                                                              ;REFERENCES https://www.asciiart.eu/mythology/dragons
+00014741                          1598  
+00014741                          1599  
+00014741= 09 09 09 49 20 64 ...   1600  foorest4a dc.b $09,$09,$09,'I do not think that he speaks English                               ',$0d,$0a,0  ;variable foorest4a terminated with null '0'
+0001478B                          1601                                                                                                         
+0001478B                          1602  
+0001478B                          1603  
+0001478B                          1604            
+0001478B                          1605            
+0001478B                          1606            
+0001478B                          1607            
+0001478B= 0D 0A 0D 0A 0D 0A       1608  foorest2b dc.b $0d,$0a,$0d,$0a,$0d,$0a         
+00014791= 09 09 59 6F 75 20 ...   1609            dc.b $09,$09,'You attempted to run past him but he takes a deep breath and shoot ',$0d,$0a 
+000147D8= 09 09 61 20 67 72 ...   1610            dc.b $09,$09,'a great gust of flame. You bearly manage to avoid the fire but ',$0d,$0a 
+0001481B= 09 09 09 09 09 69 ...   1611            dc.b $09,$09,$09,$09,$09,'it was not very good for environment  ',$0d,$0a,0             ;variable foorest2b terminated with null '0'
+00014849                          1612                                                                                                           
+00014849                          1613  
+00014849                          1614  
+00014849                          1615  
+00014849                          1616  
+00014849                          1617         
+00014849= 09 09 53 6F 6D 65 ...   1618  foorest4b dc.b $09,$09,'Some part of the forest is on fire ( + 1000 carbodioxiade )',$0d,$0a,0    ;variable foorest4b terminated with null '0'
+00014889                          1619                                                                                                  
+00014889                          1620  
+00014889                          1621  
+00014889                          1622  
+00014889                          1623  
+00014889= 09 20 20 20 20 20 ...   1624  foorest3b dc.b $09,'                                                                       ',$0A,$0D      
+000148D3= 09 20 20 20 20 20 ...   1625            dc.b $09,'                             ,.   (   .      )        .      "         ',$0A,$0D
+0001491D= 09 20 20 20 20 20 ...   1626            dc.b $09,'                     ("     )  )      ,         )  . (`      `         ',$0A,$0D
+00014967= 09 20 20 20 20 20 ...   1627            dc.b $09,'                   .; )  " (( (" )    ;(,     ((  (  ;)  "  )"         ',$0A,$0D
+000149B1= 09 20 20 20 20 20 ...   1628            dc.b $09,'               _"., ,._"_.,)_(..,( . )_  _  )_ ) (. _..(  .. )         ',$0A,$0D,0    ;variable foorest3b terminated with null '0'
+000149FC                          1629                                                                                                            ;REFERENCES https://ascii.co.uk/art/fire
+000149FC                          1630  
+000149FC                          1631  
+000149FC                          1632                
+000149FC                          1633            
+000149FC= 0D 0A 0D 0A             1634  foorest2c dc.b $0d,$0a,$0d,$0a
+00014A00= 09 09 59 6F 75 20 ...   1635            dc.b $09,$09,'You decide to attack the dragon',$0d,$0a,$0d,$0a 
+00014A25= 09 09 57 68 61 74 ...   1636            dc.b $09,$09,'What do you want the attack the dragon with ',$0d,$0a,0   ;variable foorest2c terminated with null '0'
+00014A56                          1637                                                                                                            
+00014A56                          1638  
+00014A56                          1639  
+00014A56                          1640            
+00014A56                          1641  
+00014A56                          1642  
+00014A56                          1643  
+00014A56= 20 20 20 20 20 20 ...   1644  foorest3c dc.b '                _                        ',$0A,$0D
+00014A81= 20 20 20 20 20 20 ...   1645            dc.b '              _( }                       ',$0A,$0D
+00014AAC= 20 20 20 20 2D 3D ...   1646            dc.b '    -=   _  <<  \                        ',$0A,$0D
+00014AD7= 20 20 20 20 20 20 ...   1647            dc.b '        `.\__/`/\\   Press 1 to run away ',$0A,$0D
+00014B02= 20 20 2D 3D 20 20 ...   1648            dc.b '  -=      "--"\\  `                      ',$0A,$0D
+00014B2D= 20 20 20 20 20 20 ...   1649            dc.b '       -=     //                         ',$0A,$0D
+00014B58= 20 20 20 20 20 20 ...   1650            dc.b '              \)                         ',$0A,$0D,0  ;variable foorest3c terminated with null '0'
+00014B84                          1651                                                                        ;REFERENCES https://ascii.co.uk/art/running
+00014B84                          1652  
+00014B84                          1653  
+00014B84                          1654  
+00014B84= 20 20 20 20 20 20 ...   1655  foorest4c dc.b '                                      _______________________       ',$0A, $0D
+00014BCA= 20 20 20 20 20 20 ...   1656            dc.b '                                     /                       /      ',$0A, $0D
+00014C10= 20 20 20 20 20 20 ...   1657            dc.b '                                     | COME ON! COME ON!     |      ',$0A, $0D
+00014C56= 20 20 20 20 20 20 ...   1658            dc.b '                   //////            | HIT ME! HIT ME!       |      ',$0A, $0D
+00014C9C= 20 20 20 20 20 20 ...   1659            dc.b '                   |  # o            | I DARE YOU DRAGON !!! |      ',$0A, $0D
+00014CE2= 20 20 20 20 20 20 ...   1660            dc.b '                   C   - | ----------/_______________________/      ',$0A, $0D
+00014D28= 20 20 20 20 20 20 ...   1661            dc.b '      ___          I  =__        ___                                ',$0A, $0D
+00014D6E= 20 20 20 20 20 28 ...   1662            dc.b '     (` _ \_       |   |        _/   )                              ',$0A, $0D
+00014DB4= 20 20 20 20 20 20 ...   1663            dc.b '      \  (__\  ,---- _ |----.  /__)- |                              ',$0A, $0D
+00014DFA= 20 20 20 20 20 20 ...   1664            dc.b '       \__  ( (           /  ) )  __/                               ',$0A, $0D
+00014E40= 20 20 20 20 20 20 ...   1665            dc.b '         |_X_\/ \.   #  _.|  \/_X_|                                 ',$0A, $0D
+00014E86= 20 20 20 20 20 20 ...   1666            dc.b '           |  \ /(   /    /\ /  |   Press 2 to  use your bare hands ',$0A, $0D
+00014ECC= 20 20 20 20 20 20 ...   1667            dc.b '            \ /  (  ,    /  \ _/                                    ',$0A, $0D
+00014F12= 20 20 20 20 20 20 ...   1668            dc.b '                 /______/                                           ',$0A, $0D
+00014F58= 20 20 20 20 20 20 ...   1669            dc.b '                [:::::::]                                           ',$0A, $0D,0 ;variable foorest4c terminated with null '0'
+00014F9F                          1670                                                                                                   ;REFERENCES https://ascii.co.uk/art/boxer
+00014F9F                          1671  
+00014F9F                          1672  
+00014F9F                          1673                      
+00014F9F                          1674  
+00014F9F                          1675  
+00014F9F                          1676  
+00014F9F                          1677            
+00014F9F= 0D 0A                   1678  forest2d dc.b $0d,$0a
+00014FA1= 09 09 09 09 50 72 ...   1679           dc.b $09,$09,$09,$09,'Press 3 to attack drago with spear ',$0A, $0D
+00014FCA= 09 09 09 09 20 20 ...   1680           dc.b $09,$09,$09,$09,'                                   ',$0A, $0D 
+00014FF3= 09 09 09 09 20 20 ...   1681           dc.b $09,$09,$09,$09,'           THE MAGIC SPEAR         ',$0A, $0D
+0001501C= 09 09 09 09 3E 3E ...   1682           dc.b $09,$09,$09,$09,'>>-;;;-----------------------;;--> ',$0A, $0D,0     ;variable forest2d terminated with null '0'
+00015046                          1683                                                                                                                 
+00015046                          1684         
+00015046                          1685           
+00015046                          1686           
+00015046= 09 20 20 20 20 09 ...   1687  dracon dc.b $09,'                   ___====-_  _-====___                       ',$0A,$0D
+0001507C= 09 20 20 20 20 20 ...   1688         dc.b $09,'               _--^^^#####//      \\#####^^^--_               ',$0A,$0D
+000150BD= 09 20 20 20 20 20 ...   1689         dc.b $09,'           _-^##########// (    ) \\##########^-_             ',$0A,$0D
+000150FE= 09 20 20 20 20 20 ...   1690         dc.b $09,'           -############//  |\^^/|  \\############-           ',$0A,$0D
+0001513F= 09 20 20 20 20 20 ...   1691         dc.b $09,'         _/############//   (@::@)   \\############\_         ',$0A,$0D
+00015180= 09 20 20 20 20 20 ...   1692         dc.b $09,'        /#############((     \\//     ))#############\        ',$0A,$0D
+000151C1= 09 20 20 20 20 20 ...   1693         dc.b $09,'       -###############\\    (oo)    //###############-       ',$0A,$0D
+00015202= 09 20 20 20 20 20 ...   1694         dc.b $09,'      -#################\\  / VV \  //#################-      ',$0A,$0D
+00015243= 09 20 20 20 20 20 ...   1695         dc.b $09,'     -###################\\/      \//###################-     ',$0A,$0D
+00015284= 09 20 20 20 20 5F ...   1696         dc.b $09,'    _#/|##########/\######(   /\   )######/\##########|\#_    ',$0A,$0D
+000152C5= 09 20 20 20 7C 2F ...   1697         dc.b $09,'   |/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|     ',$0A,$0D
+00015306= 09 20 20 20 20 60 ...   1698         dc.b $09,'    `  |/  V  V  `   V  \#\| |  | |/#/  V     V  V  \|        ',$0A,$0D
+00015347= 09 20 20 20 20 20 ...   1699         dc.b $09,'       `   `  `      `   / | |  | | \                         ',$0A,$0D
+00015388= 09 20 20 20 20 20 ...   1700         dc.b $09,'                        (  | |  | |  )                        ',$0A,$0D
+000153C9= 09 20 20 20 20 20 ...   1701         dc.b $09,'                       __\ | |  | | /__                       ',$0A,$0D
+0001540A= 09 20 20 20 20 20 ...   1702         dc.b $09,'                     (vvv(VVV)(VVV)vvv)                       ',$0A,$0D,0 ;variable dracon terminated with null '0'
+0001544C                          1703                                                                                             ;REFERENCES https://www.asciiart.eu/mythology/dragons
+0001544C                          1704  
+0001544C                          1705  
+0001544C                          1706              
+0001544C= 54 6F 74 61 6C 20 ...   1707  coins    dc.b 'Total MONEY: $ ',0  ;variable coins terminated with null '0'
+0001545C                          1708  
+0001545C                          1709  
+0001545C= 54 6F 74 61 6C 20 ...   1710  carbon  dc.b  'Total Carbon:   ',0   ;variable carbon terminated with null '0'
+0001546D                          1711            
+0001546D                          1712                                                  
+0001546D= 59 6F 75 20 6A 75 ...   1713  solaris dc.b 'You just have bought 1 SOLAR PANEL',0   ;variable solaris terminated with null '0'
+00015490                          1714  
+00015490                          1715                                                                   
+00015490= 59 6F 75 20 6A 75 ...   1716  windows dc.b 'You just have bought 1 WINDMILL',0      ;variable windows terminated with null '0'
+000154B0                          1717  
+000154B0                          1718  
+000154B0= 59 6F 75 20 6A 75 ...   1719  tele  dc.b 'You just have bought 1 TREE',0         ;variable tele terminated with null '0'
+000154CC                          1720  
+000154CC                          1721        
+000154CC= 0D 0A                   1722  solar dc.b  $0d,$0a
+000154CE= 44 4F 20 59 4F 55 ...   1723        dc.b 'DO YOU WANT TO BAY A SOLAR PANEL PRESS A  ($400)',$0d,$0a
+00015500= 49 54 20 52 45 44 ...   1724        dc.b 'IT REDUCE CARBON LEVEL BY 2000',0                          
+0001551F                          1725                                                        ;variable solar terminated with null '0'
+0001551F                          1726        
+0001551F= 0D 0A                   1727  wind  dc.b  $0d,$0a
+00015521= 44 4F 20 59 4F 55 ...   1728        dc.b 'DO YOU WANT TO BAY A WINDMILL PRESS B ($300)',$0d,$0a      
+0001554F= 49 54 20 52 45 44 ...   1729        dc.b 'IT REDUCE CARBON LEVEL BY 1000',0                          ;variable wind terminated with null '0'
+0001556E                          1730        
+0001556E= 0D 0A                   1731  tree  dc.b  $0d,$0a
+00015570= 44 4F 20 59 4F 55 ...   1732        dc.b 'DO YOU WANT TO BAY A TREE PRESS C ($200)',$0d,$0a 
+0001559A= 49 54 20 52 45 44 ...   1733        dc.b 'IT REDUCE CARBON LEVEL BY 500',0                          ;variable tree terminated with null '0'
+000155B8                          1734        
+000155B8= 0D 0A                   1735  wapon dc.b  $0d,$0a
+000155BA= 44 4F 20 59 4F 55 ...   1736        dc.b 'DO YOU WANT TO BAY A SPEAR PRESS D ($3000)',$0d,$0a
+000155E6= 49 46 20 59 4F 55 ...   1737        dc.b 'IF YOU COLLECT ENOUGH MONEY YOU CAN BUY THE SPEAR',0     ;variable wapon terminated with null '0'
+00015618                          1738        
+00015618= 0D 0A                   1739  exit  dc.b  $0d,$0a        
+0001561A= 44 4F 20 59 4F 55 ...   1740        dc.b 'DO YOU WANT TO EXIT PRESS E '                          
+00015636= 0D 0A 00                1741        dc.b  $0d,$0a,0                                                 ;variable exit terminated with null '0'
+00015639                          1742        
+00015639= 0D 0A 00                1743  NEW   dc.b $0d,$0a, 0                                                 ;variable NEW terminated with null '0'
+0001563C                          1744          
+0001563C                          1745      END    START                                                      ;last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ATTACK              10638
+ATTACK1             1068C
+ATTACK1A            10742
+ATTACK2             10780
+CARBON              1545C
+CHOOSE              103C0
+CLEARSCREEN         10CC6
+COINS               1544C
+CORECT1             10B48
+CORECT2             10B74
+CORECT3             10BA0
+CORECT4             10BCC
+CORECT5             10BF8
+DEAD                1074E
+DEEP                10450
+DESCRIPTION         12A50
+DESCRIPTION2        12ABD
+DRACO               104A4
+DRACON              15046
+DRAGON              12A42
+DRAGONDEAD          13A13
+EARTH               110EB
+END                 10DC0
+ENDGAME             10DC4
+ENDGAME2            10DD2
+ENTER               110A5
+EXIT                15618
+EXITO               103A6
+FOOOREST2           140C3
+FOOREST             12E40
+FOOREST2            13924
+FOOREST2A           14205
+FOOREST2B           1478B
+FOOREST2C           149FC
+FOOREST3A           14255
+FOOREST3B           14889
+FOOREST3C           14A56
+FOOREST4A           14741
+FOOREST4B           14849
+FOOREST4C           14B84
+FORENT              110C7
+FOREST              103F6
+FOREST2D            14F9F
+FOUNDS              12447
+FOUNDS2             12466
+GAMELOOP            100EA
+GAMEOVER            10B0C
+HANDS               106B2
+HANDY               13215
+HANDY2              13320
+HUD                 10C82
+INPUT               100D6
+INPUTA              100E0
+INVALID             10EDA
+ITEMS               102CA
+LEVEL               10134
+MONEY               10CA4
+NEW                 15639
+NEWLINE             10126
+NITRO               10ABE
+NMONEY              1026C
+NMONEY2             1028C
+NOMONEY             10260
+NOMONEY2            10280
+PATH                10168
+QUESTION1           124AD
+QUESTION2           125B0
+QUESTION3           126A2
+QUESTION4           1278A
+QUESTION5           128E5
+RESTART             100B8
+RIP                 10B36
+RUN                 10580
+RUN2                10628
+SCOST               64
+SHOP                101EE
+SNOOP               11725
+SOLAR               154CC
+SOLARIS             1546D
+SOLO                10C30
+SOOP                12B67
+SPCOST              BB8
+SPEAR               2500
+SPEER               10D6E
+START               10000
+TALK                10502
+TALK2               10572
+TCOST               32
+TELE                154B0
+TESLA               12484
+TEXT1               10F44
+TEXT2               10F5C
+TEXT3               129A0
+TEXT4               129B4
+TEXT5               129D3
+TEXT6               129E6
+TEXT7               12A02
+TEXT8               12A25
+TREE                1556E
+TREES               11C26
+TRELE               10D1E
+UPDATE              10AA8
+VALID               10E0C
+WAIT                10C24
+WAPON               155B8
+WCOST               4B
+WELCOME             10F6A
+WELCOME2            11034
+WIND                1551F
+WINDO               10CD2
+WINDOWS             15490
+WINNER              10E74
+WIZ                 10790
+WIZARD              12A49
+WIZQ1               107F0
+WIZQ2               10848
+WIZQ3               108A0
+WIZQ4               108F8
+WIZQ5               10950
+WIZTALK             139B8
+WIZZ                1206B
+WRONG1              109A8
+WRONG2              109DC
+WRONG3              10A10
+WRONG4              10A44
+WRONG5              10A78
+XXXRIPXX            13A95
