@@ -4,7 +4,7 @@ Created On: 3/23/2022 1:11:46 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      : Global Warming Adventure Game
-00000000                             3  * Written by : Adam Czaplewski
+00000000                             3  * Written by : Adam Czaplewski C00263447
 00000000                             4  * Date       : 3/20/2022
 00000000                             5  * Description: My goal in that adventure game is to lessen carbon emissions by shopping at the store. 
 00000000                             6  *              We can also fight Dragon in the battle to win the game, but first, we must purchase 
@@ -1337,7 +1337,7 @@ Created On: 3/23/2022 1:11:46 PM
 000126A2= 0D 0A 0D 0A 0D 0A       1333  Question3 dc.b  $0d,$0a,$0d,$0a,$0d,$0a 
 000126A8= 51 55 45 53 54 49 ...   1334            dc.b 'QUESTION 3',$0d,$0a
 000126B4= 48 6F 77 20 63 61 ...   1335            dc.b 'How can less rainfall cause famine in Africa?',$0d,$0a,$0d,$0a   
-000126E5= 5B 50 72 65 73 73 ...   1336            dc.b '[Press 1]  It doesn’t'
+000126E5= 5B 50 72 65 73 73 ...   1336            dc.b '[Press 1]  It doesnÂ’t'
 000126FA= 0D 0A                   1337            dc.b  $0d,$0a
 000126FC= 0D 0A                   1338            dc.b  $0d,$0a
 000126FE= 5B 50 72 65 73 73 ...   1339            dc.b '[Press 2]  Many local farmers depend on rain-fed agriculture'
@@ -1363,7 +1363,7 @@ Created On: 3/23/2022 1:11:46 PM
 00012885= 5B 50 72 65 73 73 ...   1359            dc.b '[Press 3]  It is no cause for concern'
 000128AA= 0D 0A                   1360            dc.b  $0d,$0a
 000128AC= 0D 0A                   1361            dc.b  $0d,$0a
-000128AE= 5B 50 72 65 73 73 ...   1362            dc.b '[Press 4]  We won’t be able to grow any food anymore'
+000128AE= 5B 50 72 65 73 73 ...   1362            dc.b '[Press 4]  We wonÂ’t be able to grow any food anymore'
 000128E2= 0D 0A 00                1363            dc.b  $0d,$0a,0                                ;variable Question4 terminated with null '0'
 000128E5                          1364  
 000128E5                          1365  
@@ -1505,7 +1505,7 @@ Created On: 3/23/2022 1:11:46 PM
 000137DF= 20 20 20 20 20 20 ...   1501         dc.b '           /*%*%*%*%*\                                                         ',$0A,$0D
 00013830= 20 20 20 20 20 20 ...   1502         dc.b '           >%*%#%*%*%|                                                         ',$0A,$0D
 00013881= 20 20 20 20 20 20 ...   1503         dc.b '          /%*%*#*%*%*\                                                         ',$0A,$0D
-000138D2= 20 20 20 20 20 20 ...   1504         dc.b '         ######^######£                                                        ',$0A,$0D,0   ;variable handy2 terminated with null '0'
+000138D2= 20 20 20 20 20 20 ...   1504         dc.b '         ######^######Â£                                                        ',$0A,$0D,0   ;variable handy2 terminated with null '0'
 00013924                          1505                                                                                                            ;REFERENCES https://ascii.co.uk/art/boxer
 00013924                          1506                                                                                                            ;REFERENCES https://www.asciiart.eu/mythology/dragons
 00013924                          1507  
